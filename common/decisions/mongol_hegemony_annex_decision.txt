@@ -1,0 +1,19 @@
+﻿# Disabled — annex moved to je_mongol_steppe_unity on_complete.
+# Kept as disabled stub so old references do not soft-fail.
+
+mongol_hegemony_annex_decision = {
+	is_shown = {
+		always = no
+	}
+
+	possible = {
+		always = no
+	}
+
+	when_taken = {
+	}
+
+	ai_chance = {
+		value = 0
+	}
+}

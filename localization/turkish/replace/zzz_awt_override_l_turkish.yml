@@ -1,0 +1,64 @@
+﻿l_turkish:
+
+ dyn_c_yettishar:0 "Yedişehir"
+
+ dyn_c_yettishar_emirate:0 "Yedişehir Emirliği"
+
+ YTS:0 "Yedişehir"
+
+ YTS_ADJ:0 "Yedişehirli"
+
+ YTS_DEF:0 "Yedişehir Emirliği"
+
+ YTS_monarchy:0 "Yedişehir Emirliği"
+
+ TRH:0 "Türkistan"
+
+ TRH_ADJ:0 "Türkistanlı"
+
+ TRH_DEF:0 "Türkistan"
+
+ TRH_monarchy:0 "Türkistan İmparatorluğu"
+
+ TRH_monarchy_adj:0 "Türkistanlı"
+
+ TRH_republic:0 "Türkistan Cumhuriyeti"
+
+ TRH_republic_adj:0 "Türkistanlı"
+
+ TRH_theocracy:0 "Türkistan Emirliği"
+
+ TRH_theocracy_adj:0 "Türkistanlı"
+
+ TRH_dictatorship:0 "Türkistan İmparatorluğu"
+
+ TRH_dictatorship_adj:0 "Türkistanlı"
+
+ dyn_c_turkestan:0 "Türkistan"
+
+ dyn_c_turkestan_adj:0 "Türkistanlı"
+
+ dyn_c_kashgar:0 "Kaşgar"
+
+ dyn_c_kashgar_khanate:0 "Kaşgar Emirliği"
+
+ dyn_c_kashgar_adj:0 "Kaşgarlı"
+
+ XIN:0 "Kaşgar"
+
+ XIN_ADJ:0 "Kaşgarlı"
+
+ XIN_DEF:0 "Kaşgar Emirliği"
+
+ XIN_monarchy:0 "Kaşgar Emirliği"
+
+ dyn_c_xinjiang_clique:0 "Kaşgar Emirliği"
+
+ gov_yts_khanate:0 "Emirlik"
+
+ gov_yts_khanate_desc:0 "Bu bir [concept_government_type]; ülkenin mutlak ve geleneksel lideri olan [Concept('concept_ruler','$RULER_TITLE_EMIR$')] tarafından yönetilir.\n\n$TRANSFER_OF_POWER_NAME_DESC$"
+
+ gov_yts_regency_khanate:0 "Emirlik"
+
+ gov_yts_regency_khanate_desc:0 "Bu bir [concept_government_type]; ülkenin mutlak ve geleneksel lideri olan [Concept('concept_ruler','$RULER_TITLE_EMIR$')] adına bir naiplik tarafından yönetilir.\n\n$TRANSFER_OF_POWER_NAME_DESC$"
+

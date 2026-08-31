@@ -1,0 +1,7 @@
+﻿tradition_turkic = {
+	type = tradition
+}
+
+tradition_steppe = {
+	type = tradition
+}

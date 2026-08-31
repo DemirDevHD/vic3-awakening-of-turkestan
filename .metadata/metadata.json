@@ -1,0 +1,13 @@
+{
+  "name" : "Awakening of Turkestan",
+  "id" : "",
+  "version" : "1.0.0",
+  "picture": "thumbnail.png",
+  "supported_game_version" : "1.13.9",
+  "short_description" : "Central Asian flavor for Victoria 3 — Kokand, Yettishar, and the path to Turkestan.",
+  "tags" : ["Alternative History", "Events", "Historical", "Gameplay"],
+  "relationships" : [],
+  "game_custom_data" : {
+    "multiplayer_synchronized" : true
+  }
+}

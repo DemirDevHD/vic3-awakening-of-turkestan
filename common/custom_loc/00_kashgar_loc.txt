@@ -1,0 +1,51 @@
+﻿defined_text = {
+	name = GetRussianSupportStatus
+	text = {
+		trigger = { has_variable = kashgar_has_russian_support }
+		localization_key = status_russian_war
+	}
+	text = {
+		trigger = { has_variable = kashgar_russian_neutral }
+		localization_key = status_russian_neutral
+	}
+	text = {
+		trigger = { has_variable = kashgar_russian_refused }
+		localization_key = status_russian_refused
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = status_waiting
+	}
+}
+
+defined_text = {
+	name = GetBritishSupportStatus
+	text = {
+		trigger = { has_variable = kashgar_has_british_support }
+		localization_key = status_british_support
+	}
+	text = {
+		trigger = { has_variable = kashgar_british_refused }
+		localization_key = status_british_refused
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = status_waiting
+	}
+}
+
+defined_text = {
+	name = GetOttomanSupportStatus
+	text = {
+		trigger = { has_variable = kashgar_has_ottoman_support }
+		localization_key = status_ottoman_support
+	}
+	text = {
+		trigger = { has_variable = kashgar_ottoman_refused }
+		localization_key = status_ottoman_refused
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = status_waiting
+	}
+}

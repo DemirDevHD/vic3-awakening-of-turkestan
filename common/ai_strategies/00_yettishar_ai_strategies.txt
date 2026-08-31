@@ -1,0 +1,263 @@
+# ===========================================================================
+# Kaşgar / Yettishar Bağımsızlık Savaşı - Destekçiler için AI Stratejisi
+# ===========================================================================
+
+# Russia (and subjects) accepted neutrality — stay out of dp_yts_liberation entirely.
+ai_strategy_yettishar_russian_neutral = {
+	icon = "gfx/interface/icons/ai_strategy_icons/maintain_power_balance.dds"
+
+	type = diplomatic
+
+	possible = {
+		OR = {
+			c:RUS ?= this
+			AND = {
+				exists = c:RUS
+				is_subject_of = c:RUS
+			}
+		}
+		OR = {
+			has_variable = kashgar_temp_neutral_locked
+			AND = {
+				exists = c:RUS
+				c:RUS = { has_variable = kashgar_temp_neutral_locked }
+			}
+			any_country = {
+				OR = {
+					c:YTS ?= this
+					c:KOK ?= this
+					c:TRH ?= this
+				}
+				has_variable = kashgar_russian_neutral
+			}
+		}
+	}
+
+	weight = {
+		value = 20000
+	}
+
+	diplomatic_play_support = {
+		value = 0
+
+		if = {
+			limit = {
+				exists = scope:diplomatic_play_type
+				scope:diplomatic_play_type = play_type:dp_yts_liberation
+			}
+			add = {
+				value = -10000
+				desc = "yettishar_russian_neutrality"
+			}
+		}
+	}
+
+	diplomatic_play_neutrality = {
+		value = 0
+
+		if = {
+			limit = {
+				exists = scope:diplomatic_play_type
+				scope:diplomatic_play_type = play_type:dp_yts_liberation
+			}
+			add = {
+				value = 10000
+				desc = "yettishar_russian_neutrality"
+			}
+		}
+	}
+
+	diplomatic_play_boldness = {
+		value = 0
+
+		if = {
+			limit = {
+				exists = scope:diplomatic_play_type
+				scope:diplomatic_play_type = play_type:dp_yts_liberation
+			}
+			add = {
+				value = -5000
+				desc = "yettishar_russian_neutrality"
+			}
+		}
+	}
+}
+
+ai_strategy_yettishar_support = {
+	icon = "gfx/interface/icons/ai_strategy_icons/maintain_power_balance.dds"
+
+	type = diplomatic
+
+	possible = {
+		OR = {
+			AND = {
+				OR = {
+					c:RUS ?= this
+					AND = {
+						exists = c:RUS
+						is_subject_of = c:RUS
+					}
+				}
+				any_country = {
+					OR = {
+						c:YTS ?= this
+						c:KOK ?= this
+					}
+					has_variable = kashgar_has_russian_support
+				}
+			}
+			AND = {
+				OR = {
+					c:GBR ?= this
+					AND = {
+						exists = c:GBR
+						is_subject_of = c:GBR
+					}
+				}
+				any_country = {
+					OR = {
+						c:YTS ?= this
+						c:KOK ?= this
+					}
+					has_variable = kashgar_has_british_support
+				}
+			}
+			AND = {
+				OR = {
+					c:TUR ?= this
+					AND = {
+						exists = c:TUR
+						is_subject_of = c:TUR
+					}
+				}
+				any_country = {
+					OR = {
+						c:YTS ?= this
+						c:KOK ?= this
+					}
+					has_variable = kashgar_has_ottoman_support
+				}
+			}
+		}
+	}
+
+	weight = {
+		value = 10000
+	}
+
+	diplomatic_play_support = {
+		value = 0
+
+		if = {
+			limit = {
+				exists = scope:diplomatic_play_type
+				scope:diplomatic_play_type = play_type:dp_yts_liberation
+				exists = scope:is_initiator
+			}
+
+			add = {
+				value = 1000
+				desc = "yettishar_diplomatic_support"
+			}
+		}
+
+		if = {
+			limit = {
+				exists = scope:diplomatic_play_type
+				scope:diplomatic_play_type = play_type:dp_yts_liberation
+				NOT = { exists = scope:is_initiator }
+			}
+
+			add = {
+				value = -1000
+				desc = "yettishar_diplomatic_support"
+			}
+		}
+
+		# Locked supporters (and their subjects) must never prefer China's side
+		if = {
+			limit = {
+				exists = scope:diplomatic_play_type
+				scope:diplomatic_play_type = play_type:dp_yts_liberation
+				OR = {
+					has_variable = kashgar_temp_relations_locked
+					AND = {
+						exists = c:GBR
+						is_subject_of = c:GBR
+						c:GBR = { has_variable = kashgar_temp_relations_locked }
+					}
+					AND = {
+						exists = c:RUS
+						is_subject_of = c:RUS
+						c:RUS = { has_variable = kashgar_temp_relations_locked }
+					}
+					AND = {
+						exists = c:TUR
+						is_subject_of = c:TUR
+						c:TUR = { has_variable = kashgar_temp_relations_locked }
+					}
+				}
+				NOT = { exists = scope:is_initiator }
+			}
+			add = {
+				value = -5000
+				desc = "yettishar_diplomatic_support"
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:diplomatic_play_type
+				scope:diplomatic_play_type = play_type:dp_yts_liberation
+				OR = {
+					has_variable = kashgar_temp_relations_locked
+					AND = {
+						exists = c:GBR
+						is_subject_of = c:GBR
+						c:GBR = { has_variable = kashgar_temp_relations_locked }
+					}
+					AND = {
+						exists = c:RUS
+						is_subject_of = c:RUS
+						c:RUS = { has_variable = kashgar_temp_relations_locked }
+					}
+					AND = {
+						exists = c:TUR
+						is_subject_of = c:TUR
+						c:TUR = { has_variable = kashgar_temp_relations_locked }
+					}
+				}
+				exists = scope:is_initiator
+			}
+			add = {
+				value = 5000
+				desc = "yettishar_diplomatic_support"
+			}
+		}
+	}
+
+	diplomatic_play_boldness = {
+		value = 0
+
+		if = {
+			limit = {
+				exists = scope:diplomatic_play_type
+				scope:diplomatic_play_type = play_type:dp_yts_liberation
+			}
+
+			add = 1000
+		}
+	}
+
+	diplomatic_play_neutrality = {
+		value = 0
+
+		if = {
+			limit = {
+				exists = scope:diplomatic_play_type
+				scope:diplomatic_play_type = play_type:dp_yts_liberation
+			}
+
+			add = -1000
+		}
+	}
+}

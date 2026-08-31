@@ -1,0 +1,33 @@
+﻿YTS = {
+	dynamic_country_name = {
+		name = dyn_c_yettishar
+		adjective = YTS_ADJ
+
+		is_main_tag_only = yes
+		priority = 2000
+
+		trigger = {
+			# After proclaim, tag must be TRH — never keep Yedişehir name on proclaimed path
+			# trigger root has no variable-scope; must go through scope:actor (vanilla pattern,
+			# see game/common/dynamic_country_names/00_dynamic_country_names.txt).
+			scope:actor ?= {
+				NOT = { has_variable = yettishar_turkestan_proclaimed }
+			}
+		}
+	}
+}
+
+# Force Türkistan display after change_tag = TRH (mirrors YTS dyn name pattern)
+TRH = {
+	dynamic_country_name = {
+		name = dyn_c_turkestan
+		adjective = dyn_c_turkestan_adj
+
+		is_main_tag_only = yes
+		priority = 2000
+
+		trigger = {
+			always = yes
+		}
+	}
+}

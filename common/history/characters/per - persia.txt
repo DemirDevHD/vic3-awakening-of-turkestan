@@ -1,0 +1,15 @@
+﻿CHARACTERS = {
+	c:PER ?= {
+		create_character = {
+			template = per_mohammad_shah_qajar_template
+		}	
+
+		create_character = {
+			template = per_nasir_al_din_qajar_template
+		}
+
+		create_character = {
+			template = PER_mirza_aqasi_iravani
+		}
+	}
+}

@@ -1,0 +1,2019 @@
+﻿btn_cedidism_invite_gaspirali = {
+	name = "btn_cedidism_invite_gaspirali_name"
+	desc = "btn_cedidism_invite_gaspirali_desc"
+	visible = {
+		always = yes
+	}
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = cedidism_gaspirali_year_1880_tt
+			year >= 1880
+		}
+		custom_tooltip = {
+			text = cedidism_gaspirali_not_invited_tt
+			NOT = { has_variable = yts_gaspirali_invited }
+		}
+	}
+	selected = {
+		has_variable = yts_gaspirali_invited
+	}
+	effect = {
+		set_variable = yts_gaspirali_invited
+		trigger_event = { id = yettishar_events.130 popup = yes }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_yettishar_invite_kamil_harezmi = {
+	name = "yettishar_invite_kamil_harezmi"
+	desc = "yettishar_invite_kamil_harezmi_desc"
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_kamil_year_1850_tt
+			year >= 1850
+		}
+		custom_tooltip = {
+			text = yettishar_kamil_khi_gone_tt
+			NOT = { exists = c:KHI }
+		}
+		custom_tooltip = {
+			text = yettishar_kamil_not_invited_tt
+			NOT = { has_variable = yts_kamil_harezmi_invited }
+		}
+	}
+	selected = {
+		has_variable = yts_kamil_harezmi_invited
+	}
+	effect = {
+		set_variable = yts_kamil_harezmi_invited
+		trigger_event = { id = yettishar_events.101 popup = yes }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_yettishar_promote_ahmad_danish = {
+	name = "yettishar_promote_ahmad_danish"
+	desc = "yettishar_promote_ahmad_danish_desc"
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_kamil_invited_required_tt
+			has_variable = yts_kamil_harezmi_invited
+		}
+		custom_tooltip = {
+			text = yettishar_year_1870_tt
+			year >= 1870
+		}
+		custom_tooltip = {
+			text = yettishar_ahmad_not_promoted_tt
+			NOT = { has_variable = yts_ahmad_danish_promoted }
+		}
+	}
+	selected = {
+		has_variable = yts_ahmad_danish_promoted
+	}
+	effect = {
+		set_variable = yts_ahmad_danish_promoted
+		trigger_event = { id = yettishar_events.102 popup = yes }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_yettishar_military_reform_start = {
+	name = "yettishar_military_reform_start"
+	desc = "yettishar_military_reform_start_desc"
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_military_reform_not_opened_tt
+			NOT = { has_variable = yts_military_reform_je_opened }
+		}
+		any_scope_character = {
+			is_ruler = yes
+			is_alive = yes
+		}
+	}
+	selected = {
+		has_variable = yts_military_reform_je_opened
+	}
+	effect = {
+		set_variable = yts_military_reform_je_opened
+		trigger_event = { id = yettishar_events.103 popup = yes }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_yettishar_ottoman_officers = {
+	name = "yettishar_ottoman_officers"
+	desc = "yettishar_ottoman_officers_desc"
+	visible = {
+		always = yes
+	}
+	possible = {
+		exists = c:TUR
+		c:TUR = {
+			relations:root >= 30
+		}
+		custom_tooltip = {
+			text = yts_ottoman_officers_not_arrived_tt
+			NOT = { has_variable = yts_ottoman_officers_arrived }
+		}
+	}
+	selected = {
+		has_variable = yts_ottoman_officers_arrived
+	}
+	effect = {
+		set_variable = yts_ottoman_officers_arrived
+		if = {
+			limit = { exists = c:TUR }
+			c:TUR = {
+				custom_tooltip = {
+					text = yettishar_ottoman_guarantee_tt
+					create_treaty = {
+						first_country = c:TUR
+						second_country = root
+						is_draft = no
+						binding_period = { years = 5 }
+						articles_to_create = {
+							{
+								article = guarantee_independence
+								source_country = c:TUR
+								target_country = root
+							}
+						}
+					}
+				}
+				custom_tooltip = {
+					text = yettishar_ottoman_bankroll_tt
+					create_treaty = {
+						first_country = c:TUR
+						second_country = root
+						is_draft = no
+						binding_period = { years = 5 }
+						articles_to_create = {
+							{
+								article = money_transfer
+								source_country = c:TUR
+								target_country = root
+								inputs = {
+									{ quantity = 1000 }
+								}
+							}
+						}
+					}
+				}
+				add_modifier = {
+					name = modifier_yettishar_ottoman_mission_debuff
+					months = 60
+				}
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_ottoman_officers_bonus_tt
+			add_modifier = {
+				name = modifier_yettishar_ottoman_officers_bonus
+				months = 60
+			}
+		}
+		trigger_event = { id = yettishar_events.104 popup = yes }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_yettishar_british_rifles = {
+	name = "yettishar_british_rifles"
+	desc = "yettishar_british_rifles_desc"
+	visible = {
+		always = yes
+	}
+	possible = {
+		OR = {
+			and = {
+				exists = c:GBR
+				c:GBR = { relations:root >= 30 }
+			}
+			and = {
+				exists = c:BIC
+				c:BIC = { relations:root >= 30 }
+			}
+		}
+		custom_tooltip = {
+			text = yts_british_rifles_not_bought_tt
+			NOT = { has_variable = yts_british_rifles_bought }
+		}
+	}
+	selected = {
+		has_variable = yts_british_rifles_bought
+	}
+	effect = {
+		set_variable = yts_british_rifles_bought
+		add_treasury = -10000
+		custom_tooltip = {
+			text = yettishar_british_rifles_bonus_tt
+			add_modifier = {
+				name = modifier_yettishar_british_rifles_bonus
+				months = 60
+			}
+		}
+		if = {
+			limit = { exists = c:GBR }
+			c:GBR = {
+				add_modifier = {
+					name = modifier_yettishar_british_mission_debuff
+					months = 60
+				}
+			}
+		}
+		if = {
+			limit = { exists = c:RUS }
+			custom_tooltip = {
+				text = yettishar_british_rifles_russia_rel_tt
+				c:RUS = {
+					change_relations = {
+						country = root
+						value = -15
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_technology_researched = bolt_action_rifles }
+			}
+			custom_tooltip = {
+				text = yettishar_british_rifles_tech_tt
+				add_technology_progress = {
+					technology = bolt_action_rifles
+					progress = 1500
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = { has_technology_researched = rifling }
+			}
+			custom_tooltip = {
+				text = yettishar_british_rifles_tech_tt
+				add_technology_progress = {
+					technology = rifling
+					progress = 1500
+				}
+			}
+		}
+		trigger_event = { id = yettishar_events.105 popup = yes }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_kashgar_support_ottoman = {
+	name = btn_kashgar_support_ottoman_name
+	desc = btn_kashgar_support_ottoman_desc
+	selected = {
+		has_variable = kashgar_support_ottoman_asked
+	}
+	visible = {
+		NOT = {
+			has_variable = kashgar_crisis_triggered
+		}
+	}
+	possible = {
+		NOT = {
+			custom_tooltip = {
+				text = kashgar_diplomacy_not_asked_tt
+				has_variable = kashgar_support_ottoman_asked
+			}
+		}
+		NOT = {
+			custom_tooltip = {
+				text = kashgar_diplomacy_cooldown_tt
+				has_variable = kashgar_diplomacy_cooldown
+			}
+		}
+	}
+	effect = {
+		set_variable = kashgar_support_ottoman_asked
+		set_variable = {
+			name = kashgar_diplomacy_cooldown
+			days = 30
+		}
+		trigger_event = {
+			id = kashgar_diplomacy_events.101
+			popup = yes
+		}
+	}
+}
+btn_kashgar_support_british = {
+	name = btn_kashgar_support_british_name
+	desc = btn_kashgar_support_british_desc
+	selected = {
+		has_variable = kashgar_support_british_asked
+	}
+	visible = {
+		NOT = {
+			has_variable = kashgar_crisis_triggered
+		}
+	}
+	possible = {
+		exists = c:GBR
+		OR = {
+			is_adjacent_to_country = c:GBR
+			any_country = {
+				is_subject_of = c:GBR
+				is_adjacent_to_country = root
+			}
+		}
+		NOT = {
+			custom_tooltip = {
+				text = kashgar_diplomacy_not_asked_tt
+				has_variable = kashgar_support_british_asked
+			}
+		}
+		NOT = {
+			custom_tooltip = {
+				text = kashgar_diplomacy_cooldown_tt
+				has_variable = kashgar_diplomacy_cooldown
+			}
+		}
+	}
+	effect = {
+		set_variable = kashgar_support_british_asked
+		set_variable = {
+			name = kashgar_diplomacy_cooldown
+			days = 30
+		}
+		trigger_event = {
+			id = kashgar_diplomacy_events.102
+			popup = yes
+		}
+	}
+}
+btn_kashgar_support_russian = {
+	name = btn_kashgar_support_russian_name
+	desc = btn_kashgar_support_russian_desc
+	selected = {
+		has_variable = kashgar_support_russian_asked
+	}
+	visible = {
+		NOT = {
+			has_variable = kashgar_crisis_triggered
+		}
+	}
+	possible = {
+		NOT = {
+			custom_tooltip = {
+				text = kashgar_diplomacy_not_asked_tt
+				has_variable = kashgar_support_russian_asked
+			}
+		}
+		NOT = {
+			custom_tooltip = {
+				text = kashgar_diplomacy_cooldown_tt
+				has_variable = kashgar_diplomacy_cooldown
+			}
+		}
+	}
+	effect = {
+		set_variable = kashgar_support_russian_asked
+		set_variable = {
+			name = kashgar_diplomacy_cooldown
+			days = 30
+		}
+		trigger_event = {
+			id = kashgar_diplomacy_events.103
+			popup = yes
+		}
+	}
+}
+btn_trigger_kashgar_crisis = {
+	name = btn_trigger_kashgar_crisis_name
+	desc = btn_trigger_kashgar_crisis_desc
+	visible = {
+		NOT = { has_variable = kashgar_crisis_triggered }
+		NOT = { has_variable = kashgar_crisis_won }
+		NOT = { has_variable = kashgar_rebellion_finished }
+	}
+	possible = {
+		exists = c:CHI
+		custom_tooltip = {
+			text = kashgar_waiting_for_envoys_tt
+			AND = {
+				OR = {
+					NOT = { has_variable = kashgar_support_ottoman_asked }
+					has_variable = kashgar_has_ottoman_support
+					has_variable = kashgar_ottoman_refused
+					has_variable = kashgar_ottoman_modifier_granted
+				}
+				OR = {
+					NOT = { has_variable = kashgar_support_british_asked }
+					has_variable = kashgar_has_british_support
+					has_variable = kashgar_british_refused
+				}
+				OR = {
+					NOT = { has_variable = kashgar_support_russian_asked }
+					has_variable = kashgar_has_russian_support
+					has_variable = kashgar_russian_neutral
+					has_variable = kashgar_russian_refused
+				}
+			}
+		}
+	}
+	effect = {
+		set_variable = kashgar_crisis_triggered
+		if = {
+			limit = {
+				OR = {
+					s:STATE_TIANSHAN = {
+						any_scope_state = {
+							owner = c:CHI
+						}
+					}
+					s:STATE_DZUNGARIA = {
+						any_scope_state = {
+							owner = c:CHI
+						}
+					}
+				}
+			}
+			trigger_event = {
+				id = kashgar_diplomacy_events.4
+				popup = yes
+			}
+		}
+		else = {
+			set_variable = kashgar_crisis_won
+		}
+	}
+}
+btn_foreign_ottoman_pact = {
+	name = btn_foreign_ottoman_pact_name
+	desc = btn_foreign_ottoman_pact_desc
+	visible = {
+		exists = c:TUR
+		NOT = { has_variable = yts_foreign_ottoman_pact_signed }
+	}
+	possible = {
+		exists = c:TUR
+		c:TUR = {
+			relations:root >= 20
+		}
+		custom_tooltip = {
+			text = yts_foreign_diplomacy_cooldown_clear_tt
+			NOT = { has_variable = yts_foreign_diplomacy_cooldown }
+		}
+	}
+	effect = {
+		set_variable = yts_foreign_ottoman_pact_signed
+		set_variable = {
+			name = yts_foreign_diplomacy_cooldown
+			days = 60
+		}
+		scope:journal_entry = {
+			add_progress = {
+				name = yettishar_diplomacy_bar
+				value = 35
+			}
+		}
+		c:TUR = {
+			change_relations = {
+				country = root
+				value = 15
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+btn_foreign_british_pact = {
+	name = btn_foreign_british_pact_name
+	desc = btn_foreign_british_pact_desc
+	visible = {
+		exists = c:GBR
+		NOT = { has_variable = yts_foreign_british_pact_signed }
+	}
+	possible = {
+		exists = c:GBR
+		c:GBR = {
+			relations:root >= 20
+		}
+		custom_tooltip = {
+			text = yts_foreign_diplomacy_cooldown_clear_tt
+			NOT = { has_variable = yts_foreign_diplomacy_cooldown }
+		}
+	}
+	effect = {
+		set_variable = yts_foreign_british_pact_signed
+		set_variable = {
+			name = yts_foreign_diplomacy_cooldown
+			days = 60
+		}
+		scope:journal_entry = {
+			add_progress = {
+				name = yettishar_diplomacy_bar
+				value = 35
+			}
+		}
+		c:GBR = {
+			change_relations = {
+				country = root
+				value = 15
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+btn_foreign_russian_pact = {
+	name = btn_foreign_russian_pact_name
+	desc = btn_foreign_russian_pact_desc
+	visible = {
+		exists = c:RUS
+		NOT = { has_variable = yts_foreign_russian_pact_signed }
+	}
+	possible = {
+		exists = c:RUS
+		c:RUS = {
+			relations:root >= 20
+		}
+		custom_tooltip = {
+			text = yts_foreign_diplomacy_cooldown_clear_tt
+			NOT = { has_variable = yts_foreign_diplomacy_cooldown }
+		}
+	}
+	effect = {
+		set_variable = yts_foreign_russian_pact_signed
+		set_variable = {
+			name = yts_foreign_diplomacy_cooldown
+			days = 60
+		}
+		scope:journal_entry = {
+			add_progress = {
+				name = yettishar_diplomacy_bar
+				value = 35
+			}
+		}
+		c:RUS = {
+			change_relations = {
+				country = root
+				value = 15
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_yettishar_modernization = {
+	name = btn_yettishar_modernization_name
+	desc = btn_yettishar_modernization_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		has_technology_researched = empiricism
+		custom_tooltip = {
+			text = yettishar_modernization_not_started_tt
+			NOT = { has_variable = yettishar_modernization_started }
+		}
+		custom_tooltip = {
+			text = yettishar_modernization_not_active_tt
+			NOT = { has_journal_entry = je_yettishar_modernization }
+		}
+		custom_tooltip = {
+			text = yettishar_modernization_not_completed_tt
+			NOT = { has_variable = yts_modernization_je_completed }
+		}
+	}
+	selected = {
+		OR = {
+			has_variable = yettishar_modernization_started
+			has_variable = yts_modernization_je_completed
+			has_journal_entry = je_yettishar_modernization
+		}
+	}
+	effect = {
+		set_variable = yettishar_modernization_started
+		add_journal_entry = { type = je_yettishar_modernization }
+	}
+}
+
+btn_yettishar_turkestan_istikbal = {
+	name = btn_yettishar_turkestan_istikbal_name
+	desc = btn_yettishar_turkestan_istikbal_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		has_technology_researched = nationalism
+		custom_tooltip = {
+			text = yettishar_istikbal_not_started_tt
+			NOT = { has_variable = yettishar_istikbal_started }
+		}
+		custom_tooltip = {
+			text = turkestan_istikbal_not_completed_tt
+			NOT = { has_variable = turkestan_istikbal_completed }
+		}
+	}
+	selected = {
+		OR = {
+			has_variable = yettishar_istikbal_started
+			has_variable = turkestan_istikbal_completed
+			has_journal_entry = je_yettishar_turkestan_istikbal
+		}
+	}
+	effect = {
+		set_variable = yettishar_istikbal_started
+		add_journal_entry = { type = je_yettishar_turkestan_istikbal }
+	}
+}
+
+btn_yettishar_turkestan_hakimiyet = {
+	name = btn_yettishar_turkestan_hakimiyet_name
+	desc = btn_yettishar_turkestan_hakimiyet_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = turkestan_istikbal_completed_tt
+			has_variable = turkestan_istikbal_completed
+		}
+		has_technology_researched = pan-nationalism
+		NOT = { has_law = law_type:law_subjecthood }
+		custom_tooltip = {
+			text = yettishar_hakimiyet_not_started_tt
+			NOT = { has_variable = yettishar_hakimiyet_started }
+		}
+	}
+	selected = {
+		OR = {
+			has_variable = yettishar_hakimiyet_started
+			has_journal_entry = je_yettishar_turkestan_hakimiyet
+		}
+	}
+	effect = {
+		set_variable = yettishar_hakimiyet_started
+		add_journal_entry = { type = je_yettishar_turkestan_hakimiyet }
+	}
+}
+
+btn_yettishar_send_heir_to_porte = {
+	name = btn_yettishar_send_heir_to_porte_name
+	desc = btn_yettishar_send_heir_to_porte_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		exists = c:TUR
+		c:TUR = {
+			relations:root >= 30
+		}
+		custom_tooltip = {
+			text = yettishar_beg_kuli_is_heir_tt
+			exists = heir
+			heir = { has_template = YTS_beg_kuli_beg }
+		}
+		custom_tooltip = {
+			text = yettishar_year_1865_tt
+			year >= 1865
+		}
+		custom_tooltip = {
+			text = yts_beg_kuli_porte_not_sent_tt
+			NOT = { has_variable = yts_beg_kuli_porte_sent }
+		}
+		custom_tooltip = {
+			text = yts_beg_kuli_porte_not_returned_tt
+			NOT = { has_variable = yts_beg_kuli_porte_returned }
+		}
+	}
+	selected = {
+		OR = {
+			has_variable = yts_beg_kuli_porte_sent
+			has_variable = yts_beg_kuli_porte_returned
+		}
+	}
+	effect = {
+		set_variable = yts_beg_kuli_porte_sent
+		trigger_event = { id = yettishar_events.111 popup = yes }
+	}
+	ai_chance = {
+		value = 80
+	}
+}
+
+btn_yettishar_central_administration = {
+	name = btn_yettishar_central_administration_name
+	desc = btn_yettishar_central_administration_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yts_central_administration_not_completed_tt
+			NOT = { has_variable = yts_central_administration_completed }
+		}
+		# Bar check must live INSIDE custom_tooltip — raw scripted_bar_progress
+		# has no localization and shows as pink error text in the button tooltip.
+		custom_tooltip = {
+			text = yts_central_administration_bar_complete_tt
+			scope:journal_entry = {
+				"scripted_bar_progress(yettishar_central_administration_bar)" >= 100
+			}
+		}
+	}
+	selected = {
+		has_variable = yts_central_administration_completed
+	}
+	effect = {
+		set_variable = yts_central_administration_completed
+		add_modifier = {
+			name = modifier_yettishar_central_administration_reward
+			months = 120
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_yettishar_ottoman_military_mission = {
+	name = btn_yettishar_ottoman_military_mission_name
+	desc = btn_yettishar_ottoman_military_mission_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		exists = c:TUR
+		c:TUR = {
+			relations:root >= 30
+		}
+		custom_tooltip = {
+			text = yts_ottoman_military_mission_not_done_tt
+			NOT = { has_variable = yts_ottoman_military_mission_done }
+		}
+	}
+	selected = {
+		has_variable = yts_ottoman_military_mission_done
+	}
+	effect = {
+		set_variable = yts_ottoman_military_mission_done
+		trigger_event = { id = yettishar_events.120 popup = yes }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_yettishar_war_college = {
+	name = btn_yettishar_war_college_name
+	desc = btn_yettishar_war_college_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		has_technology_researched = general_staff
+		custom_tooltip = {
+			text = yts_ottoman_military_mission_required_tt
+			has_variable = yts_ottoman_military_mission_done
+		}
+		custom_tooltip = {
+			text = yts_war_college_not_founded_tt
+			NOT = { has_variable = yts_war_college_founded }
+		}
+	}
+	selected = {
+		has_variable = yts_war_college_founded
+	}
+	effect = {
+		set_variable = yts_war_college_founded
+		trigger_event = { id = yettishar_events.121 popup = yes }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_yettishar_london_mission = {
+	name = btn_yettishar_london_mission_name
+	desc = btn_yettishar_london_mission_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		exists = c:GBR
+		c:GBR = {
+			relations:root >= 30
+		}
+		custom_tooltip = {
+			text = yettishar_london_mission_treasury_tt
+			gold_reserves >= 10000
+		}
+		custom_tooltip = {
+			text = yts_london_mission_not_done_tt
+			NOT = { has_variable = yts_london_mission_done }
+		}
+	}
+	selected = {
+		has_variable = yts_london_mission_done
+	}
+	effect = {
+		add_treasury = -10000
+		set_variable = yts_london_mission_done
+		trigger_event = { id = yettishar_events.122 popup = yes }
+	}
+	ai_chance = {
+		value = 80
+	}
+}
+
+btn_yettishar_regular_battalions = {
+	name = btn_yettishar_regular_battalions_name
+	desc = btn_yettishar_regular_battalions_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		has_technology_researched = napoleonic_warfare
+		custom_tooltip = {
+			text = yts_ottoman_military_mission_required_tt
+			has_variable = yts_ottoman_military_mission_done
+		}
+		custom_tooltip = {
+			text = yts_regular_battalions_not_formed_tt
+			NOT = { has_variable = yts_regular_battalions_formed }
+		}
+	}
+	selected = {
+		has_variable = yts_regular_battalions_formed
+	}
+	effect = {
+		set_variable = yts_regular_battalions_formed
+		trigger_event = { id = yettishar_events.123 popup = yes }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+# --- İstikbal sub-buttons ---
+btn_istikbal_uyghur_path = {
+	name = btn_istikbal_uyghur_path_name
+	desc = btn_istikbal_uyghur_path_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = istikbal_uyghur_not_done_tt
+			NOT = { has_variable = istikbal_uyghur_path_done }
+		}
+		OR = {
+			AND = {
+				exists = c:XIN
+				NOT = { this = c:XIN }
+				# Only offer to annex XIN if it is actually our PU subject —
+				# never annex an unrelated/independent or foreign-subject XIN.
+				c:XIN = { is_subject_of = root }
+			}
+			AND = {
+				OR = {
+					has_state_in_state_region = STATE_TIANSHAN
+					any_subject_or_below = { has_state_in_state_region = STATE_TIANSHAN }
+				}
+				OR = {
+					has_state_in_state_region = STATE_DZUNGARIA
+					any_subject_or_below = { has_state_in_state_region = STATE_DZUNGARIA }
+				}
+			}
+		}
+	}
+	effect = {
+		add_primary_culture = cu:uighur
+		if = {
+			limit = {
+				exists = c:XIN
+				NOT = { this = c:XIN }
+				c:XIN = { is_subject_of = root }
+			}
+			annex_with_incorporation = c:XIN
+		}
+		# Full unification safety sweep: pull any leftover split shares of the
+		# Uyghur homeland (a subject other than XIN, or a stray root share left
+		# unincorporated) fully under root, mirroring the working XIN transfer
+		# pattern from kashgar_victory_events / mongol_personal_union_decision.
+		# Never touches RUS/GBR-owned shares.
+		custom_tooltip = istikbal_uyghur_unify_tt
+		hidden_effect = {
+			s:STATE_TIANSHAN = {
+				every_scope_state = {
+					limit = {
+						NOT = { owner = root }
+						NOT = { owner = c:RUS }
+						NOT = { owner = c:GBR }
+					}
+					set_state_owner = root
+					set_state_type = incorporated
+				}
+			}
+			s:STATE_DZUNGARIA = {
+				every_scope_state = {
+					limit = {
+						NOT = { owner = root }
+						NOT = { owner = c:RUS }
+						NOT = { owner = c:GBR }
+					}
+					set_state_owner = root
+					set_state_type = incorporated
+				}
+			}
+			s:STATE_JETISY = {
+				every_scope_state = {
+					limit = {
+						NOT = { owner = root }
+						NOT = { owner = c:RUS }
+						NOT = { owner = c:GBR }
+					}
+					set_state_owner = root
+					set_state_type = incorporated
+				}
+			}
+		}
+		set_variable = istikbal_uyghur_path_done
+	}
+	selected = {
+		has_variable = istikbal_uyghur_path_done
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_istikbal_open_turkmenistan = {
+	name = btn_istikbal_open_turkmenistan_name
+	desc = btn_istikbal_open_turkmenistan_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_turkmenistan_not_started_tt
+			NOT = { has_variable = yettishar_turkmenistan_started }
+		}
+		custom_tooltip = {
+			text = yettishar_turkmenistan_not_completed_tt
+			NOT = { has_variable = yettishar_turkmenistan_completed }
+		}
+	}
+	selected = {
+		OR = {
+			has_variable = yettishar_turkmenistan_started
+			has_variable = yettishar_turkmenistan_completed
+			has_journal_entry = je_yettishar_turkmenistan
+		}
+	}
+	effect = {
+		set_variable = yettishar_turkmenistan_started
+		add_journal_entry = { type = je_yettishar_turkmenistan }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+# --- Türkmen Meselesi buttons ---
+btn_turkmen_persuade_people = {
+	name = btn_turkmen_persuade_people_name
+	desc = btn_turkmen_persuade_people_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = cooldown_turkmen_persuade_tt
+			NOT = { has_variable = cooldown_turkmen_persuade }
+		}
+	}
+	selected = {
+		has_variable = cooldown_turkmen_persuade
+	}
+	effect = {
+		set_variable = {
+			name = cooldown_turkmen_persuade
+			days = 90
+		}
+		trigger_event = { id = turkmen_issue_events.1 popup = yes }
+	}
+	ai_chance = {
+		value = 80
+	}
+}
+
+btn_turkmen_nomad_crisis = {
+	name = btn_turkmen_nomad_crisis_name
+	desc = btn_turkmen_nomad_crisis_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = cooldown_turkmen_nomad_tt
+			NOT = { has_variable = cooldown_turkmen_nomad }
+		}
+	}
+	selected = {
+		has_variable = cooldown_turkmen_nomad
+	}
+	effect = {
+		set_variable = {
+			name = cooldown_turkmen_nomad
+			days = 90
+		}
+		trigger_event = { id = turkmen_issue_events.2 popup = yes }
+	}
+	ai_chance = {
+		value = 70
+	}
+}
+
+btn_turkmen_colonization_war = {
+	name = btn_turkmen_colonization_war_name
+	desc = btn_turkmen_colonization_war_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		has_institution = institution_colonial_affairs
+		yettishar_borders_turkmen_lands = yes
+		custom_tooltip = {
+			text = cooldown_turkmen_colonization_war_tt
+			NOT = { has_variable = cooldown_turkmen_colonization_war }
+		}
+		custom_tooltip = {
+			text = yettishar_turkmen_war_not_won_tt
+			NOT = { has_variable = yettishar_turkmen_colonization_war_won }
+		}
+		custom_tooltip = {
+			text = yettishar_turkmen_play_not_active_tt
+			NOT = { has_variable = yettishar_turkmen_colonization_play_active }
+		}
+	}
+	# Selected only after a real war/button win — never from a pre-existing KHIVA split share
+	selected = {
+		has_variable = yettishar_turkmen_colonization_war_won
+	}
+	effect = {
+		# Marker: button was pressed (required for ownership fallbacks)
+		set_variable = yettishar_turkmen_colonization_war_started
+		set_variable = yettishar_turkmen_colonization_button_used
+		# Instant win ONLY if Harezm + Uralsk objectives already secured
+		if = {
+			limit = {
+				yettishar_turkmen_already_owns_colonization_targets = yes
+			}
+			set_variable = yettishar_turkmen_colonization_war_won
+			je:je_yettishar_turkmenistan ?= {
+				add_progress = {
+					name = yettishar_turkmen_meselesi_bar
+					value = 40
+				}
+			}
+		}
+		else_if = {
+			limit = { exists = c:TRM }
+			# Primary: TRM's Harezm (STATE_KHIVA) share
+			s:STATE_KHIVA = {
+				random_scope_state = {
+					limit = { owner = c:TRM }
+					save_scope_as = harezm_target_state
+					add_claim = root
+				}
+			}
+			# Secondary: TRM's Uralsk (STATE_URALSK) share
+			s:STATE_URALSK = {
+				random_scope_state = {
+					limit = { owner = c:TRM }
+					save_scope_as = uralsk_target_state
+					add_claim = root
+				}
+			}
+			# Fallback primary: any TRM state if Harezm share is gone
+			if = {
+				limit = { NOT = { exists = scope:harezm_target_state } }
+				c:TRM = {
+					random_scope_state = {
+						save_scope_as = harezm_target_state
+						add_claim = root
+					}
+				}
+			}
+			if = {
+				limit = { exists = scope:harezm_target_state }
+				set_variable = yettishar_turkmen_colonization_play_active
+				create_diplomatic_play = {
+					name = turkmen_colonization_play
+					target_country = c:TRM
+					type = dp_turkmen_colonization
+					target_state = scope:harezm_target_state
+				}
+				# Add Uralsk as second primary demand (2 Infamy) — Kashgar multi-wargoal pattern
+				if = {
+					limit = { exists = scope:uralsk_target_state }
+					random_diplomatic_play = {
+						limit = {
+							is_diplomatic_play_type = dp_turkmen_colonization
+						}
+						add_war_goal = {
+							holder = root
+							type = turkmen_colonization_uralsk
+							primary_demand = yes
+							target_country = c:TRM
+							target_state = scope:uralsk_target_state
+						}
+					}
+				}
+			}
+			else = {
+			}
+		}
+		else = {
+			# No TRM — fight whoever holds Harezm (and Uralsk if needed)
+			s:STATE_KHIVA = {
+				random_scope_state = {
+					limit = {
+						NOT = { owner = root }
+					}
+					save_scope_as = harezm_target_state
+					owner = { save_scope_as = harezm_target_country }
+					add_claim = root
+				}
+			}
+			s:STATE_URALSK = {
+				random_scope_state = {
+					limit = {
+						NOT = { owner = root }
+					}
+					save_scope_as = uralsk_target_state
+					add_claim = root
+				}
+			}
+			if = {
+				limit = {
+					exists = scope:harezm_target_country
+					exists = scope:harezm_target_state
+				}
+				set_variable = yettishar_turkmen_colonization_play_active
+				create_diplomatic_play = {
+					name = turkmen_colonization_play
+					target_country = scope:harezm_target_country
+					type = dp_turkmen_colonization
+					target_state = scope:harezm_target_state
+				}
+				if = {
+					limit = {
+						exists = scope:uralsk_target_state
+						scope:uralsk_target_state = {
+							owner = scope:harezm_target_country
+						}
+					}
+					random_diplomatic_play = {
+						limit = {
+							is_diplomatic_play_type = dp_turkmen_colonization
+						}
+						add_war_goal = {
+							holder = root
+							type = turkmen_colonization_uralsk
+							primary_demand = yes
+							target_country = scope:harezm_target_country
+							target_state = scope:uralsk_target_state
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					yettishar_turkmen_colonization_objectives_secured = yes
+				}
+				set_variable = yettishar_turkmen_colonization_war_won
+				je:je_yettishar_turkmenistan ?= {
+					add_progress = {
+						name = yettishar_turkmen_meselesi_bar
+						value = 40
+					}
+				}
+			}
+			else = {
+			}
+		}
+	}
+	ai_chance = {
+		value = 60
+	}
+}
+
+btn_turkmen_ban_alaman = {
+	name = btn_turkmen_ban_alaman_name
+	desc = btn_turkmen_ban_alaman_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_turkmen_alaman_not_banned_tt
+			NOT = { has_variable = yettishar_turkmen_alaman_banned }
+		}
+	}
+	selected = {
+		has_variable = yettishar_turkmen_alaman_banned
+	}
+	effect = {
+		set_variable = yettishar_turkmen_alaman_banned
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 25
+			}
+		}
+		if = {
+			limit = { exists = c:PER }
+			c:PER = {
+				change_relations = {
+					country = root
+					value = 15
+				}
+			}
+		}
+		add_modifier = {
+			name = modifier_turkmen_caravan_protection
+			months = 24
+		}
+		add_radicals = {
+			value = 0.05
+			strata = lower
+		}
+	}
+	ai_chance = {
+		value = 50
+	}
+}
+
+# --- Hakimiyet hub buttons ---
+btn_hakimiyet_kazakh_path = {
+	name = btn_hakimiyet_kazakh_path_name
+	desc = btn_hakimiyet_kazakh_path_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_kazakh_not_started_tt
+			NOT = { has_variable = yettishar_kazakh_started }
+		}
+		custom_tooltip = {
+			text = yettishar_kazakh_not_completed_tt
+			NOT = { has_variable = yettishar_kazakh_completed }
+		}
+		custom_tooltip = {
+			text = yettishar_kazakh_je_not_active_tt
+			NOT = { has_journal_entry = je_yettishar_kazakh }
+		}
+	}
+	selected = {
+		OR = {
+			has_variable = yettishar_kazakh_started
+			has_variable = yettishar_kazakh_completed
+			has_journal_entry = je_yettishar_kazakh
+		}
+	}
+	effect = {
+		set_variable = yettishar_kazakh_started
+		add_journal_entry = { type = je_yettishar_kazakh }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_hegemony_cultural_unity = {
+	name = btn_hegemony_cultural_unity_name
+	desc = btn_hegemony_cultural_unity_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_kazakh_completed_tt
+			has_variable = yettishar_kazakh_completed
+		}
+		custom_tooltip = {
+			text = yettishar_cultural_unity_not_completed_tt
+			NOT = { has_variable = yettishar_cultural_unity_completed }
+		}
+	}
+	selected = {
+		has_variable = yettishar_cultural_unity_completed
+	}
+	effect = {
+		cu:uzbek = { add_tradition_trait = tradition_turkic }
+		cu:kazak = { add_tradition_trait = tradition_turkic }
+		cu:kirgiz = { add_tradition_trait = tradition_turkic }
+		cu:uighur = { add_tradition_trait = tradition_turkic }
+		cu:turkmen = { add_tradition_trait = tradition_turkic }
+		cu:hazara = { add_tradition_trait = tradition_turkic }
+		cu:tuvan = { add_tradition_trait = tradition_turkic }
+		cu:tatar = { add_tradition_trait = tradition_turkic }
+		cu:chuvash = { add_tradition_trait = tradition_turkic }
+		cu:yakut = { add_tradition_trait = tradition_turkic }
+		cu:bashkir = { add_tradition_trait = tradition_turkic }
+		set_variable = yettishar_cultural_unity_completed
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_hakimiyet_proclaim_turkestan = {
+	name = btn_hakimiyet_proclaim_turkestan_name
+	desc = btn_hakimiyet_proclaim_turkestan_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_cultural_unity_completed_tt
+			has_variable = yettishar_cultural_unity_completed
+		}
+		custom_tooltip = {
+			text = yettishar_turkestan_not_proclaimed_tt
+			NOT = { has_variable = yettishar_turkestan_proclaimed }
+		}
+		NOT = { c:TRH ?= THIS }
+		yettishar_can_proclaim_turkestan_states = yes
+	}
+	selected = {
+		OR = {
+			has_variable = yettishar_turkestan_proclaimed
+			c:TRH ?= THIS
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				exists = c:TRH
+				NOT = { c:TRH ?= THIS }
+				c:TRH = { is_player = no }
+			}
+			annex = c:TRH
+		}
+		if = {
+			limit = { NOT = { c:TRH ?= THIS } }
+			change_tag = TRH
+		}
+		if = {
+			limit = { NOT = { country_has_primary_culture = cu:turkmen } }
+			add_primary_culture = cu:turkmen
+		}
+		if = {
+			limit = {
+				exists = c:TRC
+				NOT = { this = c:TRC }
+			}
+			annex_with_incorporation = c:TRC
+		}
+		if = {
+			limit = { c:TRH ?= THIS }
+			add_modifier = {
+				name = modifier_turkestan_proclaimed
+				months = 60
+			}
+			set_variable = yettishar_turkestan_proclaimed
+			s:STATE_TOMSK = { add_claim = root }
+			s:STATE_TOBOLSK = { add_claim = root }
+			s:STATE_ASTRAKHAN = { add_claim = root }
+			s:STATE_KALMYKIA = { add_claim = root }
+			s:STATE_KRASNOYARSK = { add_claim = root }
+			trigger_event = { id = yettishar_events.200 }
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_hakimiyet_centralize = {
+	name = btn_hakimiyet_centralize_name
+	desc = btn_hakimiyet_centralize_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_turkestan_proclaimed_tt
+			has_variable = yettishar_turkestan_proclaimed
+		}
+		custom_tooltip = {
+			text = yettishar_centralize_not_started_tt
+			NOT = { has_variable = yettishar_centralize_started }
+		}
+		custom_tooltip = {
+			text = yettishar_centralize_not_completed_tt
+			NOT = { has_variable = yettishar_centralize_completed }
+		}
+		custom_tooltip = {
+			text = yettishar_centralize_je_not_active_tt
+			NOT = { has_journal_entry = je_yettishar_centralize }
+		}
+	}
+	selected = {
+		OR = {
+			has_variable = yettishar_centralize_started
+			has_variable = yettishar_centralize_completed
+			has_journal_entry = je_yettishar_centralize
+		}
+	}
+	effect = {
+		set_variable = yettishar_centralize_started
+		add_journal_entry = { type = je_yettishar_centralize }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+# --- Kazakh path buttons ---
+btn_kazakh_negotiate_zhuz = {
+	name = btn_kazakh_negotiate_zhuz_name
+	desc = btn_kazakh_negotiate_zhuz_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = cooldown_kazakh_negotiate_tt
+			NOT = { has_variable = cooldown_kazakh_negotiate }
+		}
+	}
+	selected = {
+		has_variable = cooldown_kazakh_negotiate
+	}
+	effect = {
+		set_variable = {
+			name = cooldown_kazakh_negotiate
+			days = 90
+		}
+		trigger_event = { id = yettishar_events.201 popup = yes }
+	}
+	ai_chance = {
+		value = 80
+	}
+}
+
+btn_kazakh_consolidate_influence = {
+	name = btn_kazakh_consolidate_influence_name
+	desc = btn_kazakh_consolidate_influence_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = cooldown_kazakh_influence_tt
+			NOT = { has_variable = cooldown_kazakh_influence }
+		}
+		custom_tooltip = {
+			text = yettishar_kazakh_influence_cost_tt
+			gold_reserves >= 2500
+		}
+	}
+	selected = {
+		has_variable = cooldown_kazakh_influence
+	}
+	effect = {
+		set_variable = {
+			name = cooldown_kazakh_influence
+			days = 90
+		}
+		add_treasury = -2500
+		
+		je:je_yettishar_kazakh ?= {
+			add_progress = {
+				name = yettishar_kazakh_bar
+				value = 12
+			}
+		}
+	}
+	ai_chance = {
+		value = 70
+	}
+}
+
+btn_kazakh_invite_sadyk = {
+	name = btn_kazakh_invite_sadyk_name
+	desc = btn_kazakh_invite_sadyk_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_kazakh_bar_100_tt
+			je:je_yettishar_kazakh ?= {
+				"scripted_bar_progress(yettishar_kazakh_bar)" >= 100
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_sadyk_not_recruited_tt
+			NOT = { has_variable = yettishar_sadyk_recruited }
+		}
+		custom_tooltip = {
+			text = yettishar_sadyk_not_present_tt
+			NOT = {
+				any_scope_character = {
+					has_template = YTS_sadyk_sultan
+				}
+			}
+		}
+	}
+	selected = {
+		has_variable = yettishar_sadyk_recruited
+	}
+	effect = {
+		create_character = {
+			template = YTS_sadyk_sultan
+		}
+		set_variable = yettishar_sadyk_recruited
+		je:je_yettishar_kazakh ?= {
+			add_progress = {
+				name = yettishar_kazakh_bar
+				value = 20
+			}
+		}
+		trigger_event = { id = yettishar_events.202 popup = yes }
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_kazakh_raise_cavalry = {
+	name = btn_kazakh_raise_cavalry_name
+	desc = btn_kazakh_raise_cavalry_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_kazakh_bar_150_tt
+			je:je_yettishar_kazakh ?= {
+				"scripted_bar_progress(yettishar_kazakh_bar)" >= 150
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_sadyk_recruited_tt
+			has_variable = yettishar_sadyk_recruited
+		}
+		custom_tooltip = {
+			text = yettishar_sadyk_alive_tt
+			any_scope_character = {
+				has_template = YTS_sadyk_sultan
+				is_alive = yes
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_kazakh_army_not_raised_tt
+			NOT = { has_variable = yettishar_kazakh_army_raised }
+		}
+	}
+	selected = {
+		has_variable = yettishar_kazakh_army_raised
+	}
+	effect = {
+		custom_tooltip = btn_kazakh_cavalry_raise_tt
+		hidden_effect = {
+			if = {
+				limit = { has_state_in_state_region = STATE_SYRDARYA }
+				create_military_formation = {
+					type = army
+					hq_region = sr:region_central_asia
+					combat_unit = {
+						type = unit_type:combat_unit_type_hussars
+						state_region = s:STATE_SYRDARYA
+						count = 16
+					}
+					save_scope_as = kazakh_cavalry_army
+				}
+			}
+			else = {
+				create_military_formation = {
+					type = army
+					hq_region = sr:region_central_asia
+					combat_unit = {
+						type = unit_type:combat_unit_type_hussars
+						state_region = capital.state_region
+						count = 16
+					}
+					save_scope_as = kazakh_cavalry_army
+				}
+			}
+			random_scope_character = {
+				limit = {
+					has_template = YTS_sadyk_sultan
+					is_alive = yes
+				}
+				transfer_to_formation = scope:kazakh_cavalry_army
+			}
+			set_variable = yettishar_kazakh_army_raised
+			je:je_yettishar_kazakh ?= {
+				add_progress = {
+					name = yettishar_kazakh_bar
+					value = 20
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+# --- Greater Turkestan buttons ---
+btn_gt_break_russosphere = {
+	name = btn_gt_break_russosphere_name
+	desc = btn_gt_break_russosphere_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		has_state_in_state_region = STATE_SAMARA
+		has_state_in_state_region = STATE_KAZAN
+		has_state_in_state_region = STATE_UFA
+		has_state_in_state_region = STATE_CHELYABINSK
+		custom_tooltip = {
+			text = yettishar_gt_russosphere_not_broken_tt
+			NOT = { has_variable = yettishar_gt_russosphere_broken }
+		}
+	}
+	selected = {
+		has_variable = yettishar_gt_russosphere_broken
+	}
+	effect = {
+		show_as_tooltip = {
+			cu:chuvash = { remove_tradition_trait = tradition_russosphere }
+			cu:tatar = { remove_tradition_trait = tradition_russosphere }
+			cu:bashkir = { remove_tradition_trait = tradition_russosphere }
+			cu:kalmyk = { remove_tradition_trait = tradition_russosphere }
+		}
+		hidden_effect = {
+			cu:chuvash = { remove_tradition_trait = tradition_russosphere }
+			cu:tatar = { remove_tradition_trait = tradition_russosphere }
+			cu:bashkir = { remove_tradition_trait = tradition_russosphere }
+			cu:kalmyk = { remove_tradition_trait = tradition_russosphere }
+			set_variable = yettishar_gt_russosphere_broken
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_gt_idel_ural_primary = {
+	name = btn_gt_idel_ural_primary_name
+	desc = btn_gt_idel_ural_primary_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		has_state_in_state_region = STATE_SAMARA
+		has_state_in_state_region = STATE_KAZAN
+		has_state_in_state_region = STATE_UFA
+		has_state_in_state_region = STATE_CHELYABINSK
+		custom_tooltip = {
+			text = yettishar_gt_russosphere_broken_tt
+			has_variable = yettishar_gt_russosphere_broken
+		}
+		custom_tooltip = {
+			text = yettishar_gt_russians_expelled_or_na_tt
+			OR = {
+				has_variable = yettishar_gt_russians_expelled
+				NOT = { exists = c:RUS }
+				NOT = {
+					any_scope_state = {
+						any_scope_pop = {
+							culture = cu:russian
+						}
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_gt_idel_ural_not_done_tt
+			NOT = { has_variable = yettishar_gt_idel_ural_primary }
+		}
+	}
+	selected = {
+		has_variable = yettishar_gt_idel_ural_primary
+	}
+	effect = {
+		show_as_tooltip = {
+			if = {
+				limit = { NOT = { country_has_primary_culture = cu:tatar } }
+				add_primary_culture = cu:tatar
+			}
+			if = {
+				limit = { NOT = { country_has_primary_culture = cu:chuvash } }
+				add_primary_culture = cu:chuvash
+			}
+			if = {
+				limit = { NOT = { country_has_primary_culture = cu:bashkir } }
+				add_primary_culture = cu:bashkir
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { NOT = { country_has_primary_culture = cu:tatar } }
+				add_primary_culture = cu:tatar
+			}
+			if = {
+				limit = { NOT = { country_has_primary_culture = cu:chuvash } }
+				add_primary_culture = cu:chuvash
+			}
+			if = {
+				limit = { NOT = { country_has_primary_culture = cu:bashkir } }
+				add_primary_culture = cu:bashkir
+			}
+			set_variable = yettishar_gt_idel_ural_primary
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+btn_gt_expel_russians = {
+	name = btn_gt_expel_russians_name
+	desc = btn_gt_expel_russians_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_gt_russosphere_broken_tt
+			has_variable = yettishar_gt_russosphere_broken
+		}
+		custom_tooltip = {
+			text = yettishar_gt_russians_not_expelled_tt
+			NOT = { has_variable = yettishar_gt_russians_expelled }
+		}
+		OR = {
+			AND = {
+				custom_tooltip = {
+					text = yettishar_gt_has_russian_pops_tt
+					any_scope_state = {
+						any_scope_pop = {
+							culture = cu:russian
+						}
+					}
+				}
+				custom_tooltip = {
+					text = yettishar_gt_russia_exists_tt
+					exists = c:RUS
+				}
+				custom_tooltip = {
+					text = yettishar_gt_has_railways_tt
+					has_technology_researched = railways
+				}
+			}
+			custom_tooltip = {
+				text = yettishar_gt_expel_skip_allowed_tt
+				OR = {
+					NOT = { exists = c:RUS }
+					NOT = {
+						any_scope_state = {
+							any_scope_pop = {
+								culture = cu:russian
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	selected = {
+		has_variable = yettishar_gt_russians_expelled
+	}
+	effect = {
+		if = {
+			limit = {
+				exists = c:RUS
+				any_scope_state = {
+					any_scope_pop = {
+						culture = cu:russian
+					}
+				}
+			}
+			# Lock button immediately (same pattern as Gaspirali / Kamil).
+			# Real move/mass-migration run in yettishar_events.210 option (no kill).
+			# Effects tip: engine modifiers/relations/migration only — no mega custom_tt.
+			set_variable = yettishar_gt_russians_expelled
+			show_as_tooltip = {
+				custom_tooltip = btn_gt_expel_russians_migration_tt
+				if = {
+					limit = { exists = c:RUS }
+					c:RUS = {
+						# Mass mig target match event: russian→Moscow
+						if = {
+							limit = {
+								any_scope_state = { state_region = s:STATE_MOSCOW }
+							}
+							random_scope_state = {
+								limit = { state_region = s:STATE_MOSCOW }
+								create_mass_migration = { origin = root culture = cu:russian }
+							}
+						}
+						else_if = {
+							limit = {
+								any_scope_state = { state_region = s:STATE_INGRIA }
+							}
+							random_scope_state = {
+								limit = { state_region = s:STATE_INGRIA }
+								create_mass_migration = { origin = root culture = cu:russian }
+							}
+						}
+						else_if = {
+							limit = {
+								any_scope_state = { state_region = s:STATE_KIEV }
+							}
+							random_scope_state = {
+								limit = { state_region = s:STATE_KIEV }
+								create_mass_migration = { origin = root culture = cu:russian }
+							}
+						}
+						if = {
+							limit = {
+								any_scope_state = { state_region = s:STATE_INGRIA }
+							}
+							random_scope_state = {
+								limit = { state_region = s:STATE_INGRIA }
+								add_modifier = {
+									name = modifier_gt_exile_pull
+									months = 12
+								}
+							}
+						}
+						if = {
+							limit = {
+								any_scope_state = { state_region = s:STATE_MOSCOW }
+							}
+							random_scope_state = {
+								limit = { state_region = s:STATE_MOSCOW }
+								add_modifier = {
+									name = modifier_gt_exile_pull
+									months = 12
+								}
+							}
+						}
+						if = {
+							limit = {
+								any_scope_state = { state_region = s:STATE_KIEV }
+							}
+							random_scope_state = {
+								limit = { state_region = s:STATE_KIEV }
+								add_modifier = {
+									name = modifier_gt_exile_pull
+									months = 12
+								}
+							}
+						}
+					}
+				}
+				every_scope_state = {
+					limit = {
+						any_scope_pop = {
+							culture = cu:russian
+						}
+					}
+					add_modifier = {
+						name = modifier_gt_expulsion_push
+						months = 12
+					}
+				}
+				add_culture_acceptance_modifier = {
+					culture = cu:russian
+					multiplier = -15
+				}
+				add_culture_acceptance_modifier = {
+					culture = cu:ukrainian
+					multiplier = -15
+				}
+				add_modifier = {
+					name = modifier_gt_russian_unwelcome
+				}
+				if = {
+					limit = { exists = c:RUS }
+					change_relations = {
+						country = c:RUS
+						value = -100
+					}
+				}
+			}
+			hidden_effect = {
+				trigger_event = { id = yettishar_events.210 popup = yes }
+			}
+		}
+		else = {
+			custom_tooltip = yettishar_gt_expel_skipped_tt
+			set_variable = yettishar_gt_russians_expelled
+		}
+	}
+	ai_chance = {
+		value = 50
+	}
+}
+
+# --- Mongol steppe unity button ---
+btn_mongol_spread_steppe_tradition = {
+	name = btn_mongol_spread_steppe_tradition_name
+	desc = btn_mongol_spread_steppe_tradition_desc
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = yettishar_mongol_has_pan_nationalism_tt
+			has_technology_researched = pan-nationalism
+		}
+		custom_tooltip = {
+			text = yettishar_mongol_owns_upper_yeniseysk_tt
+			has_state_in_state_region = STATE_UPPER_YENISEYSK
+		}
+		custom_tooltip = {
+			text = yettishar_mongol_owns_yakutsk_tt
+			has_state_in_state_region = STATE_YAKUTSK
+		}
+		custom_tooltip = {
+			text = yettishar_mongol_buryatia_root_or_mgl_tt
+			OR = {
+				has_state_in_state_region = STATE_BURYATIA
+				AND = {
+					exists = c:MGL
+					c:MGL = { has_state_in_state_region = STATE_BURYATIA }
+				}
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_mongol_steppe_not_spread_tt
+			NOT = { has_variable = yettishar_mongol_steppe_spread }
+		}
+	}
+	selected = {
+		has_variable = yettishar_mongol_steppe_spread
+	}
+	effect = {
+		custom_tooltip = {
+			text = btn_mongol_spread_cultures_tt
+			custom_tooltip = uzbek
+			custom_tooltip = kirgiz
+			custom_tooltip = kazak
+			custom_tooltip = uighur
+			custom_tooltip = mongol
+			custom_tooltip = buryat
+			custom_tooltip = kalmyk
+			custom_tooltip = tuvan
+			custom_tooltip = yakut
+		}
+		hidden_effect = {
+			cu:uzbek = { add_tradition_trait = tradition_steppe }
+			cu:kirgiz = { add_tradition_trait = tradition_steppe }
+			cu:kazak = { add_tradition_trait = tradition_steppe }
+			cu:uighur = { add_tradition_trait = tradition_steppe }
+			cu:mongol = { add_tradition_trait = tradition_steppe }
+			cu:buryat = { add_tradition_trait = tradition_steppe }
+			cu:kalmyk = { add_tradition_trait = tradition_steppe }
+			cu:tuvan = { add_tradition_trait = tradition_steppe }
+			cu:yakut = { add_tradition_trait = tradition_steppe }
+			set_variable = yettishar_mongol_steppe_spread
+		}
+	}
+	ai_chance = {
+		value = 80
+	}
+}

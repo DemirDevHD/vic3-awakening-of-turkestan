@@ -1,0 +1,49 @@
+﻿# Turkmen Issue & Mongol PU modifiers.
+# Previously undefined -> add_modifier "Failed to obtain modifier from script".
+
+modifier_turkmen_issue_completed = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	country_authority_add = 40
+	country_bureaucracy_mult = 0.05
+	country_influence_mult = 0.05
+}
+modifier_turkmen_caravan_protection = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds"
+	state_trade_capacity_mult = 0.10
+	state_radicals_from_political_movements_mult = 0.05
+}
+modifier_turkmen_nomad_suppressed = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	unit_offense_mult = 0.05
+	interest_group_ig_rural_folk_pop_attraction_mult = -0.10
+}
+# Legacy *_20 kept for old saves. Keys *_25 / *_30 keep names; values are Steppe Oath +30 / Deep Steppe Oath +45.
+modifier_mongol_brotherhood_20 = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	country_mongol_cultural_acceptance_add = 20
+	country_buryat_cultural_acceptance_add = 20
+	country_tuvan_cultural_acceptance_add = 20
+}
+modifier_mongol_brotherhood_25 = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	country_mongol_cultural_acceptance_add = 30
+	country_buryat_cultural_acceptance_add = 30
+	country_tuvan_cultural_acceptance_add = 30
+	country_kalmyk_cultural_acceptance_add = 30
+}
+modifier_mongol_brotherhood_30 = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	country_mongol_cultural_acceptance_add = 45
+	country_buryat_cultural_acceptance_add = 45
+	country_tuvan_cultural_acceptance_add = 45
+	country_kalmyk_cultural_acceptance_add = 45
+}
+modifier_mongol_pu_hard_integration = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_negative.dds"
+	country_authority_add = -40
+	state_radicals_from_political_movements_mult = 0.05
+}
+modifier_mongol_pu_loyal_steppe = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	country_liberty_desire_add = -0.15
+}

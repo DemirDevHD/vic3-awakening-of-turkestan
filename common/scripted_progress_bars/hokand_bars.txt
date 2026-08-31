@@ -1,0 +1,274 @@
+﻿hokand_authority_bar = {
+    name = hokand_authority_bar_name
+    desc = hokand_authority_bar_desc
+
+    default_bad = yes # Han otoritesini sağladığı için bar yeşil renkli olur
+
+    monthly_progress = {
+        if = {
+            limit = {
+                legitimacy >= 50
+            }
+            add = {
+                desc = "hokand_authority_from_legitimacy_tt"
+                value = 5
+            }
+        }
+        if = {
+            limit = {
+                is_at_war = yes
+            }
+            subtract = {
+                desc = "hokand_authority_from_war_tt"
+                value = 2
+            }
+        }
+        if = {
+            limit = {
+                OR = {
+                    has_variable = kashgar_victory_event_fired
+                    has_variable = kashgar_crisis_won
+                    has_state_in_state_region = s:STATE_TIANSHAN
+                    any_subject_or_below = {
+                        has_state_in_state_region = s:STATE_TIANSHAN
+                    }
+                }
+            }
+            add = {
+                desc = "hokand_authority_from_kashgar_tt"
+                value = 8
+            }
+        }
+        if = {
+            limit = {
+                has_modifier = modifier_hokand_tribal_loyalty
+            }
+            add = {
+                desc = "hokand_authority_from_tribes_tt"
+                value = 2.5
+            }
+        }
+        if = {
+            limit = {
+                legitimacy < 50
+            }
+            subtract = {
+                desc = "hokand_authority_low_legitimacy_tt"
+                value = 2
+            }
+        }
+        if = {
+            limit = {
+                has_modifier = modifier_hokand_frontier_command
+            }
+            subtract = {
+                desc = "hokand_authority_from_frontier_tt"
+                value = 1
+            }
+        }
+        if = {
+            limit = {
+                has_modifier = modifier_hokand_ulema_fatwa
+            }
+            subtract = {
+                desc = "hokand_authority_from_fatwa_tt"
+                value = 1
+            }
+        }
+    }
+
+    start_value = 300
+    min_value = 0
+    max_value = 450
+}
+
+hokand_yakub_support_bar = {
+    name = hokand_yakub_support_bar_name
+    desc = hokand_yakub_support_bar_desc
+
+    default = yes # Devlet için yönetimi ele geçirme tehdidi olduğu için bar kırmızı renkli olur
+
+    monthly_progress = {
+        if = {
+            limit = {
+                has_modifier = modifier_hokand_frontier_command
+            }
+            add = {
+                desc = "hokand_yakub_from_frontier_tt"
+                value = 1.5
+            }
+        }
+        if = {
+            limit = {
+                has_modifier = modifier_hokand_tashkent_pact
+            }
+            add = {
+                desc = "hokand_yakub_from_nobility_tt"
+                value = 1.2
+            }
+        }
+        if = {
+            limit = {
+                has_modifier = modifier_hokand_ulema_fatwa
+            }
+            add = {
+                desc = "hokand_yakub_from_ulema_tt"
+                value = 1.5
+            }
+        }
+        if = {
+            limit = {
+                has_modifier = modifier_hokand_officer_arsenal
+            }
+            add = {
+                desc = "hokand_yakub_from_arsenal_tt"
+                value = 1.2
+            }
+        }
+        if = {
+            limit = {
+                has_modifier = modifier_hokand_patrol_order
+            }
+            add = {
+                desc = "hokand_yakub_from_patrols_tt"
+                value = 1.2
+            }
+        }
+        if = {
+            limit = {
+                is_at_war = yes
+            }
+            add = {
+                desc = "hokand_yakub_from_war_tt"
+                value = 1.5
+            }
+        }
+        if = {
+            limit = {
+                has_modifier = modifier_hokand_tribal_loyalty
+            }
+            subtract = {
+                desc = "hokand_yakub_tribal_appeased_tt"
+                value = 2
+            }
+        }
+    }
+
+    start_value = 0
+    min_value = 0
+    max_value = 350
+}
+
+hokand_secure_fergana_bar = {
+    name = hokand_secure_fergana_bar_name
+    desc = hokand_secure_fergana_bar_desc
+
+    default_bad = yes # Fergana otoritesi sağlandığı için yeşil renkli olur
+
+    monthly_progress = {
+        if = {
+            limit = { legitimacy >= 75 }
+            add = {
+                desc = "hokand_authority_from_legitimacy_tt"
+                value = 3
+            }
+        }
+        if = {
+            limit = {
+                OR = {
+                    has_variable = kashgar_victory_event_fired
+                    has_variable = kashgar_crisis_won
+                    has_state_in_state_region = s:STATE_TIANSHAN
+                    any_subject_or_below = {
+                        has_state_in_state_region = s:STATE_TIANSHAN
+                    }
+                }
+            }
+            add = {
+                desc = "hokand_authority_from_kashgar_tt"
+                value = 3
+            }
+        }
+        if = {
+            limit = { is_at_war = yes }
+            subtract = {
+                desc = "hokand_authority_from_war_tt"
+                value = 2
+            }
+        }
+        if = {
+            limit = { legitimacy < 50 }
+            subtract = {
+                desc = "hokand_authority_low_legitimacy_tt"
+                value = 3
+            }
+        }
+    }
+
+    start_value = 0
+    min_value = 0
+    max_value = 500
+}
+
+hokand_secure_nomad_bar = {
+    name = hokand_secure_nomad_bar_name
+    desc = hokand_secure_nomad_bar_desc
+
+    default_bad = yes # Göçebe isyan kontrolü sağlandığı için yeşil renkli olur
+
+    monthly_progress = {
+        add = {
+            desc = "hokand_nomad_base_progress_tt"
+            value = 1
+        }
+        if = {
+            limit = { has_variable = hokand_alimbek_treaty_signed }
+            add = {
+                desc = "hokand_nomad_alimbek_support_tt"
+                value = 3
+            }
+        }
+        if = {
+            limit = {
+                OR = {
+                    has_variable = kashgar_victory_event_fired
+                    has_variable = kashgar_crisis_won
+                    has_state_in_state_region = s:STATE_TIANSHAN
+                    any_subject_or_below = {
+                        has_state_in_state_region = s:STATE_TIANSHAN
+                    }
+                }
+            }
+            add = {
+                desc = "hokand_authority_from_kashgar_tt"
+                value = 3
+            }
+        }
+        if = {
+            limit = { has_modifier = modifier_hokand_nomad_cavalry_raids }
+            add = {
+                desc = "hokand_nomad_cavalry_progress_tt"
+                value = 2
+            }
+        }
+        if = {
+            limit = { legitimacy < 50 }
+            subtract = {
+                desc = "hokand_authority_low_legitimacy_tt"
+                value = 3
+            }
+        }
+        if = {
+            limit = { is_at_war = yes }
+            subtract = {
+                desc = "hokand_nomad_war_distraction_tt"
+                value = 1.5
+            }
+        }
+    }
+
+    start_value = 0
+    min_value = 0
+    max_value = 400
+}
+

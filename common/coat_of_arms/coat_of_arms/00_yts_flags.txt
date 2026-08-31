@@ -1,0 +1,20 @@
+﻿YTS = {
+	pattern = "pattern_solid.tga"
+	color1 = "red"
+
+	colored_emblem = {
+		texture = "ce_crescent_rotated.dds"
+		color1 = "white"
+		color2 = "white"
+		instance = { scale = { 0.65 0.65 } position = { 0.50 0.50 } }
+		
+	}
+	colored_emblem = {
+		texture = "ce_star_08.dds"
+		color1 = "white"
+		color2 = "white"
+		instance = { scale = { 0.28 0.28 } position = { 0.60 0.35 } }
+	}
+
+
+}

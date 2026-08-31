@@ -1,0 +1,73 @@
+dp_turkmen_colonization = {
+	requires_interest_marker = no
+	war_goal = turkmen_colonization
+	texture = "gfx/interface/icons/war_goals/conquer_state.dds"
+
+	allow_negotiated_peace = yes
+	# Goals come only from JE button create_diplomatic_play + scripted add_war_goal.
+	initiator_can_add_war_goals = no
+	target_can_add_war_goals = no
+	aggressive_diplomatic_plays_permitted = yes
+	enable_switch_sides = no
+
+	# Script/JE-button only (vanilla dp_balkan_war pattern).
+	# possible=yes leaks this into province right-click "Diplomatic Demands"
+	# even when selectable_in_lens = no (greyed out for wrong targets).
+	possible = {
+		always = no
+	}
+
+	selectable_in_lens = {
+		always = no
+	}
+
+	ai_acceptance_max = 50
+
+	# Loss / unresolved end: cooldown. Win is set by WG on_enforced / on_demand_accepted.
+	on_war_end = {
+		initiator = {
+			if = {
+				limit = {
+					NOT = { has_variable = yettishar_turkmen_colonization_war_won }
+				}
+				set_variable = {
+					name = cooldown_turkmen_colonization_war
+					days = 365
+				}
+			}
+			remove_variable = yettishar_turkmen_colonization_play_active
+		}
+	}
+
+	on_demand_accepted = {
+		initiator = {
+			save_scope_as = turkmen_colonizer
+			# Demand acceptance should transfer both objectives to initiator
+			s:STATE_KHIVA = {
+				every_scope_state = {
+					limit = { owner = c:TRM }
+					set_state_owner = scope:turkmen_colonizer
+				}
+			}
+			s:STATE_URALSK = {
+				every_scope_state = {
+					limit = { owner = c:TRM }
+					set_state_owner = scope:turkmen_colonizer
+				}
+			}
+			if = {
+				limit = {
+					NOT = { has_variable = yettishar_turkmen_colonization_war_won }
+				}
+				set_variable = yettishar_turkmen_colonization_war_won
+				je:je_yettishar_turkmenistan ?= {
+					add_progress = {
+						name = yettishar_turkmen_meselesi_bar
+						value = 40
+					}
+				}
+			}
+			remove_variable = yettishar_turkmen_colonization_play_active
+		}
+	}
+}

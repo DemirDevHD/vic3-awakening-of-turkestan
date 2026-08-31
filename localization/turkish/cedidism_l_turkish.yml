@@ -1,0 +1,62 @@
+﻿l_turkish:
+
+ ideology_cedidism:0 "Cedidcilik"
+
+ ideology_cedidism_desc:0 "Devlet okulları, zorunlu eğitim, vicdan özgürlüğü ile kölelik ve serfliğin kaldırılmasını savunan; gelenekselciliğe karşı müdahaleci modernleşmeyi benimseyen Türk reformcu ideolojisi."
+
+ ideology_cedidist_movement:0 "Cedidcilik"
+
+ ideology_cedidist_movement_desc:0 "Devlet okulları, vicdan özgürlüğü, müdahaleci modernleşme ile serflik ve köleliğin sona ermesini talep eden eğitimciler, katipler ve reformcu aydınlar."
+
+ movement_cedidist:0 "Cedidcilik"
+
+ movement_cedidist_short:0 "Cedidcilik"
+
+ movement_cedidist_name:0 "$movement_cedidist$"
+
+ movement_cedidist_desc:0 "Modern mektepler, okuryazarlık, vicdan hakları ve tedrici toplumsal özgürleşme peşindeki reformcu eğitimciler ile şehirli meslek erbabı."
+
+ je_cedidism:0 "Cedidcilik ve Milli Uyanış"
+
+ je_cedidism_reason:0 "1880'lerden itibaren Cedidci modern mektep ve toplumsal reform fikirleri Türk aydınları arasında yayılır. İsmail Gaspıralı'yı davet edip programını uygulamak toplumumuzu yeniden şekillendirebilir."
+
+ je_cedidism_status:0 "Gaspıralı'yı davet edin, mektepleri genişletin, kölelik ve serfliği kaldırın, okuryazarlığı artırın ve Cedidci reformun hukuki temellerini güvenceye alın."
+
+ je_cedidism_goal:0 "Gaspıralı'yı davet ederek tüm eğitim ve toplumsal şartları sağlayıp Cedidci reform programını tamamlayın."
+
+ btn_cedidism_invite_gaspirali_name:0 "İsmail Gaspıralı'yı Davet Et"
+
+ btn_cedidism_invite_gaspirali_desc:0 "Kırım Tatarı eğitimci İsmail Gaspıralı'yı Aydınlar liderliğine getirerek Cedidci hareketi güçlendirin."
+
+ cedidism_year_1880_tt:0 "Yıl 1880 veya sonrası"
+
+ cedidism_gaspirali_year_1880_tt:0 "Yıl 1880 veya sonrası"
+
+ cedidism_gaspirali_not_invited_tt:0 "İsmail Gaspıralı henüz davet edilmedi"
+
+ cedidism_je_not_completed_tt:0 "Cedidcilik ve Milli Uyanış henüz tamamlanmadı"
+
+ cedidism_not_subject_tt:0 "Ülke bir başka ülkenin tebaası olmamalı"
+
+ yettishar_events.130.t:0 "Gaspıralı Türkistan'da"
+
+ yettishar_events.130.d:0 "İsmail Gaspıralı, Kırım'dan usul-i cedid programıyla — ana dilde mektep, okuryazarlık ve ölçülü reform — gelir. Aydınları yönetmeye ve şehirlerimizde Cedidci taraftarları bir araya getirmeye hazırdır."
+
+ yettishar_events.130.f:0 "Dilde, fikirde, işte birlik."
+
+ yettishar_events.130.a:0 "Usul-i cedid'in eğitimcisini karşıla"
+
+ modifier_cedidism_active:0 "Cedidci Uyanış"
+
+ modifier_cedidism_active_desc:0 "Cedidci uyanış Aydınları güçlendirir ve Küçük Burjuvaziyi reforma çeker."
+
+ modifier_cedidism_movement_boost_gaspirali:0 "Gaspıralı'nın Cedidci Çağrısı"
+
+ modifier_cedidism_movement_boost_gaspirali_desc:0 "İsmail Gaspıralı'nın gelişi Cedidci harekete 30 yıl boyunca +%200 hareket pop çekimi kazandırır."
+
+ modifier_cedidism_completed:0 "Cedidciliğin Zaferi"
+
+ modifier_cedidism_completed_desc:0 "Cedidci reformlar modern eğitimi kök saldırmış ve reformcu çıkar gruplarını güçlendirmiştir. Bu etki 20 yıl sürer."
+
+ cedidism_gaspirali_invited_tt:0 "İsmail Gaspıralı davet edildi"
+

@@ -1,0 +1,146 @@
+﻿# NOTE (1.13): This redefines can_join_side_in_diplomatic_play and will NOT load while vanilla
+# also defines it, unless the mod enables replace_path=common/scripted_rules and ships a full
+# merged 00_scripted_rules.txt. Kept for design intent; enable replace_path to activate.
+# scope:region = strategic region of the initial war goal
+can_join_side_in_diplomatic_play = {
+	# Yedişehir / Kaşgar Diplomatik Oyununda:
+	# - Tarafsızlığı Kabul Ettiyse (kashgar_russian_neutral) hiçbir tarafa katılamaz.
+	# - Askeri Desteği Kabul Ettiyse (kashgar_has_..._support) SADECE karşı tarafa
+	#   (enemy = desteklenen ülke) katılamaz. Desteklenen tarafına katılım serbest.
+	# - kashgar_temp_relations_locked tek başına her iki tarafı da engellemez
+	#   (eski bug: AI kendi tarafına da giremiyordu / yanlış tarafta kilitleniyordu).
+	# - Destekçinin tebaaları da aynı kısıta tabi (özellikle GBR→BIC/RAJ).
+	NOT = {
+		AND = {
+			OR = {
+				# 1. Rusya Tarafsızlığı Kabul Ettiyse (Hiçbir tarafa katılamaz)
+				AND = {
+					OR = {
+						c:RUS ?= root
+						AND = {
+							exists = c:RUS
+							is_subject_of = c:RUS
+						}
+					}
+					OR = {
+						scope:enemy_country = { has_variable = kashgar_russian_neutral }
+						scope:target_country = { has_variable = kashgar_russian_neutral }
+						has_variable = kashgar_temp_neutral_locked
+						AND = {
+							exists = c:RUS
+							c:RUS = { has_variable = kashgar_temp_neutral_locked }
+						}
+					}
+				}
+				# 2. Rusya Askeri Desteği — yalnızca desteklenen ülkeye karşı katılamaz
+				AND = {
+					OR = {
+						c:RUS ?= root
+						AND = {
+							exists = c:RUS
+							is_subject_of = c:RUS
+						}
+					}
+					scope:enemy_country = { has_variable = kashgar_has_russian_support }
+				}
+				# 3. İngiltere Askeri Desteği — yalnızca desteklenen ülkeye karşı katılamaz
+				AND = {
+					OR = {
+						c:GBR ?= root
+						AND = {
+							exists = c:GBR
+							is_subject_of = c:GBR
+						}
+					}
+					scope:enemy_country = { has_variable = kashgar_has_british_support }
+				}
+				# 4. Osmanlı Askeri Desteği — yalnızca desteklenen ülkeye karşı katılamaz
+				AND = {
+					OR = {
+						c:TUR ?= root
+						AND = {
+							exists = c:TUR
+							is_subject_of = c:TUR
+						}
+					}
+					scope:enemy_country = { has_variable = kashgar_has_ottoman_support }
+				}
+			}
+			# Bu kısıtlama sadece Kaşgar / Yedişehir ile ilgili oyunlarda geçerlidir
+			OR = {
+				scope:target_country = {
+					OR = {
+						c:YTS ?= this
+						c:KOK ?= this
+						c:TRH ?= this
+						has_variable = kashgar_liberation_play_started
+					}
+				}
+				scope:enemy_country = {
+					OR = {
+						c:YTS ?= this
+						c:KOK ?= this
+						c:TRH ?= this
+						has_variable = kashgar_liberation_play_started
+					}
+				}
+			}
+		}
+	}
+
+	# Might be disallowed by power bloc
+	NOT = {
+		custom_tooltip = {
+			text = "POWER_BLOC_CANNOT_SIDE_AGAINST_OVERLORD"
+			is_in_same_power_bloc = scope:target_country
+			is_in_same_power_bloc = scope:enemy_country
+			power_bloc ?= {
+				modifier:power_bloc_disallow_war_bool = yes
+			}
+			# Conflicts between Overlord and (their own) Subject are always permitted despite Power Bloc special conditions
+			# We can join the overlord side but not the subject's one
+			scope:target_country = {
+				is_direct_subject_of = scope:enemy_country
+			}
+		}
+	}
+	NOT = {
+		# Disallow plays targeting your indirect subjects
+		scope:enemy_country = {
+			is_indirect_subject_of = root
+		}
+	}
+
+	OR = {
+		has_strategic_region_interest_tier = {
+			strategic_region = scope:region
+			value >= interest_tier_effect_can_join_diplomatic_plays_min_tier
+		}
+		has_treaty_alliance_with = { TARGET = scope:target_country }
+		AND = {
+			has_treaty_defensive_pact_with = { TARGET = scope:target_country }
+			hidden_trigger = {
+				scope:target_country = {
+					scope:initiator != this
+				}
+			}
+		}
+		AND = {
+			scope:target_country = {
+				has_treaty_guarantee_independence_with = { TARGET = root }
+			}
+			hidden_trigger = {
+				scope:target_country = {
+					scope:initiator != this
+				}
+			}
+		}
+		scope:target_country = {
+			has_treaty_support_independence_with = { TARGET = root }
+		}
+		is_direct_subject_of = scope:enemy_country
+		scope:enemy_country = { is_direct_subject_of = root }
+		is_direct_subject_of = scope:target_country
+		scope:target_country = { is_direct_subject_of = root }
+	}
+}

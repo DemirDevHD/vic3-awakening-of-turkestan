@@ -1,0 +1,209 @@
+﻿yettishar_stability_bar = {
+    name = yettishar_stability_bar_name
+    desc = yettishar_stability_bar_desc
+
+    default_bad = yes # İstikrar barı dolunca Yakub Beg'in iktidarı sağlamlaşmış sayılır
+
+    monthly_progress = {
+        # Meşruiyet yüksekse istikrar artar
+        if = {
+            limit = { legitimacy >= 60 }
+            add = {
+                desc = "yettishar_stability_from_legitimacy_tt"
+                value = 3
+            }
+        }
+        # Savaş döneminde de istikrar artar (ordu Yakub'a bağlı)
+        if = {
+            limit = { has_war = yes }
+            add = {
+                desc = "yettishar_stability_from_war_tt"
+                value = 2
+            }
+        }
+        # Meşruiyet düşükse istikrar erir
+        if = {
+            limit = { legitimacy < 40 }
+            subtract = {
+                desc = "yettishar_stability_low_legitimacy_tt"
+                value = 2
+            }
+        }
+    }
+
+    start_value = 50
+    min_value = 0
+    max_value = 200
+}
+
+yettishar_hakimiyet_bar = {
+	name = yettishar_hakimiyet_bar_name
+	desc = yettishar_hakimiyet_bar_desc
+	default_bad = yes
+	monthly_progress = {
+		if = {
+			limit = { legitimacy >= 50 }
+			add = {
+				desc = "yettishar_hakimiyet_legitimacy_tt"
+				value = 2
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_TIANSHAN }
+			add = {
+				desc = "yettishar_hakimiyet_tianshan_tt"
+				value = 2
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_DZUNGARIA }
+			add = {
+				desc = "yettishar_hakimiyet_dzungaria_tt"
+				value = 2
+			}
+		}
+	}
+	start_value = 0
+	min_value = 0
+	max_value = 600
+}
+
+yettishar_diplomacy_bar = {
+	name = yettishar_diplomacy_bar_name
+	desc = yettishar_diplomacy_bar_desc
+	default_bad = yes
+	monthly_progress = {
+		if = {
+			limit = { legitimacy >= 50 }
+			add = {
+				desc = "yettishar_diplomacy_legitimacy_tt"
+				value = 2
+			}
+		}
+	}
+	start_value = 0
+	min_value = 0
+	max_value = 100
+}
+
+yettishar_civil_reform_bar = {
+	name = yettishar_civil_reform_bar_name
+	desc = yettishar_civil_reform_bar_desc
+	default_bad = yes
+	start_value = 0
+	min_value = 0
+	max_value = 4
+}
+
+yettishar_military_reform_bar = {
+	name = yettishar_military_reform_bar_name
+	desc = yettishar_military_reform_bar_desc
+	default_bad = yes
+	start_value = 0
+	min_value = 0
+	max_value = 6
+}
+
+yettishar_turkmen_meselesi_bar = {
+	name = yettishar_turkmen_meselesi_bar_name
+	desc = yettishar_turkmen_meselesi_bar_desc
+	default_bad = yes
+	# Light passive drift so active play finishes in ~12–24 months
+	monthly_progress = {
+		if = {
+			limit = { has_institution = institution_colonial_affairs }
+			add = {
+				desc = "yettishar_turkmen_bar_colonial_tt"
+				value = 2
+			}
+		}
+		else = {
+			add = {
+				desc = "yettishar_turkmen_bar_passive_tt"
+				value = 1
+			}
+		}
+	}
+	start_value = 0
+	min_value = 0
+	max_value = 200
+}
+
+yettishar_kazakh_bar = {
+	name = yettishar_kazakh_bar_name
+	desc = yettishar_kazakh_bar_desc
+	default_bad = yes
+	# Passive ~7–8/mo with legitimacy + claim bonus → ~12–18 months active tempo
+	monthly_progress = {
+		if = {
+			limit = { legitimacy >= 50 }
+			add = {
+				desc = "yettishar_kazakh_legitimacy_tt"
+				value = 5
+			}
+		}
+		else = {
+			add = {
+				desc = "yettishar_kazakh_passive_tt"
+				value = 3
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_claim = s:STATE_AKTOBE
+					has_claim = s:STATE_AKMOLINSK
+					has_claim = s:STATE_SEMIRECHE
+					has_claim = s:STATE_SYRDARYA
+					has_claim = s:STATE_URALSK
+				}
+			}
+			add = {
+				desc = "yettishar_kazakh_claims_tt"
+				value = 2
+			}
+		}
+		if = {
+			limit = { legitimacy >= 75 }
+			add = {
+				desc = "yettishar_kazakh_high_legitimacy_tt"
+				value = 1
+			}
+		}
+	}
+	start_value = 0
+	min_value = 0
+	max_value = 200
+}
+
+yettishar_central_administration_bar = {
+	name = yettishar_central_administration_bar_name
+	desc = yettishar_central_administration_bar_desc
+	default_green = yes
+	monthly_progress = {
+		# Do not progress until the player starts the reform
+		if = {
+			limit = {
+				has_variable = yts_central_administration_started
+				NOT = { has_variable = yts_central_administration_completed }
+			}
+			if = {
+				limit = { has_institution = institution_home_affairs }
+				add = {
+					desc = yettishar_central_administration_home_affairs_tt
+					value = 3
+				}
+			}
+			if = {
+				limit = { has_institution = institution_police }
+				add = {
+					desc = yettishar_central_administration_police_tt
+					value = 3
+				}
+			}
+		}
+	}
+	start_value = 0
+	min_value = 0
+	max_value = 100
+}

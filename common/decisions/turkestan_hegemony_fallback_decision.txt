@@ -1,0 +1,47 @@
+﻿# Early Yakub death → open Hakimiyet JE.
+# Vic3: NO icon; has_journal_entry (not is_journal_entry_active); ai_chance value=.
+
+turkestan_hegemony_fallback_decision = {
+	is_shown = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = turkestan_istikbal_completed_tt
+			has_variable = turkestan_istikbal_completed
+		}
+		custom_tooltip = {
+			text = yettishar_hakimiyet_not_started_tt
+			NOT = { has_variable = yettishar_hakimiyet_started }
+		}
+		NOT = { has_journal_entry = je_yettishar_turkestan_hakimiyet }
+		OR = {
+			has_variable = yettishar_yakub_beg_died
+			ruler = {
+				NOT = { has_template = YTS_yakub_beg }
+			}
+		}
+	}
+
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = turkestan_istikbal_completed_tt
+			has_variable = turkestan_istikbal_completed
+		}
+		has_technology_researched = pan-nationalism
+		NOT = { has_law = law_type:law_subjecthood }
+		custom_tooltip = {
+			text = yettishar_hakimiyet_not_started_tt
+			NOT = { has_variable = yettishar_hakimiyet_started }
+		}
+		NOT = { has_journal_entry = je_yettishar_turkestan_hakimiyet }
+	}
+
+	when_taken = {
+		set_variable = yettishar_hakimiyet_started
+		add_journal_entry = { type = je_yettishar_turkestan_hakimiyet }
+	}
+
+	ai_chance = {
+		value = 100
+	}
+}

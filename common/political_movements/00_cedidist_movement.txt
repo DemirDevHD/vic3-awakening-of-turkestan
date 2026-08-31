@@ -1,0 +1,263 @@
+﻿movement_cedidist = {
+	category = movement_category_ideological
+
+	ideology = ideology_cedidist_movement
+	character_ideologies = {
+		ideology_cedidism
+		ideology_reformer
+		ideology_modernizer_leader
+	}
+
+	creation_trigger = {
+		game_date >= 1880.1.1
+		OR = {
+			country_has_primary_culture = cu:tatar
+			country_has_primary_culture = cu:uzbek
+			country_has_primary_culture = cu:kazak
+			country_has_primary_culture = cu:kirgiz
+		}
+		ig:ig_intelligentsia ?= {
+			ig_counts_as_marginal = no
+		}
+	}
+
+	creation_weight = {
+		value = 800
+	}
+
+	# Vanilla pattern: decaying +100% attraction for 20 years so the movement
+	# survives past MOVEMENT_MIN_SUPPORT_GRACE_MONTHS (12) while support builds.
+	on_created = {
+		add_movement_enthusiasm_modifier = yes
+	}
+
+	# Only dissolve when Cedidist legal goals are achieved — not on low support alone
+	# after the 12-month grace (support weights below keep it above maintain threshold).
+	disband_trigger = {
+		has_law_or_variant = law_type:law_public_schools
+		has_law_or_variant = law_type:law_freedom_of_conscience
+	}
+	on_disbanded = {}
+
+	# Characters of Intelligentsia / Petty Bourgeoisie (and Cedidist ideologies) support — shows Aydınlar & Küçük Burjuvazi as supporters
+	character_support_trigger = {
+		OR = {
+			has_ideology = ideology:ideology_cedidism
+			has_ideology = ideology:ideology_reformer
+			has_ideology = ideology:ideology_modernizer_leader
+			is_interest_group_type = ig_intelligentsia
+			is_interest_group_type = ig_petty_bourgeoisie
+		}
+	}
+
+	character_support_weight = {
+		value = 200
+		if = {
+			limit = {
+				has_ideology = ideology:ideology_cedidism
+			}
+			multiply = {
+				value = 5
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_ideology = ideology:ideology_reformer
+					has_ideology = ideology:ideology_modernizer_leader
+				}
+			}
+			multiply = {
+				value = 3
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					is_interest_group_type = ig_intelligentsia
+					is_interest_group_type = ig_petty_bourgeoisie
+				}
+			}
+			multiply = {
+				value = 2
+			}
+		}
+	}
+
+	# Broad enough for Central Asia: urban/reform strata of primary Turkic cultures.
+	# Narrow academics-only gate left support under 1% after the 12-month grace.
+	pop_support_trigger = {
+		OR = {
+			culture = cu:tatar
+			culture = cu:uzbek
+			culture = cu:kazak
+			culture = cu:kirgiz
+		}
+		NOR = {
+			is_pop_type = clergymen
+			is_pop_type = peasants
+			is_pop_type = slaves
+			is_pop_type = tribesmen
+		}
+	}
+
+	pop_support_factors = {
+		movement_support_high_literacy
+		movement_support_high_urbanization
+		movement_support_academics
+		movement_support_bureaucrats
+		movement_support_clerks
+		movement_support_shopkeepers
+	}
+
+	pop_support_weight = {
+		if = {
+			limit = {
+				exists = scope:political_movement
+				scope:political_movement ?= {
+					OR = {
+						is_being_suppressed = yes
+						is_being_bolstered = yes
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:political_movement = {
+						is_being_suppressed = yes
+					}
+				}
+				add = {
+					value = suppression_base_value
+					multiply = {
+						value = -0.5
+						add = owner.modifier:country_suppression_attraction_factor
+					}
+					desc = "concept_suppressed"
+				}
+			}
+			else = {
+				add = {
+					value = bolstering_base_value
+					multiply = {
+						value = 0.5
+						add = owner.modifier:country_bolster_attraction_factor
+					}
+					desc = "concept_bolstered"
+				}
+			}
+		}
+
+		add = {
+			desc = "URBAN_STATE"
+			value = 10
+			multiply = state.state_urbanization_rate
+		}
+
+		add = {
+			desc = "LITERACY"
+			value = 25
+			multiply = literacy_rate
+		}
+
+		if = {
+			limit = {
+				strata = upper
+			}
+			if = {
+				limit = {
+					is_pop_type = capitalists
+				}
+				add = {
+					value = 12
+					desc = "POP_CAPITALISTS"
+				}
+			}
+			else = {
+				add = {
+					value = 5
+					desc = "UPPER_NO_ICON"
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				strata = middle
+			}
+			if = {
+				limit = {
+					is_pop_type = academics
+				}
+				add = {
+					value = 35
+					desc = "POP_ACADEMICS"
+				}
+			}
+			else_if = {
+				limit = {
+					is_pop_type = bureaucrats
+				}
+				add = {
+					value = 25
+					desc = "POP_BUREAUCRATS"
+				}
+			}
+			else_if = {
+				limit = {
+					is_pop_type = engineers
+				}
+				add = {
+					value = 20
+					desc = "POP_ENGINEERS"
+				}
+			}
+			else_if = {
+				limit = {
+					is_pop_type = shopkeepers
+				}
+				add = {
+					value = 22
+					desc = "POP_SHOPKEEPERS"
+				}
+			}
+			else = {
+				add = {
+					value = 12
+					desc = "MIDDLE_NO_ICON"
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				strata = lower
+			}
+			if = {
+				limit = {
+					is_pop_type = clerks
+				}
+				add = {
+					value = 20
+					desc = "POP_CLERKS"
+				}
+			}
+			else_if = {
+				limit = {
+					OR = {
+						is_pop_type = machinists
+						is_pop_type = laborers
+					}
+				}
+				add = {
+					value = 6
+					desc = "LOWER_NO_ICON"
+				}
+			}
+			else = {
+				add = {
+					value = 3
+					desc = "LOWER_NO_ICON"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,289 @@
+﻿# Yettishar/Kashgar milestone & flavor modifiers.
+# NOTE: every modifier referenced via add_modifier/modifiers_while_active in
+# common/journal_entries/je_yettishar.txt, scripted_buttons/yettishar_buttons.txt,
+# events/yettishar_events.txt and events/kashgar_*.txt MUST be defined here.
+# A missing definition makes add_modifier fail ("Failed to obtain modifier from
+# script") and previously spammed error.log hundreds of times per second while
+# the JE completion tooltip was rendered — a confirmed contributor to the crash.
+
+# --- Civil Modernization task bonuses (je_yettishar_modernization on_monthly_pulse) ---
+modifier_yettishar_home_affairs_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	country_bureaucracy_mult = 0.05
+	state_tax_capacity_mult = 0.05
+}
+modifier_yettishar_police_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	state_turmoil_effects_mult = -0.10
+	state_radicals_from_political_movements_mult = -0.05
+}
+modifier_yettishar_economic_reform_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds"
+	building_throughput_add = 0.05
+	state_tax_capacity_mult = 0.05
+}
+modifier_yettishar_admin_building_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_documents_positive.dds"
+	country_bureaucracy_mult = 0.10
+}
+modifier_yettishar_modernization_active = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	interest_group_ig_intelligentsia_pop_attraction_mult = 0.5
+	interest_group_ig_intelligentsia_pol_str_mult = 0.5
+	country_society_tech_research_speed_mult = 0.10
+	country_society_tech_spread_mult = 0.10
+}
+modifier_yettishar_modernization_completed = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	interest_group_ig_intelligentsia_pop_attraction_mult = 1.0
+	interest_group_ig_intelligentsia_pol_str_mult = 1.0
+	country_tech_research_speed_mult = 0.20
+	country_tech_spread_mult = 0.20
+	country_bureaucracy_mult = 0.15
+	state_tax_capacity_mult = 0.15
+	country_authority_mult = 0.10
+	country_bureaucracy_investment_cost_factor_mult = -0.10
+}
+
+# --- Military Reform task bonuses (je_yettishar_military_reform on_monthly_pulse) ---
+modifier_yettishar_barracks_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	unit_morale_recovery_mult = 0.10
+	unit_defense_mult = 0.03
+}
+modifier_yettishar_arms_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	unit_offense_mult = 0.05
+}
+modifier_yettishar_professional_army_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	unit_offense_mult = 0.03
+	unit_defense_mult = 0.03
+	military_formation_organization_gain_mult = 0.10
+}
+modifier_yettishar_military_reform_active = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	country_military_tech_research_speed_mult = 0.15
+	country_military_tech_spread_mult = 0.15
+}
+modifier_yettishar_military_reform_completed = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	country_military_tech_research_speed_mult = 0.25
+	country_military_tech_spread_mult = 0.25
+	unit_offense_mult = 0.08
+	unit_defense_mult = 0.08
+	military_formation_organization_gain_mult = 0.15
+}
+
+# --- Foreign relations / diplomacy JE ---
+modifier_yettishar_diplomacy_completed = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds"
+	country_diplomatic_play_maneuvers_add = 10
+	country_prestige_mult = 0.10
+}
+
+# --- Yakub Beg's rule (modifiers_while_active on je_yettishar_yakub_beg_rule) ---
+modifier_yettishar_yakub_beg_rule = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	interest_group_ig_armed_forces_pop_attraction_mult = 1.0
+	interest_group_ig_armed_forces_pol_str_mult = 1.0
+	country_authority_mult = 0.25
+	country_legitimacy_base_add = 25
+	country_bureaucracy_mult = 0.20
+	state_tax_capacity_mult = 0.20
+	unit_offense_mult = 0.15
+	unit_defense_mult = 0.15
+}
+
+# --- Kashgar liberation war (dp_yts_liberation) ---
+modifier_yettishar_liberation_war_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	unit_offense_mult = 0.25
+	unit_defense_mult = 0.25
+}
+modifier_china_east_turkestan_war_penalty = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_negative.dds"
+	unit_offense_mult = -0.30
+	unit_defense_mult = -0.30
+}
+modifier_yettishar_independence_victory = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds"
+	country_authority_add = 100
+	country_tax_income_add = 3000
+}
+modifier_kashgar_caliphate_prestige = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds"
+	country_prestige_mult = 0.15
+}
+
+# --- Istikbal completion (je_yettishar_turkestan_istikbal on_complete) ---
+# Authority-only reward by design — kept as a single flat stat to avoid any
+# nested-tooltip rendering issues in the JE "on complete" preview panel.
+modifier_yettishar_istikbal_completed = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	country_authority_add = 100
+}
+
+# --- Hakimiyet: proclaim Turkestan / Greater Turkestan ---
+modifier_turkestan_proclaimed = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds"
+	country_authority_add = 100
+	country_bureaucracy_mult = 0.10
+	state_assimilation_mult = 0.40
+}
+modifier_yettishar_kazakh_completed = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds"
+	country_prestige_add = 25
+	country_authority_add = 25
+}
+modifier_yettishar_turkestan_hegemony = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds"
+	country_influence_mult = 0.15
+	country_prestige_add = 40
+	state_assimilation_mult = 0.25
+	state_birth_rate_mult = 0.06
+	country_infamy_generation_mult = -0.15
+}
+modifier_greater_turkestan = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds"
+	country_max_companies_add = 2
+	country_free_charters_add = 4
+	state_assimilation_mult = 1.25
+	state_conversion_mult = 0.40
+	state_incorporation_speed_mult = 0.40
+	# Birth +25% (Doğum Oranı). No separate state_pop_growth_mult exists;
+	# net Toplum Büyümesi / Nüfus Artışı = birth − mortality, so −1% mortality is the +1% growth lever.
+	state_birth_rate_mult = 0.25
+	state_mortality_mult = -0.01
+	country_infamy_generation_mult = -0.30
+}
+# SoL only — culture acceptance applied via add_culture_acceptance_modifier in event/button.
+modifier_gt_russian_unwelcome = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_negative.dds"
+	state_russian_standard_of_living_add = -4
+	state_ukrainian_standard_of_living_add = -4
+}
+# Timed (12 months) after Expulsion by Rail — soft wave for leftover Russian pops.
+# Note: state_migration_push_mult has loc but no modifier_type in this game version;
+# negative pull on origin is the working emigration push.
+modifier_gt_expulsion_push = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds"
+	state_migration_pull_mult = -0.75
+}
+modifier_gt_exile_pull = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_documents_positive.dds"
+	state_migration_pull_mult = 1.5
+}
+
+# --- Great power military missions (btn_yettishar_ottoman_officers / btn_yettishar_british_rifles) ---
+modifier_yettishar_ottoman_officers_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	unit_offense_mult = 0.05
+	unit_defense_mult = 0.05
+}
+modifier_yettishar_ottoman_mission_debuff = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds"
+	country_prestige_mult = -0.05
+}
+modifier_yettishar_british_rifles_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	unit_offense_mult = 0.05
+	unit_defense_mult = 0.03
+}
+modifier_yettishar_british_mission_debuff = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds"
+	country_prestige_mult = -0.05
+}
+
+# --- Kamil Harezmi movement events ---
+modifier_kamil_harezmi_movement_support = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	interest_group_ig_intelligentsia_pol_str_mult = 0.40
+	political_movement_pop_attraction_mult = 0.30
+}
+modifier_kamil_harezmi_test_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds"
+	country_law_enactment_speed_mult = 0.15
+	interest_group_ig_intelligentsia_approval_add = 10
+}
+
+# --- Ahmad Donish movement events ---
+modifier_ahmad_donish_movement_support = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	political_movement_pop_attraction_mult = 1.20
+	political_movement_activism_growth_mult = 0.50
+}
+modifier_ahmad_donish_reform = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_documents_positive.dds"
+	country_law_enactment_speed_mult = 0.20
+	country_society_tech_research_speed_mult = 0.15
+	interest_group_ig_intelligentsia_approval_add = 15
+	interest_group_ig_intelligentsia_pol_str_mult = 0.25
+}
+
+# --- Central Administration Reform ---
+modifier_yettishar_central_administration_reward = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_documents_positive.dds"
+	country_bureaucracy_investment_cost_factor_mult = -0.05
+	country_bureaucracy_mult = 0.05
+}
+
+# --- Beg Kuli Porte education ---
+modifier_yettishar_beg_kuli_porte_education = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	country_society_tech_spread_mult = 0.05
+	interest_group_ig_intelligentsia_approval_add = 3
+}
+
+# --- Military Reform mission buttons ---
+modifier_yettishar_ottoman_military_mission = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	country_military_tech_research_speed_mult = 0.10
+}
+modifier_yettishar_london_mission = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	country_military_tech_research_speed_mult = 0.15
+}
+modifier_yettishar_london_mission_speed = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	country_military_tech_research_speed_mult = 0.10
+}
+modifier_yettishar_war_college = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	state_education_access_add = 0.10
+	country_weekly_innovation_add = 5
+	interest_group_ig_armed_forces_approval_add = 5
+	interest_group_ig_intelligentsia_approval_add = 5
+}
+modifier_yettishar_regular_battalions = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds"
+	military_formation_organization_gain_mult = 0.15
+	state_conscription_rate_mult = 0.10
+	building_training_rate_mult = 0.10
+	unit_morale_recovery_mult = 0.10
+}
+
+# --- Cedidism JE / Gaspirali ---
+modifier_cedidism_active = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	interest_group_ig_intelligentsia_pol_str_mult = 0.5
+	interest_group_ig_petty_bourgeoisie_pop_attraction_mult = 0.6
+	interest_group_ig_petty_bourgeoisie_pol_str_mult = 0.6
+}
+# Gaspirali arrives: +200% Cedidist movement attraction for 360 months (30 years)
+modifier_cedidism_movement_boost_gaspirali = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	political_movement_pop_attraction_mult = 2.0
+}
+# JE complete reward: Cedidciliğin Zaferi — 240 months (20 years)
+modifier_cedidism_completed = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds"
+	interest_group_ig_intelligentsia_pop_attraction_mult = 0.3
+	interest_group_ig_intelligentsia_pol_str_mult = 0.3
+	interest_group_ig_petty_bourgeoisie_pop_attraction_mult = 0.5
+	interest_group_ig_petty_bourgeoisie_pol_str_mult = 0.5
+	state_education_access_add = 0.20
+	country_weekly_innovation_mult = 0.20
+	country_tech_research_speed_mult = 0.15
+	country_bureaucracy_mult = 0.05
+}

@@ -1,0 +1,343 @@
+﻿je_hokand_void_of_authority = {
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	group = je_group_hokand
+	# Lobby (başlangıç ekranı) görünürlüğü
+	is_shown_in_lobby = {
+		c:KOK ?= THIS
+	}
+	# Aktif değilken görünürlük şartı
+	is_shown_when_inactive = {
+		c:KOK ?= THIS
+	}
+	# Aktifleşmesi için gereken şart
+	possible = {
+		c:KOK ?= THIS
+		game_date >= 1842.1.1
+		game_date <= 1860.1.1
+		owns_entire_state_region = STATE_UZBEKIA
+		custom_tooltip = {
+			text = hokand_no_stagnant_ming_tt
+			NOT = {
+				has_modifier = modifier_hokand_stagnant_ming_rule
+			}
+		}
+	}
+	# İlk aktif olduğunda değişkeni (variable) tanımlar
+	immediate = {
+		trigger_event = {
+			id = hokand_events.1
+		}
+	}
+	modifiers_while_active = {
+		modifier_hokand_authority_crisis
+	}
+	on_monthly_pulse = {
+		# Vic3 JE pulses require effect = { } for if/random_list (random_events is the only top-level alt)
+		effect = {
+			# 90-day cooldown between flavor events
+			if = {
+				limit = {
+					NOT = { has_variable = hokand_void_event_cd }
+				}
+				random_list = {
+					10 = {
+						trigger_event = { id = hokand_events.10 }
+						set_variable = { name = hokand_void_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.11 }
+						set_variable = { name = hokand_void_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.12 }
+						set_variable = { name = hokand_void_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.13 }
+						set_variable = { name = hokand_void_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.14 }
+						set_variable = { name = hokand_void_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.15 }
+						set_variable = { name = hokand_void_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.16 }
+						set_variable = { name = hokand_void_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.17 }
+						set_variable = { name = hokand_void_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.18 }
+						set_variable = { name = hokand_void_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.19 }
+						set_variable = { name = hokand_void_event_cd days = 90 }
+					}
+					150 = { }
+				}
+			}
+		}
+	}
+	scripted_button = btn_hokand_grant_akmechet_command
+	scripted_button = btn_hokand_ulema_ghazi_title
+	scripted_button = btn_hokand_modernize_arsenal_officers
+	scripted_button = btn_hokand_purge_palace_conspirators
+	scripted_button = btn_hokand_tax_privileges_tashkent
+	scripted_button = btn_hokand_bribe_kipchak_tribes
+	scripted_button = btn_hokand_fergana_patrols
+	# Scripted Barlarımızı ekliyoruz
+	scripted_progress_bar = hokand_authority_bar
+	scripted_progress_bar = hokand_yakub_support_bar
+	# Yandaki menüde (Outliner) iki barın da değerini gösterecek kısım
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_hokand_status
+				trigger = {
+					always = yes
+				}
+			}
+		}
+	}
+	# TAMAMLANMA: Han Otoritesi 20 ve altına düşünce Yakub Beg'in desteği en az 290 ise VE Buhara İşbirlikçileri Tasfiye edildiyse
+	complete = {
+		scope:journal_entry = {
+			custom_tooltip = {
+				text = hokand_authority_bar_req_tt
+				"scripted_bar_progress(hokand_authority_bar)" <= 10
+			}
+			custom_tooltip = {
+				text = hokand_yakub_support_bar_req_tt
+				"scripted_bar_progress(hokand_yakub_support_bar)" >= 350
+			}
+			custom_tooltip = {
+				text = hokand_je_sub_purge_tt
+				has_variable = hokand_palace_purged
+			}
+		}
+	}
+	on_complete = {
+		trigger_event = {
+			id = hokand_events.2
+		}
+	}
+	# BAŞARISIZLIK: Han Otoritesi maksimum puana (450) ulaşırsa Yakub Beg tasfiye edilir ve mod içerikleri devre dışı kalır
+	fail = {
+		scope:journal_entry = {
+			custom_tooltip = {
+				text = hokand_je_fail_condition_tt
+				"scripted_bar_progress(hokand_authority_bar)" >= 450
+			}
+		}
+	}
+	on_fail = {
+		trigger_event = {
+			id = hokand_events.6
+		}
+	}
+	weight = 5000
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+je_hokand_secure_authority = {
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	group = je_group_hokand
+	is_shown_in_lobby = {
+		OR = {
+			c:KOK ?= THIS
+			c:YTS ?= THIS
+		}
+	}
+	is_shown_when_inactive = {
+		OR = {
+			c:KOK ?= THIS
+			c:YTS ?= THIS
+		}
+	}
+	# Yakub Beg hükümdar olduğunda aktifleşir — otomatik tarama (possible)
+	possible = {
+		OR = {
+			c:KOK ?= THIS
+			c:YTS ?= THIS
+		}
+		custom_tooltip = {
+			text = yakub_beg_is_ruler_tt
+			ruler = {
+				has_template = YTS_yakub_beg
+			}
+		}
+		custom_tooltip = {
+			text = hokand_no_yettishar_established_tt
+			NOT = {
+				has_modifier = modifier_hokand_yettishar_established
+			}
+		}
+	}
+	immediate = {
+		trigger_event = {
+			id = hokand_events.35
+		}
+	}
+	modifiers_while_active = {
+		modifier_hokand_authority_vacuum
+		modifier_hokand_nomad_unrest
+	}
+	on_monthly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					je:je_hokand_secure_authority ?= {
+						"scripted_bar_progress(hokand_secure_fergana_bar)" >= 200
+					}
+					NOT = {
+						has_modifier = modifier_hokand_fergana_mint_100
+					}
+				}
+				add_modifier = {
+					name = modifier_hokand_fergana_mint_100
+				}
+			}
+			if = {
+				limit = {
+					je:je_hokand_secure_authority ?= {
+						"scripted_bar_progress(hokand_secure_fergana_bar)" >= 350
+					}
+					NOT = {
+						has_modifier = modifier_hokand_fergana_fatwa_175
+					}
+				}
+				add_modifier = {
+					name = modifier_hokand_fergana_fatwa_175
+				}
+			}
+			if = {
+				limit = {
+					je:je_hokand_secure_authority ?= {
+						"scripted_bar_progress(hokand_secure_nomad_bar)" >= 200
+					}
+					NOT = {
+						has_modifier = modifier_hokand_nomad_cavalry_100
+					}
+				}
+				add_modifier = {
+					name = modifier_hokand_nomad_cavalry_100
+				}
+			}
+			if = {
+				limit = {
+					je:je_hokand_secure_authority ?= {
+						"scripted_bar_progress(hokand_secure_nomad_bar)" >= 300
+					}
+					NOT = {
+						has_modifier = modifier_hokand_nomad_silkroad_150
+					}
+				}
+				add_modifier = {
+					name = modifier_hokand_nomad_silkroad_150
+				}
+			}
+			# 90-day cooldown between flavor events
+			if = {
+				limit = {
+					NOT = { has_variable = hokand_secure_event_cd }
+				}
+				random_list = {
+					10 = {
+						trigger_event = { id = hokand_events.40 }
+						set_variable = { name = hokand_secure_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.41 }
+						set_variable = { name = hokand_secure_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.42 }
+						set_variable = { name = hokand_secure_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.43 }
+						set_variable = { name = hokand_secure_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.44 }
+						set_variable = { name = hokand_secure_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.45 }
+						set_variable = { name = hokand_secure_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.46 }
+						set_variable = { name = hokand_secure_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.47 }
+						set_variable = { name = hokand_secure_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.48 }
+						set_variable = { name = hokand_secure_event_cd days = 90 }
+					}
+					10 = {
+						trigger_event = { id = hokand_events.49 }
+						set_variable = { name = hokand_secure_event_cd days = 90 }
+					}
+					50 = { }
+				}
+			}
+		}
+	}
+	scripted_button = btn_hokand_secure_fergana_beys
+	scripted_button = btn_hokand_secure_ulema_pact
+	scripted_button = btn_hokand_secure_alimbek_treaty
+	scripted_button = btn_hokand_secure_nomad_cavalry
+	scripted_button = btn_hokand_secure_rebel_camps
+	scripted_button = btn_hokand_secure_border_patrols
+	scripted_progress_bar = hokand_secure_fergana_bar
+	scripted_progress_bar = hokand_secure_nomad_bar
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_hokand_secure_authority_status
+				trigger = {
+					always = yes
+				}
+			}
+		}
+	}
+	# TAMAMLANMA: Fergana Hakimiyeti >= 500, Göçebe Sadakati >= 400 ve Alimbek Datka Antlaşması imzalandıysa
+	complete = {
+		scope:journal_entry = {
+			custom_tooltip = {
+				text = hokand_secure_fergana_bar_req_tt
+				"scripted_bar_progress(hokand_secure_fergana_bar)" >= 500
+			}
+			custom_tooltip = {
+				text = hokand_secure_nomad_bar_req_tt
+				"scripted_bar_progress(hokand_secure_nomad_bar)" >= 400
+			}
+		}
+		custom_tooltip = {
+			text = hokand_secure_alimbek_treaty_req_tt
+			has_variable = hokand_alimbek_treaty_signed
+		}
+	}
+	on_complete = {
+		trigger_event = {
+			id = hokand_events.3
+		}
+		add_modifier = {
+			name = modifier_hokand_yettishar_established
+			months = 360
+		}
+	}
+	weight = 5000
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}

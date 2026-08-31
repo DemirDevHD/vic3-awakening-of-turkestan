@@ -1,0 +1,1895 @@
+﻿namespace = kashgar_diplomacy_events
+
+# ===========================================================================
+# 1. YTS/KOK'tan Osmanli Destek Istegi
+# ===========================================================================
+kashgar_diplomacy_events.1 = {
+	type = country_event
+	placement = root
+	title = kashgar_diplomacy_events.1.t
+	desc = kashgar_diplomacy_events.1.d
+	trigger = { always = yes }
+	immediate = {
+		c:TUR = { trigger_event = { id = kashgar_diplomacy_events.11 } }
+	}
+	option = {
+		name = kashgar_diplomacy_events.1.a
+	}
+}
+
+# ===========================================================================
+# 2. YTS/KOK'tan Ingiltere Destek Istegi
+# ===========================================================================
+kashgar_diplomacy_events.2 = {
+	type = country_event
+	placement = root
+	title = kashgar_diplomacy_events.2.t
+	desc = kashgar_diplomacy_events.2.d
+	trigger = { always = yes }
+	immediate = {
+		c:GBR = { trigger_event = { id = kashgar_diplomacy_events.12 } }
+	}
+	option = {
+		name = kashgar_diplomacy_events.2.a
+	}
+}
+
+# ===========================================================================
+# 3. YTS/KOK'tan Rusya Destek Istegi
+# ===========================================================================
+kashgar_diplomacy_events.3 = {
+	type = country_event
+	placement = root
+	title = kashgar_diplomacy_events.3.t
+	desc = kashgar_diplomacy_events.3.d
+	trigger = { always = yes }
+	immediate = {
+		c:RUS = { trigger_event = { id = kashgar_diplomacy_events.1301 } }
+	}
+	option = {
+		name = kashgar_diplomacy_events.3.a
+	}
+}
+
+# ===========================================================================
+# 4. Krizi Tetikle - Cine Ultimatom
+# ===========================================================================
+kashgar_diplomacy_events.4 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.4.t
+	desc = kashgar_diplomacy_events.4.d
+	flavor = kashgar_diplomacy_events.4.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_civilian"
+	}
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	trigger = {
+		always = yes
+	}
+	immediate = {
+		c:CHI = { trigger_event = { id = kashgar_diplomacy_events.5 popup = yes } }
+	}
+	option = {
+		name = kashgar_diplomacy_events.4.a
+	}
+}
+
+# ===========================================================================
+# 5. Ç5. Cinin Karariı
+# ===========================================================================
+kashgar_diplomacy_events.5 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.5.t
+	desc = kashgar_diplomacy_events.5.d
+	flavor = kashgar_diplomacy_events.5.f
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	trigger = {
+		always = yes
+	}
+	# Kabul et (Bariscil)ışçıl)
+	option = {
+		name = kashgar_diplomacy_events.5.a
+		default_option = yes
+		ai_chance = {
+			base = 0
+		}
+		# Test için 0
+		every_country = {
+			limit = {
+				has_variable = kashgar_crisis_triggered
+			}
+			trigger_event = {
+				id = kashgar_diplomacy_events.6
+				popup = yes
+			}
+		}
+	}
+	# Reddet (Savas)ş)
+	option = {
+		name = kashgar_diplomacy_events.5.b
+		ai_chance = {
+			base = 100
+		}
+		# AI kesinlikle savassin
+		every_country = {
+			limit = {
+				has_variable = kashgar_crisis_triggered
+			}
+			trigger_event = {
+				id = kashgar_diplomacy_events.7
+				popup = yes
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# ===========================================================================
+# 6. Cin Kabul Etti (Bariscil Transfer)
+# ===========================================================================
+kashgar_diplomacy_events.6 = {
+	type = country_event
+	placement = root
+	title = kashgar_diplomacy_events.6.t
+	desc = kashgar_diplomacy_events.6.d
+	flavor = kashgar_diplomacy_events.6.f
+	event_image = { video = "ep1_redcoats" }
+	icon = "gfx/interface/icons/company_icons/historical_company_icons/gb_eic.dds"
+	trigger = { always = yes }
+	immediate = {
+		# 1. KIRGIZİSTAN (s:STATE_KIRGHIZIA) -> DOĞRUDAN ROOT (HOKAND / OYUNCU)
+		s:STATE_KIRGHIZIA = {
+			every_scope_state = {
+				limit = { owner = c:CHI }
+				set_state_owner = root
+				set_state_type = incorporated
+			}
+		}
+
+		# 2. KAŞGAR EMİRLİĞİ / UYGURİSTAN (c:XIN) PU
+		# Mode decided BEFORE create_country (seeding last CHI share must not
+		# flip into release and steal player Jetisy):
+		#   Liberation — CHI/XBR still holds ET: seed+fill from CHI/XBR only
+		#   Release — no CHI/XBR ET left: seed+fill from root non-capital → XIN PU
+		if = {
+			limit = {
+				AND = { exists = c:XIN c:XIN = root }
+			}
+			s:STATE_TIANSHAN = {
+				every_scope_state = {
+					limit = {
+						owner = c:CHI
+					}
+					set_state_owner = root
+					set_state_type = incorporated
+				}
+			}
+			s:STATE_DZUNGARIA = {
+				every_scope_state = {
+					limit = {
+						owner = c:CHI
+					}
+					set_state_owner = root
+					set_state_type = incorporated
+				}
+			}
+			s:STATE_JETISY = {
+				every_scope_state = {
+					limit = {
+						owner = c:CHI
+					}
+					set_state_owner = root
+					set_state_type = incorporated
+				}
+			}
+		}
+		else_if = {
+			# Liberation: Qing / XBR still holds East Turkestan homeland
+			limit = {
+				OR = {
+					s:STATE_TIANSHAN = {
+						any_scope_state = {
+							owner = c:CHI
+						}
+					}
+					s:STATE_DZUNGARIA = {
+						any_scope_state = {
+							owner = c:CHI
+						}
+					}
+					s:STATE_JETISY = {
+						any_scope_state = {
+							owner = c:CHI
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					NOT = { exists = c:XIN }
+				}
+				s:STATE_TIANSHAN = {
+					random_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						create_country = {
+							tag = XIN
+							origin = this.owner
+							state = this
+							on_created = {
+								set_country_type = unrecognized
+								activate_law = law_type:law_monarchy
+								activate_law = law_type:law_autocracy
+								regime_change = yes
+								set_capital = STATE_TIANSHAN
+							}
+						}
+					}
+				}
+				if = {
+					limit = { NOT = { exists = c:XIN } }
+					s:STATE_DZUNGARIA = {
+						random_scope_state = {
+							limit = {
+								owner = c:CHI
+							}
+							create_country = {
+								tag = XIN
+								origin = this.owner
+								state = this
+								on_created = {
+									set_country_type = unrecognized
+									activate_law = law_type:law_monarchy
+									activate_law = law_type:law_autocracy
+									regime_change = yes
+									set_capital = STATE_DZUNGARIA
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = { NOT = { exists = c:XIN } }
+					s:STATE_JETISY = {
+						random_scope_state = {
+							limit = {
+								owner = c:CHI
+							}
+							create_country = {
+								tag = XIN
+								origin = this.owner
+								state = this
+								on_created = {
+									set_country_type = unrecognized
+									activate_law = law_type:law_monarchy
+									activate_law = law_type:law_autocracy
+									regime_change = yes
+									set_capital = STATE_JETISY
+								}
+							}
+						}
+					}
+				}
+			}
+			if = {
+				limit = { exists = c:XIN }
+				s:STATE_TIANSHAN = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_DZUNGARIA = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_JETISY = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							c:KOK = root
+							c:YTS = root
+						}
+					}
+					if = {
+						limit = {
+							c:XIN = { is_subject_of = root }
+						}
+						c:XIN = {
+							change_subject_type = subject_type_personal_union
+						}
+					}
+					else = {
+						create_diplomatic_pact = {
+							country = c:XIN
+							type = personal_union
+						}
+					}
+				}
+			}
+			else = {
+				# Founding failed — Qing leftovers to root
+				s:STATE_TIANSHAN = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = root
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_DZUNGARIA = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = root
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_JETISY = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = root
+						set_state_type = incorporated
+					}
+				}
+			}
+		}
+		else = {
+			# Release: no CHI/XBR ET left — found XIN from player homeland as PU
+			if = {
+				limit = {
+					NOT = { exists = c:XIN }
+				}
+				s:STATE_TIANSHAN = {
+					random_scope_state = {
+						limit = {
+							owner = root
+							NOT = { is_capital = yes }
+						}
+						create_country = {
+							tag = XIN
+							origin = this.owner
+							state = this
+							on_created = {
+								set_country_type = unrecognized
+								activate_law = law_type:law_monarchy
+								activate_law = law_type:law_autocracy
+								regime_change = yes
+								set_capital = STATE_TIANSHAN
+							}
+						}
+					}
+				}
+				if = {
+					limit = { NOT = { exists = c:XIN } }
+					s:STATE_DZUNGARIA = {
+						random_scope_state = {
+							limit = {
+								owner = root
+								NOT = { is_capital = yes }
+							}
+							create_country = {
+								tag = XIN
+								origin = this.owner
+								state = this
+								on_created = {
+									set_country_type = unrecognized
+									activate_law = law_type:law_monarchy
+									activate_law = law_type:law_autocracy
+									regime_change = yes
+									set_capital = STATE_DZUNGARIA
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = { NOT = { exists = c:XIN } }
+					s:STATE_JETISY = {
+						random_scope_state = {
+							limit = {
+								owner = root
+								NOT = { is_capital = yes }
+							}
+							create_country = {
+								tag = XIN
+								origin = this.owner
+								state = this
+								on_created = {
+									set_country_type = unrecognized
+									activate_law = law_type:law_monarchy
+									activate_law = law_type:law_autocracy
+									regime_change = yes
+									set_capital = STATE_JETISY
+								}
+							}
+						}
+					}
+				}
+			}
+			if = {
+				limit = { exists = c:XIN }
+				s:STATE_TIANSHAN = {
+					every_scope_state = {
+						limit = {
+							owner = root
+							NOT = { is_capital = yes }
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_DZUNGARIA = {
+					every_scope_state = {
+						limit = {
+							owner = root
+							NOT = { is_capital = yes }
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_JETISY = {
+					every_scope_state = {
+						limit = {
+							owner = root
+							NOT = { is_capital = yes }
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							c:KOK = root
+							c:YTS = root
+						}
+					}
+					if = {
+						limit = {
+							c:XIN = { is_subject_of = root }
+						}
+						c:XIN = {
+							change_subject_type = subject_type_personal_union
+						}
+					}
+					else = {
+						create_diplomatic_pact = {
+							country = c:XIN
+							type = personal_union
+						}
+					}
+				}
+			}
+		}
+
+		# 2. Destekçi Ülkelerin (Kabul Edenlerin) Ödülleri
+		if = {
+			limit = {
+				has_variable = kashgar_has_russian_support
+				exists = c:RUS
+			}
+			s:STATE_AMUR = {
+				every_scope_state = {
+					limit = { owner = c:CHI }
+					set_state_owner = c:RUS
+				}
+			}
+			s:STATE_OUTER_MANCHURIA = {
+				every_scope_state = {
+					limit = { owner = c:CHI }
+					set_state_owner = c:RUS
+				}
+			}
+			s:STATE_SAKHALIN = {
+				every_scope_state = {
+					limit = { owner = c:CHI }
+					set_state_owner = c:RUS
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_variable = kashgar_russian_neutral
+				exists = c:RUS
+			}
+			root = { set_owes_obligation_to = { country = c:RUS setting = yes } }
+		}
+		if = {
+			limit = {
+				has_variable = kashgar_has_british_support
+				exists = c:GBR
+			}
+			create_treaty = {
+				first_country = root
+				second_country = c:GBR
+				is_draft = no
+				binding_period = { years = 20 }
+				articles_to_create = {
+					{
+						article = trade_privilege
+						source_country = root
+						target_country = c:GBR
+					}
+				}
+			}
+			if = {
+				limit = { exists = c:CHI }
+				create_treaty = {
+					first_country = c:CHI
+					second_country = c:GBR
+					is_draft = no
+					binding_period = { years = 20 }
+					articles_to_create = {
+						{
+							article = trade_privilege
+							source_country = c:CHI
+							target_country = c:GBR
+						}
+					}
+				}
+			}
+			c:GBR = { add_treasury = 25000 }
+		}
+		if = {
+			limit = {
+				has_variable = kashgar_has_ottoman_support
+				exists = c:TUR
+			}
+			c:TUR = {
+				add_modifier = {
+					name = modifier_kashgar_caliphate_prestige
+					months = 240
+				}
+				add_treasury = 25000
+			}
+		}
+
+		# 3. Ateşkes, Hazineler ve Geçici İlişkilerin Sıfırlanması
+		create_bidirectional_truce = { country = c:CHI months = 60 }
+		add_treasury = 50000
+		set_variable = kashgar_crisis_won
+		set_variable = kashgar_victory_event_fired
+
+		if = {
+			limit = { exists = c:RUS NOT = { c:RUS = root } c:RUS = { has_variable = kashgar_temp_relations_locked } }
+			c:RUS = {
+				change_relations = { country = root value = -60 }
+				if = { limit = { exists = c:CHI NOT = { c:CHI = root } } change_relations = { country = c:CHI value = 60 } }
+				remove_variable = kashgar_temp_relations_locked
+			}
+		}
+		if = {
+			limit = { exists = c:GBR NOT = { c:GBR = root } c:GBR = { has_variable = kashgar_temp_relations_locked } }
+			c:GBR = {
+				change_relations = { country = root value = -60 }
+				if = { limit = { exists = c:CHI NOT = { c:CHI = root } } change_relations = { country = c:CHI value = 60 } }
+				remove_variable = kashgar_temp_relations_locked
+			}
+		}
+		if = {
+			limit = { exists = c:TUR NOT = { c:TUR = root } c:TUR = { has_variable = kashgar_temp_relations_locked } }
+			c:TUR = {
+				change_relations = { country = root value = -60 }
+				if = { limit = { exists = c:CHI NOT = { c:CHI = root } } change_relations = { country = c:CHI value = 60 } }
+				remove_variable = kashgar_temp_relations_locked
+			}
+		}
+		if = {
+			limit = { exists = c:KOK NOT = { c:KOK = root } c:KOK = { has_variable = kashgar_temp_relations_locked } }
+			c:KOK = {
+				change_relations = { country = root value = -60 }
+				if = { limit = { exists = c:CHI NOT = { c:CHI = root } } change_relations = { country = c:CHI value = 60 } }
+				remove_variable = kashgar_temp_relations_locked
+			}
+		}
+		if = {
+			limit = { exists = c:RUS NOT = { c:RUS = root } c:RUS = { has_variable = kashgar_temp_neutral_locked } }
+			c:RUS = {
+				if = { limit = { exists = c:CHI NOT = { c:CHI = root } } change_relations = { country = c:CHI value = 80 } }
+				remove_variable = kashgar_temp_neutral_locked
+			}
+		}
+		if = {
+			limit = { exists = c:YTS c:YTS = { has_variable = kashgar_temp_relations_locked } }
+			c:YTS = { remove_variable = kashgar_temp_relations_locked }
+		}
+		if = {
+			limit = { exists = c:XIN c:XIN = { has_variable = kashgar_temp_relations_locked } }
+			c:XIN = { remove_variable = kashgar_temp_relations_locked }
+		}
+	}
+	option = {
+		name = kashgar_diplomacy_events.6.a
+	}
+}
+
+# 7. Kriz Baslangici ve Gecici Iliski Kilidi
+kashgar_diplomacy_events.7 = {
+	type = country_event
+	placement = root
+	title = kashgar_diplomacy_events.7.t
+	desc = kashgar_diplomacy_events.7.d
+	flavor = kashgar_diplomacy_events.7.f
+
+	event_image = { video = "unspecific_military_parade" }
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	trigger = { always = yes }
+
+	immediate = {
+		#  1. ILISKILERI KIR 
+		root = {
+			change_relations = { country = c:CHI value = -80 }
+			end_truce = c:CHI
+			set_variable = kashgar_liberation_play_started
+		}
+
+		# Tianshan eyaletlerine krizi baslatan ulke (root: YTS/KOK) adina hak iddiasi ekle
+		if = {
+			limit = { exists = c:CHI }
+			s:STATE_TIANSHAN = {
+				every_scope_state = {
+					limit = { owner = c:CHI }
+					add_claim = root
+				}
+			}
+		}
+
+		#  2. GEÇİCİ İLİŞKİ DEĞİŞİMİ (Kriz Sürecinde Taraf Değiştirmeyi Engeller) 
+		# İNGİLTERE
+		if = {
+			limit = {
+				root = { has_variable = kashgar_has_british_support }
+				exists = c:GBR
+			}
+			c:GBR = {
+				end_truce = c:CHI
+				change_relations = { country = root value = 60 }
+				if = { limit = { exists = c:CHI } change_relations = { country = c:CHI value = -60 } }
+				set_variable = kashgar_temp_relations_locked
+				every_scope_treaty = {
+					limit = {
+						binds = c:CHI
+						any_scope_article = { has_type = alliance }
+					}
+					withdraw = { country = PREV }
+				}
+				every_scope_treaty = {
+					limit = {
+						binds = c:CHI
+						any_scope_article = { has_type = defensive_pact }
+					}
+					withdraw = { country = PREV }
+				}
+			}
+			root = { set_owes_obligation_to = { country = c:GBR setting = yes } }
+		}
+		# RUSYA
+		if = {
+			limit = {
+				root = { has_variable = kashgar_has_russian_support }
+				exists = c:RUS
+			}
+			c:RUS = {
+				end_truce = c:CHI
+				change_relations = { country = root value = 60 }
+				if = { limit = { exists = c:CHI } change_relations = { country = c:CHI value = -60 } }
+				set_variable = kashgar_temp_relations_locked
+				every_scope_treaty = {
+					limit = {
+						binds = c:CHI
+						any_scope_article = { has_type = alliance }
+					}
+					withdraw = { country = PREV }
+				}
+				every_scope_treaty = {
+					limit = {
+						binds = c:CHI
+						any_scope_article = { has_type = defensive_pact }
+					}
+					withdraw = { country = PREV }
+				}
+			}
+		}
+		# OSMANLI
+		if = {
+			limit = {
+				root = { has_variable = kashgar_has_ottoman_support }
+				exists = c:TUR
+			}
+			c:TUR = {
+				end_truce = c:CHI
+				change_relations = { country = root value = 60 }
+				if = { limit = { exists = c:CHI } change_relations = { country = c:CHI value = -60 } }
+				set_variable = kashgar_temp_relations_locked
+				every_scope_treaty = {
+					limit = {
+						binds = c:CHI
+						any_scope_article = { has_type = alliance }
+					}
+					withdraw = { country = PREV }
+				}
+				every_scope_treaty = {
+					limit = {
+						binds = c:CHI
+						any_scope_article = { has_type = defensive_pact }
+					}
+					withdraw = { country = PREV }
+				}
+			}
+		}
+		# RUSYA TARAFSIZ - Ateşkes
+		if = {
+			limit = {
+				root = { has_variable = kashgar_russian_neutral }
+				exists = c:RUS
+			}
+			c:RUS = {
+				create_bidirectional_truce = { country = root months = 12 }
+				if = {
+					limit = { exists = c:CHI }
+					create_bidirectional_truce = { country = c:CHI months = 12 }
+					change_relations = { country = c:CHI value = -80 }
+					set_variable = kashgar_temp_neutral_locked
+				}
+			}
+		}
+
+		#  3. HEDEF STATE SCOPE'LARINI KAYDET 
+		if = {
+			limit = { exists = c:CHI }
+			s:STATE_TIANSHAN = {
+				random_scope_state = {
+					limit = { owner = c:CHI }
+					save_scope_as = kashgar_target_state_tianshan
+				}
+			}
+			s:STATE_DZUNGARIA = {
+				random_scope_state = {
+					limit = { owner = c:CHI }
+					save_scope_as = kashgar_target_state_dzungaria
+				}
+			}
+		}
+		# Rus hedef eyaletleri
+		if = {
+			limit = {
+				root = { has_variable = kashgar_has_russian_support }
+				exists = c:CHI
+			}
+			s:STATE_AMUR = {
+				random_scope_state = {
+					limit = { owner = c:CHI }
+					save_scope_as = rus_target_amur
+				}
+			}
+			s:STATE_OUTER_MANCHURIA = {
+				random_scope_state = {
+					limit = { owner = c:CHI }
+					save_scope_as = rus_target_outerm
+				}
+			}
+			s:STATE_SAKHALIN = {
+				random_scope_state = {
+					limit = { owner = c:CHI }
+					save_scope_as = rus_target_sakhalin
+				}
+			}
+		}
+
+		#  4. DIPLOMATIK OYUN BASLAT (Vanilla Formati)
+		# Vanilla'da create_diplomatic_play icinde add_war_goal YAZILMAZ!
+		# war_goal satiri play type'indan otomatik gelir.
+		# target_state ile oyunun merkezi Cin baskenti yerine Tianshan olur.
+		if = {
+			limit = { exists = scope:kashgar_target_state_tianshan }
+			root = {
+				create_diplomatic_play = {
+					target_country = c:CHI
+					type = dp_yts_liberation
+					target_state = scope:kashgar_target_state_tianshan
+				}
+			}
+		}
+		else_if = {
+			limit = { exists = scope:kashgar_target_state_dzungaria }
+			root = {
+				create_diplomatic_play = {
+					target_country = c:CHI
+					type = dp_yts_liberation
+					target_state = scope:kashgar_target_state_dzungaria
+				}
+			}
+		}
+		else = {
+			root = {
+				set_variable = kashgar_crisis_won
+			}
+		}
+
+		#  5. WAR GOAL VE BACKER EKLEMESI (Vanilla Mekanigi)
+		# Vanilla: is_diplomatic_play_initiator = yes / is_diplomatic_play_target = yes
+		hidden_effect = {
+			# Temel war goal - Tianshan eyaletlerini talep et
+			random_diplomatic_play = {
+				limit = {
+					is_diplomatic_play_type = dp_yts_liberation
+				}
+				# Russia accepted neutrality — yank off China's (and our) side immediately
+				if = {
+					limit = {
+						exists = c:RUS
+						OR = {
+							root = { has_variable = kashgar_russian_neutral }
+							c:RUS = { has_variable = kashgar_temp_neutral_locked }
+						}
+					}
+					c:RUS = { set_variable = kashgar_temp_neutral_locked }
+					yts_ensure_neutral_out = { COUNTRY = c:RUS }
+					c:RUS = {
+						every_subject_or_below = {
+							prev.prev = {
+								yts_ensure_neutral_out = { COUNTRY = prev }
+							}
+						}
+					}
+				}
+				if = {
+					limit = { exists = scope:kashgar_target_state_tianshan }
+					add_war_goal = {
+						type = yts_liberation
+						primary_demand = yes
+						target_country = c:CHI
+						target_state = scope:kashgar_target_state_tianshan
+					}
+				}
+				else_if = {
+					limit = { exists = scope:kashgar_target_state_dzungaria }
+					add_war_goal = {
+						type = yts_liberation
+						primary_demand = yes
+						target_country = c:CHI
+						target_state = scope:kashgar_target_state_dzungaria
+					}
+				}
+				# RUSYA backer + toprak talepleri
+				# Ensure initiator side once (yank if on China; noop if already correct).
+				if = {
+					limit = {
+						root = { has_variable = kashgar_has_russian_support }
+						exists = c:RUS
+					}
+					yts_ensure_initiator_backer = { COUNTRY = c:RUS }
+					if = {
+						limit = {
+							c:RUS = { any_subject_or_below = { exists = this } }
+						}
+						c:RUS = {
+							every_subject_or_below = {
+								end_truce = c:CHI
+								prev.prev = {
+									yts_ensure_initiator_backer = { COUNTRY = prev }
+								}
+							}
+						}
+					}
+					if = {
+						limit = { exists = scope:rus_target_amur }
+						add_war_goal = {
+							type = conquer_state
+							primary_demand = yes
+							target_country = c:CHI
+							target_state = scope:rus_target_amur
+							holder = c:RUS
+						}
+					}
+					if = {
+						limit = { exists = scope:rus_target_outerm }
+						add_war_goal = {
+							type = conquer_state
+							primary_demand = yes
+							target_country = c:CHI
+							target_state = scope:rus_target_outerm
+							holder = c:RUS
+						}
+					}
+					if = {
+						limit = { exists = scope:rus_target_sakhalin }
+						add_war_goal = {
+							type = conquer_state
+							primary_demand = yes
+							target_country = c:CHI
+							target_state = scope:rus_target_sakhalin
+							holder = c:RUS
+						}
+					}
+				}
+				# OSMANLI backer + tazminat
+				if = {
+					limit = {
+						root = { has_variable = kashgar_has_ottoman_support }
+						exists = c:TUR
+					}
+					yts_ensure_initiator_backer = { COUNTRY = c:TUR }
+					if = {
+						limit = {
+							c:TUR = { any_subject_or_below = { exists = this } }
+						}
+						c:TUR = {
+							every_subject_or_below = {
+								end_truce = c:CHI
+								prev.prev = {
+									yts_ensure_initiator_backer = { COUNTRY = prev }
+								}
+							}
+						}
+					}
+					add_war_goal = {
+						holder = c:TUR
+						target_country = c:CHI
+						type = enforce_treaty_article
+						primary_demand = yes
+						article = {
+							article = money_transfer
+							source_country = c:CHI
+							target_country = c:TUR
+							inputs = { { quantity = 10000 } }
+						}
+					}
+				}
+				# İNGİLTERE backer + ticaret
+				if = {
+					limit = {
+						root = { has_variable = kashgar_has_british_support }
+						exists = c:GBR
+					}
+					yts_ensure_initiator_backer = { COUNTRY = c:GBR }
+					if = {
+						limit = {
+							c:GBR = { any_subject_or_below = { exists = this } }
+						}
+						c:GBR = {
+							every_subject_or_below = {
+								end_truce = c:CHI
+								prev.prev = {
+									yts_ensure_initiator_backer = { COUNTRY = prev }
+								}
+							}
+						}
+					}
+					if = {
+						limit = { exists = c:BIC }
+						c:BIC = { end_truce = c:CHI }
+						yts_ensure_initiator_backer = { COUNTRY = c:BIC }
+					}
+					if = {
+						limit = { exists = c:RAJ }
+						c:RAJ = { end_truce = c:CHI }
+						yts_ensure_initiator_backer = { COUNTRY = c:RAJ }
+					}
+					add_war_goal = {
+						type = open_market
+						primary_demand = yes
+						target_country = c:CHI
+						holder = c:GBR
+					}
+					add_war_goal = {
+						holder = c:GBR
+						target_country = c:CHI
+						type = enforce_treaty_article
+						primary_demand = yes
+						article = {
+							article = trade_privilege
+							source_country = c:CHI
+							target_country = c:GBR
+						}
+					}
+				}
+				set_variable = is_yts_liberation_play
+			}
+		}
+	}
+
+	option = { name = kashgar_diplomacy_events.7.a }
+}
+
+# ===========================================================================
+# 11. Osmanlinin Cevabi
+# ===========================================================================
+kashgar_diplomacy_events.11 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.11.t
+	desc = kashgar_diplomacy_events.11.d
+	flavor = kashgar_diplomacy_events.11.f
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	option = {
+		name = kashgar_diplomacy_events.11.a
+		default_option = yes
+		ai_chance = {
+			base = 70
+			# Olumlu Etkenler (Yukseltenler)
+			modifier = {
+				add = 25
+				exists = c:YTS
+				relations:c:YTS >= 20
+			}
+			modifier = {
+				add = 20
+				country_rank >= rank_value:great_power
+			}
+			modifier = {
+				add = 15
+				OR = {
+					AND = {
+						exists = c:YTS
+						c:YTS = {
+							has_diplomatic_pact = {
+								who = c:CHI
+								type = rivalry
+							}
+						}
+					}
+					AND = {
+						exists = c:KOK
+						c:KOK = {
+							has_diplomatic_pact = {
+								who = c:CHI
+								type = rivalry
+							}
+						}
+					}
+				}
+			}
+			# Olumsuz Etkenler (Dusurenler)
+			modifier = {
+				add = -20
+				is_at_war = yes
+			}
+			modifier = {
+				add = -30
+				in_default = yes
+			}
+			modifier = {
+				add = -30
+				exists = c:YTS
+				relations:c:YTS <= -20
+			}
+			# Kesin Engel
+			modifier = {
+				factor = 0
+				is_in_civil_war = yes
+			}
+		}
+		every_country = {
+			limit = {
+				has_variable = kashgar_support_ottoman_asked
+			}
+			set_variable = kashgar_has_ottoman_support
+			trigger_event = {
+				id = kashgar_diplomacy_events.14
+				popup = yes
+			}
+			if = {
+				limit = {
+					any_country = {
+						OR = {
+							c:YTS ?= this
+							c:KOK ?= this
+						}
+						has_variable = kashgar_liberation_play_started
+					}
+				}
+				root = {
+					end_truce = c:CHI
+					change_relations = { country = PREV value = 60 }
+					if = { limit = { exists = c:CHI } change_relations = { country = c:CHI value = -60 } }
+					set_variable = kashgar_temp_relations_locked
+					every_scope_treaty = {
+						limit = {
+							binds = c:CHI
+							any_scope_article = { has_type = alliance }
+						}
+						withdraw = { country = PREV }
+					}
+					every_scope_treaty = {
+						limit = {
+							binds = c:CHI
+							any_scope_article = { has_type = defensive_pact }
+						}
+						withdraw = { country = PREV }
+					}
+					if = {
+						limit = { any_subject_or_below = { exists = this } }
+						every_subject_or_below = { end_truce = c:CHI }
+					}
+				}
+				random_diplomatic_play = {
+					limit = { is_diplomatic_play_type = dp_yts_liberation }
+					yts_ensure_initiator_backer = { COUNTRY = root }
+					if = {
+						limit = {
+							root = { any_subject_or_below = { exists = this } }
+						}
+						root = {
+							every_subject_or_below = {
+								end_truce = c:CHI
+								prev.prev = {
+									yts_ensure_initiator_backer = { COUNTRY = prev }
+								}
+							}
+						}
+					}
+					add_war_goal = {
+						holder = root
+						target_country = c:CHI
+						type = enforce_treaty_article
+						primary_demand = yes
+						article = {
+							article = money_transfer
+							source_country = c:CHI
+							target_country = root
+							inputs = { { quantity = 10000 } }
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = kashgar_diplomacy_events.11.b
+		ai_chance = {
+			base = 25
+		}
+		every_country = {
+			limit = {
+				has_variable = kashgar_support_ottoman_asked
+			}
+			set_variable = kashgar_ottoman_refused
+				c:TUR = { set_variable = yts_refused_or_neutral }
+			trigger_event = {
+				id = kashgar_diplomacy_events.15
+				popup = yes
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# 12. Ingilterenin Cevabi
+# ===========================================================================
+kashgar_diplomacy_events.12 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.12.t
+	desc = kashgar_diplomacy_events.12.d
+	flavor = kashgar_diplomacy_events.12.f
+	event_image = {
+		video = "ep1_redcoats"
+	}
+	icon = "gfx/interface/icons/company_icons/historical_company_icons/gb_eic.dds"
+	option = {
+		name = kashgar_diplomacy_events.12.a
+		default_option = yes
+		trigger = {
+			NOT = {
+				has_treaty_alliance_with = { TARGET = c:CHI }
+			}
+			NOT = {
+				has_treaty_defensive_pact_with = { TARGET = c:CHI }
+			}
+		}
+		ai_chance = {
+			base = 70
+			# Olumlu Etkenler (Yukseltenler)
+			modifier = {
+				add = 25
+				OR = {
+					has_diplomatic_pact = {
+					who = c:RUS
+					type = rivalry
+				}
+					relations:c:RUS <= -20
+				}
+			}
+			modifier = {
+				add = 25
+				OR = {
+					has_diplomatic_pact = {
+					who = c:CHI
+					type = rivalry
+				}
+					relations:c:CHI <= -20
+				}
+			}
+			modifier = {
+				add = 20
+				exists = c:YTS
+				relations:c:YTS >= 20
+			}
+			modifier = {
+				add = 20
+				OR = {
+					AND = {
+						exists = c:YTS
+						c:YTS = {
+							has_diplomatic_pact = {
+								who = c:CHI
+								type = rivalry
+							}
+						}
+					}
+					AND = {
+						exists = c:KOK
+						c:KOK = {
+							has_diplomatic_pact = {
+								who = c:CHI
+								type = rivalry
+							}
+						}
+					}
+				}
+			}
+			modifier = {
+				add = 15
+				OR = {
+					AND = {
+						exists = c:YTS
+						c:YTS = {
+							has_diplomatic_pact = {
+								who = c:CHI
+								type = rivalry
+							}
+						}
+					}
+					AND = {
+						exists = c:KOK
+						c:KOK = {
+							has_diplomatic_pact = {
+								who = c:CHI
+								type = rivalry
+							}
+						}
+					}
+				}
+			}
+			# Olumsuz Etkenler (Dusurenler)
+			modifier = {
+				add = -25
+				relations:c:CHI >= 50
+			}
+			modifier = {
+				add = -25
+				is_at_war = yes
+			}
+			modifier = {
+				add = -35
+				in_default = yes
+			}
+			# Kesin Engel
+			modifier = {
+				factor = 0
+				is_in_civil_war = yes
+			}
+		}
+		every_country = {
+			limit = {
+				has_variable = kashgar_support_british_asked
+			}
+			set_variable = kashgar_has_british_support
+			trigger_event = {
+				id = kashgar_diplomacy_events.14
+				popup = yes
+			}
+			if = {
+				limit = {
+					any_country = {
+						OR = {
+							c:YTS ?= this
+							c:KOK ?= this
+						}
+						has_variable = kashgar_liberation_play_started
+					}
+				}
+				root = {
+					end_truce = c:CHI
+					change_relations = { country = PREV value = 60 }
+					if = { limit = { exists = c:CHI } change_relations = { country = c:CHI value = -60 } }
+					set_variable = kashgar_temp_relations_locked
+					every_scope_treaty = {
+						limit = {
+							binds = c:CHI
+							any_scope_article = { has_type = alliance }
+						}
+						withdraw = { country = PREV }
+					}
+					every_scope_treaty = {
+						limit = {
+							binds = c:CHI
+							any_scope_article = { has_type = defensive_pact }
+						}
+						withdraw = { country = PREV }
+					}
+					if = {
+						limit = { any_subject_or_below = { exists = this } }
+						every_subject_or_below = { end_truce = c:CHI }
+					}
+				}
+				if = {
+					limit = {
+						exists = c:BIC
+						c:BIC = { is_subject_of = c:GBR }
+					}
+					c:BIC = { end_truce = c:CHI }
+				}
+				if = {
+					limit = {
+						exists = c:RAJ
+						c:RAJ = { is_subject_of = c:GBR }
+					}
+					c:RAJ = { end_truce = c:CHI }
+				}
+				random_diplomatic_play = {
+					limit = { is_diplomatic_play_type = dp_yts_liberation }
+					yts_ensure_initiator_backer = { COUNTRY = root }
+					if = {
+						limit = {
+							root = { any_subject_or_below = { exists = this } }
+						}
+						root = {
+							every_subject_or_below = {
+								end_truce = c:CHI
+								prev.prev = {
+									yts_ensure_initiator_backer = { COUNTRY = prev }
+								}
+							}
+						}
+					}
+					if = { limit = { exists = c:BIC c:BIC = { is_subject_of = root } } c:BIC = { end_truce = c:CHI } yts_ensure_initiator_backer = { COUNTRY = c:BIC } }
+					if = { limit = { exists = c:RAJ c:RAJ = { is_subject_of = root } } c:RAJ = { end_truce = c:CHI } yts_ensure_initiator_backer = { COUNTRY = c:RAJ } }
+					add_war_goal = {
+						type = open_market
+						primary_demand = yes
+						target_country = c:CHI
+						holder = root
+					}
+					add_war_goal = {
+						holder = root
+						target_country = c:CHI
+						type = enforce_treaty_article
+						primary_demand = yes
+						article = {
+							article = trade_privilege
+							source_country = c:CHI
+							target_country = root
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = kashgar_diplomacy_events.12.b
+		ai_chance = {
+			base = 20
+		}
+		every_country = {
+			limit = {
+				has_variable = kashgar_support_british_asked
+			}
+			set_variable = kashgar_british_refused
+				c:GBR = { set_variable = yts_refused_or_neutral }
+			trigger_event = {
+				id = kashgar_diplomacy_events.15
+				popup = yes
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# 1301. Rusyanin TARAFSIZLIK Talebine Cevabi (Sadece Tarafsiz Kal / Reddet)
+# ===========================================================================
+kashgar_diplomacy_events.1301 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.1301.t
+	desc = kashgar_diplomacy_events.1301.d
+	flavor = kashgar_diplomacy_events.1301.f
+	event_image = {
+		video = "ep1_cossacks"
+	}
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	option = {
+		name = kashgar_diplomacy_events.1301.a
+		default_option = yes
+		ai_chance = {
+			base = 75
+			# Olumlu Etkenler (Yedisehir ile yakinlik)
+			modifier = {
+				add = 30
+				exists = c:YTS
+				relations:c:YTS >= 20
+			}
+			# Olumsuz Etkenler (Dusurenler)
+			modifier = {
+				add = -25
+				relations:c:CHI >= 50
+			}
+			modifier = {
+				add = -20
+				is_at_war = yes
+			}
+			modifier = {
+				add = -20
+				in_default = yes
+			}
+			modifier = {
+				factor = 0
+				is_in_civil_war = yes
+			}
+		}
+		every_country = {
+			limit = {
+				has_variable = kashgar_support_russian_asked
+			}
+			set_variable = kashgar_russian_neutral
+				c:RUS = {
+					set_variable = yts_refused_or_neutral
+					set_variable = kashgar_temp_neutral_locked
+				}
+				if = {
+					limit = { exists = c:CHI }
+					c:RUS = { create_bidirectional_truce = { country = c:CHI months = 36 } }
+				}
+				if = {
+					limit = { exists = c:YTS }
+					c:RUS = { create_bidirectional_truce = { country = c:YTS months = 36 } }
+				}
+				if = {
+					limit = { exists = c:KOK }
+					c:RUS = { create_bidirectional_truce = { country = c:KOK months = 36 } }
+				}
+			trigger_event = {
+				id = kashgar_diplomacy_events.14
+				popup = yes
+			}
+		}
+	}
+	option = {
+		name = kashgar_diplomacy_events.1301.b
+		ai_chance = {
+			base = 20
+		}
+		every_country = {
+			limit = {
+				has_variable = kashgar_support_russian_asked
+			}
+			set_variable = kashgar_russian_refused
+				c:RUS = { set_variable = yts_refused_or_neutral }
+			trigger_event = {
+				id = kashgar_diplomacy_events.15
+				popup = yes
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# 1302. Rusyanin ASKERI ITTIFAK (Savasa Katilma) Talebine Cevabi
+# ===========================================================================
+kashgar_diplomacy_events.1302 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.1302.t
+	desc = kashgar_diplomacy_events.1302.d
+	flavor = kashgar_diplomacy_events.1302.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	option = {
+		name = kashgar_diplomacy_events.1302.a
+		default_option = yes
+		trigger = {
+			NOT = {
+				has_treaty_alliance_with = { TARGET = c:CHI }
+			}
+			NOT = {
+				has_treaty_defensive_pact_with = { TARGET = c:CHI }
+			}
+		}
+		ai_chance = {
+			base = 40
+			# Olumlu Etkenler (Yedisehir ile cok siki dostluk)
+			modifier = {
+				add = 35
+				exists = c:YTS
+				relations:c:YTS >= 50
+			}
+			# Olumsuz Etkenler (Ingiliz-Rus Buyuk Oyun Rekabeti)
+			modifier = {
+				add = -35
+				has_variable = kashgar_has_british_support
+				has_diplomatic_pact = { who = c:GBR type = rivalry }
+			}
+			modifier = {
+				add = -25
+				relations:c:CHI >= 20
+			}
+			modifier = {
+				add = -25
+				is_at_war = yes
+			}
+			modifier = {
+				add = -35
+				in_default = yes
+			}
+			# Kesin Engel
+			modifier = {
+				factor = 0
+				is_in_civil_war = yes
+			}
+		}
+		every_country = {
+			limit = {
+				has_variable = kashgar_support_russian_asked
+			}
+			set_variable = kashgar_has_russian_support
+			trigger_event = {
+				id = kashgar_diplomacy_events.14
+				popup = yes
+			}
+			if = {
+				limit = {
+					any_country = {
+						OR = {
+							c:YTS ?= this
+							c:KOK ?= this
+						}
+						has_variable = kashgar_liberation_play_started
+					}
+				}
+				root = {
+					end_truce = c:CHI
+					change_relations = { country = PREV value = 60 }
+					if = { limit = { exists = c:CHI } change_relations = { country = c:CHI value = -60 } }
+					set_variable = kashgar_temp_relations_locked
+					every_scope_treaty = {
+						limit = {
+							binds = c:CHI
+							any_scope_article = { has_type = alliance }
+						}
+						withdraw = { country = PREV }
+					}
+					every_scope_treaty = {
+						limit = {
+							binds = c:CHI
+							any_scope_article = { has_type = defensive_pact }
+						}
+						withdraw = { country = PREV }
+					}
+					if = {
+						limit = { any_subject_or_below = { exists = this } }
+						every_subject_or_below = { end_truce = c:CHI }
+					}
+				}
+				random_diplomatic_play = {
+					limit = { is_diplomatic_play_type = dp_yts_liberation }
+					# Çin tarafındaysa yank; zaten initiator ally ise noop.
+					yts_ensure_initiator_backer = { COUNTRY = root }
+					if = {
+						limit = {
+							root = { any_subject_or_below = { exists = this } }
+						}
+						root = {
+							every_subject_or_below = {
+								end_truce = c:CHI
+								prev.prev = {
+									yts_ensure_initiator_backer = { COUNTRY = prev }
+								}
+							}
+						}
+					}
+					if = {
+						limit = { exists = scope:rus_target_amur }
+						add_war_goal = {
+							type = conquer_state
+							primary_demand = yes
+							target_country = c:CHI
+							target_state = scope:rus_target_amur
+							holder = root
+						}
+					}
+					if = {
+						limit = { exists = scope:rus_target_outerm }
+						add_war_goal = {
+							type = conquer_state
+							primary_demand = yes
+							target_country = c:CHI
+							target_state = scope:rus_target_outerm
+							holder = root
+						}
+					}
+					if = {
+						limit = { exists = scope:rus_target_sakhalin }
+						add_war_goal = {
+							type = conquer_state
+							primary_demand = yes
+							target_country = c:CHI
+							target_state = scope:rus_target_sakhalin
+							holder = root
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = kashgar_diplomacy_events.1302.b
+		ai_chance = {
+			base = 50
+		}
+		every_country = {
+			limit = {
+				has_variable = kashgar_support_russian_asked
+			}
+			set_variable = kashgar_russian_refused
+				c:RUS = { set_variable = yts_refused_or_neutral }
+			trigger_event = {
+				id = kashgar_diplomacy_events.15
+				popup = yes
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# 101. Teklif Secimi - Osmanli
+# ===========================================================================
+kashgar_diplomacy_events.101 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.101.t
+	desc = kashgar_diplomacy_events.101.d
+	flavor = kashgar_diplomacy_events.101.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	trigger = {
+		always = yes
+	}
+	immediate = {
+	}
+	option = {
+		name = kashgar_diplomacy_events.101.a
+        save_scope_as = kashgar_crisis_sender
+		c:TUR = {
+			trigger_event = {
+				id = kashgar_diplomacy_events.11
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# 102. Teklif Secimi - Ingiltere
+# ===========================================================================
+kashgar_diplomacy_events.102 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.102.t
+	desc = kashgar_diplomacy_events.102.d
+	flavor = kashgar_diplomacy_events.102.f
+	event_image = {
+		video = "asia_westerners_arriving"
+	}
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	trigger = {
+		always = yes
+	}
+	immediate = {
+	}
+	option = {
+		name = kashgar_diplomacy_events.102.a
+        save_scope_as = kashgar_crisis_sender
+		c:GBR = {
+			trigger_event = {
+				id = kashgar_diplomacy_events.12
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# 103. Teklif Secimi - Rusya
+# ===========================================================================
+kashgar_diplomacy_events.103 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.103.t
+	desc = kashgar_diplomacy_events.103.d
+	flavor = kashgar_diplomacy_events.103.f
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	trigger = {
+		always = yes
+	}
+	immediate = {
+	}
+	option = {
+		name = kashgar_diplomacy_events.103.neutral
+		default_option = yes
+        save_scope_as = kashgar_crisis_sender
+		c:RUS = {
+			trigger_event = {
+				id = kashgar_diplomacy_events.1301
+			}
+		}
+	}
+	option = {
+		name = kashgar_diplomacy_events.103.war
+        save_scope_as = kashgar_crisis_sender
+		c:RUS = {
+			trigger_event = {
+				id = kashgar_diplomacy_events.1302
+			}
+		}
+	}
+	option = {
+		name = kashgar_diplomacy_events.103.b
+        save_scope_as = kashgar_crisis_sender
+		c:RUS = {
+			trigger_event = {
+				id = kashgar_diplomacy_events.114
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# 114. Rusya (AI) Tarafsizlik Karari (Elci Gonderilmeyen Senaryo)
+# ===========================================================================
+kashgar_diplomacy_events.114 = {
+	type = country_event
+	placement = root
+	duration = 3
+	hidden = yes
+	event_image = {
+		video = "ep1_cossacks"
+	}
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	trigger = {
+		always = yes
+	}
+	immediate = {
+		random_list = {
+			70 = {
+				every_country = {
+					limit = {
+						OR = {
+							c:YTS ?= THIS
+							c:KOK ?= THIS
+						}
+					}
+					set_variable = kashgar_russian_neutral
+				c:RUS = {
+					set_variable = yts_refused_or_neutral
+					set_variable = kashgar_temp_neutral_locked
+				}
+				if = {
+					limit = { exists = c:CHI }
+					c:RUS = { create_bidirectional_truce = { country = c:CHI months = 36 } }
+				}
+				if = {
+					limit = { exists = c:YTS }
+					c:RUS = { create_bidirectional_truce = { country = c:YTS months = 36 } }
+				}
+				if = {
+					limit = { exists = c:KOK }
+					c:RUS = { create_bidirectional_truce = { country = c:KOK months = 36 } }
+				}
+				}
+			}
+			30 = {
+				every_country = {
+					limit = {
+						OR = {
+							c:YTS ?= THIS
+							c:KOK ?= THIS
+						}
+					}
+					set_variable = kashgar_russian_refused
+				c:RUS = { set_variable = yts_refused_or_neutral }
+				}
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# BILGILENDIRME EVENTLERI
+# ===========================================================================
+kashgar_diplomacy_events.14 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.14.t
+	desc = kashgar_diplomacy_events.14.d
+	flavor = kashgar_diplomacy_events.14.f
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	trigger = {
+		always = yes
+	}
+	option = {
+		name = kashgar_diplomacy_events.14.a
+	}
+}
+
+# ===========================================================================
+# 15. Osmanli Modifier Cevabi
+# ===========================================================================
+kashgar_diplomacy_events.15 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_diplomacy_events.15.t
+	desc = kashgar_diplomacy_events.15.d
+	flavor = kashgar_diplomacy_events.15.f
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	trigger = {
+		always = yes
+	}
+	option = {
+		name = kashgar_diplomacy_events.15.a
+	}
+}

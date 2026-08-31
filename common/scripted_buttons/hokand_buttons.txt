@@ -1,0 +1,396 @@
+﻿# --- TEK SEFERLİK TARİHSEL DEVİR VE KARARLAR (4 ADET) ---
+btn_hokand_grant_akmechet_command = {
+    name = btn_hokand_grant_akmechet_command_name
+    desc = btn_hokand_grant_akmechet_command_desc
+
+    visible = {
+        always = yes
+    }
+
+    possible = {
+        authority >= 50
+        custom_tooltip = {
+            text = hokand_one_time_action_tt
+            NOT = { has_variable = hokand_akmechet_granted }
+        }
+    }
+
+    effect = {
+        add_treasury = -1500
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 5 }
+            add_progress = { name = hokand_authority_bar value = -5 }
+        }
+        add_modifier = {
+            name = modifier_hokand_frontier_command
+            months = 12
+        }
+        set_variable = hokand_akmechet_granted
+    }
+}
+btn_hokand_ulema_ghazi_title = {
+    name = btn_hokand_ulema_ghazi_title_name
+    desc = btn_hokand_ulema_ghazi_title_desc
+
+    visible = {
+        always = yes
+    }
+
+    possible = {
+        custom_tooltip = {
+            text = hokand_one_time_action_tt
+            NOT = { has_variable = hokand_fatwa_granted }
+        }
+        influence >= 30
+    }
+
+    effect = {
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 5 }
+            add_progress = { name = hokand_authority_bar value = -5 }
+        }
+        add_modifier = {
+            name = modifier_hokand_ulema_fatwa
+            months = 12
+        }
+        set_variable = hokand_fatwa_granted
+    }
+}
+btn_hokand_modernize_arsenal_officers = {
+    name = btn_hokand_modernize_arsenal_officers_name
+    desc = btn_hokand_modernize_arsenal_officers_desc
+
+    visible = {
+        always = yes
+    }
+
+    possible = {
+        bureaucracy >= 10
+        custom_tooltip = {
+            text = hokand_one_time_action_tt
+            NOT = { has_variable = hokand_arsenal_granted }
+        }
+    }
+
+    effect = {
+        add_treasury = -2000
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 5 }
+            add_progress = { name = hokand_authority_bar value = -5 }
+        }
+        add_modifier = {
+            name = modifier_hokand_officer_arsenal
+            months = 12
+        }
+        set_variable = hokand_arsenal_granted
+    }
+}
+btn_hokand_purge_palace_conspirators = {
+    name = btn_hokand_purge_palace_conspirators_name
+    desc = btn_hokand_purge_palace_conspirators_desc
+
+    visible = {
+        always = yes
+    }
+
+    possible = {
+        authority >= 250
+        bureaucracy >= 10
+        custom_tooltip = {
+            text = hokand_one_time_action_tt
+            NOT = { has_variable = hokand_palace_purged }
+        }
+    }
+
+    effect = {
+        add_treasury = -1000
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 5 }
+            add_progress = { name = hokand_authority_bar value = -5 }
+            set_variable = hokand_palace_purged
+        }
+        set_variable = hokand_palace_purged
+    }
+}
+
+# --- TEKRARLANABİLİR DİNAMİK DEVLET POLİTİKALARI (3 ADET) ---
+btn_hokand_tax_privileges_tashkent = {
+    name = btn_hokand_tax_privileges_tashkent_name
+    desc = btn_hokand_tax_privileges_tashkent_desc
+
+    visible = {
+        always = yes
+    }
+
+    possible = {
+        bureaucracy >= 10
+        custom_tooltip = {
+            text = hokand_cooldown_ready_tt
+            NOT = { has_variable = cooldown_hokand_tashkent_privileges }
+        }
+    }
+
+    effect = {
+        add_treasury = -2500
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 4 }
+            add_progress = { name = hokand_authority_bar value = -4 }
+        }
+        add_modifier = {
+            name = modifier_hokand_tashkent_pact
+            months = 12
+        }
+        set_variable = {
+            name = cooldown_hokand_tashkent_privileges
+            days = 360
+        }
+    }
+}
+btn_hokand_bribe_kipchak_tribes = {
+    name = btn_hokand_bribe_kipchak_tribes_name
+    desc = btn_hokand_bribe_kipchak_tribes_desc
+
+    visible = {
+        always = yes
+    }
+
+    possible = {
+        custom_tooltip = {
+            text = hokand_cooldown_ready_tt
+            NOT = { has_variable = cooldown_hokand_kipchak_bribe }
+        }
+    }
+
+    effect = {
+        add_treasury = -3000
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = -5 }
+            add_progress = { name = hokand_yakub_support_bar value = 4 }
+        }
+        add_modifier = {
+            name = modifier_hokand_tribal_loyalty
+            months = 6
+        }
+        set_variable = {
+            name = cooldown_hokand_kipchak_bribe
+            days = 180
+        }
+    }
+}
+btn_hokand_fergana_patrols = {
+    name = btn_hokand_fergana_patrols_name
+    desc = btn_hokand_fergana_patrols_desc
+
+    visible = {
+        always = yes
+    }
+
+    possible = {
+        authority >= 30
+        custom_tooltip = {
+            text = hokand_cooldown_ready_tt
+            NOT = { has_variable = cooldown_hokand_fergana_patrols }
+        }
+    }
+
+    effect = {
+        add_treasury = -1500
+        je:je_hokand_void_of_authority ?= {
+			add_progress = { name = hokand_yakub_support_bar value = 4 }
+            add_progress = { name = hokand_authority_bar value = -4 }
+        }
+        add_modifier = {
+            name = modifier_hokand_patrol_order
+            months = 6
+        }
+        set_variable = {
+            name = cooldown_hokand_fergana_patrols
+            days = 180
+        }
+    }
+}
+
+# --- OTORİTENİN TESİS EDİLMESİ (2. AŞAMA) DİVAN KARARLARI (6 ADET) ---
+
+# 1. Fergana Beylerini İtaate Zorla (Tek Seferlik - fergana_bar >= 50 gerekli)
+btn_hokand_secure_fergana_beys = {
+    name = btn_hokand_secure_fergana_beys_name
+    desc = btn_hokand_secure_fergana_beys_desc
+
+    visible = {
+        always = yes
+    }
+    
+    possible = {
+        authority >= 100
+        custom_tooltip = {
+            text = hokand_one_time_action_tt
+            NOT = { has_variable = hokand_fergana_beys_secured }
+        }
+        custom_tooltip = {
+            text = hokand_fergana_bar_50_tt
+            je:je_hokand_secure_authority ?= {
+                "scripted_bar_progress(hokand_secure_fergana_bar)" >= 50
+            }
+        }
+    }
+    
+    effect = {
+        add_treasury = -5000
+        set_variable = hokand_fergana_beys_secured
+        trigger_event = { id = hokand_events.50 popup = yes }
+    }
+}
+
+# 2. Fergana Ulemasının Şer'i Desteğini Al (Tek Seferlik - meşruiyet >= 60 gerekli)
+btn_hokand_secure_ulema_pact = {
+    name = btn_hokand_secure_ulema_pact_name
+    desc = btn_hokand_secure_ulema_pact_desc
+
+    visible = {
+        always = yes
+    }
+    
+    possible = {
+        authority >= 75
+        custom_tooltip = {
+            text = hokand_one_time_action_tt
+            NOT = { has_variable = hokand_ulema_pact_secured }
+        }
+        custom_tooltip = {
+            text = hokand_legitimacy_60_tt
+            legitimacy >= 60
+        }
+    }
+    
+    effect = {
+        add_treasury = -4000
+        set_variable = hokand_ulema_pact_secured
+        trigger_event = { id = hokand_events.51 popup = yes }
+    }
+}
+
+# 3. Alimbek Datka ile Kırgız Antlaşması (ZORUNLU - Tek Seferlik - nomad_bar >= 50 gerekli)
+btn_hokand_secure_alimbek_treaty = {
+    name = btn_hokand_secure_alimbek_treaty_name
+    desc = btn_hokand_secure_alimbek_treaty_desc
+
+    visible = {
+        always = yes
+    }
+    
+    possible = {
+        authority >= 100
+        custom_tooltip = {
+            text = hokand_one_time_action_tt
+            NOT = { has_variable = hokand_alimbek_treaty_signed }
+        }
+        custom_tooltip = {
+            text = hokand_nomad_bar_50_tt
+            je:je_hokand_secure_authority ?= {
+                "scripted_bar_progress(hokand_secure_nomad_bar)" >= 50
+            }
+        }
+    }
+    
+    effect = {
+        add_treasury = -6000
+        set_variable = hokand_alimbek_treaty_signed
+        trigger_event = { id = hokand_events.52 popup = yes }
+    }
+}
+
+# 4. Akıncı Süvarilerini Seferber Et (Tekrarlanabilir - Savaşta olmamak gerekli)
+btn_hokand_secure_nomad_cavalry = {
+    name = btn_hokand_secure_nomad_cavalry_name
+    desc = btn_hokand_secure_nomad_cavalry_desc
+
+    visible = {
+        always = yes
+    }
+    
+    possible = {
+        authority >= 50
+        custom_tooltip = {
+            text = hokand_cooldown_ready_tt
+            NOT = { has_modifier = cooldown_hokand_nomad_cavalry }
+        }
+        custom_tooltip = {
+            text = hokand_not_at_war_tt
+            is_at_war = no
+        }
+    }
+    
+    effect = {
+        add_treasury = -3500
+        add_modifier = {
+            name = cooldown_hokand_nomad_cavalry
+            days = 360
+        }
+        trigger_event = { id = hokand_events.53 popup = yes }
+    }
+}
+
+# 5. İsyancı Kamplarını Bas (Tekrarlanabilir - fergana_bar >= 100 gerekli)
+btn_hokand_secure_rebel_camps = {
+    name = btn_hokand_secure_rebel_camps_name
+    desc = btn_hokand_secure_rebel_camps_desc
+
+    visible = {
+        always = yes
+    }
+    
+    possible = {
+        authority >= 75
+        custom_tooltip = {
+            text = hokand_cooldown_ready_tt
+            NOT = { has_modifier = cooldown_hokand_rebel_camps }
+        }
+        custom_tooltip = {
+            text = hokand_fergana_bar_100_tt
+            scope:journal_entry = {
+                "scripted_bar_progress(hokand_secure_fergana_bar)" >= 200
+            }
+        }
+    }
+    
+    effect = {
+        add_treasury = -3000
+        add_modifier = {
+            name = cooldown_hokand_rebel_camps
+            days = 360
+        }
+        trigger_event = { id = hokand_events.54 popup = yes }
+    }
+}
+
+# 6. Sınır Devriyelerini Güçlendir (Tekrarlanabilir - Alimbek Antlaşması gerekli)
+btn_hokand_secure_border_patrols = {
+    name = btn_hokand_secure_border_patrols_name
+    desc = btn_hokand_secure_border_patrols_desc
+
+    visible = {
+        always = yes
+    }
+    
+    possible = {
+        authority >= 50
+        custom_tooltip = {
+            text = hokand_cooldown_ready_tt
+            NOT = { has_modifier = cooldown_hokand_border_patrols }
+        }
+        custom_tooltip = {
+            text = hokand_alimbek_required_tt
+            has_variable = hokand_alimbek_treaty_signed
+        }
+    }
+    
+    effect = {
+        add_treasury = -3500
+        add_modifier = {
+            name = cooldown_hokand_border_patrols
+            days = 360
+        }
+        trigger_event = { id = hokand_events.55 popup = yes }
+    }
+}

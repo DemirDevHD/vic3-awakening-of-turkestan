@@ -1,0 +1,426 @@
+﻿# Yettishar land-transfer / split-state cleanup helpers.
+#
+# Vic3 has NO scripted merge_states / unify_states effect.
+# Engine rule (concept_split_state): when one country controls more than one
+# share of the same state_region, those shares auto-combine into a single state.
+# Closest vanilla pattern: chris transfer_state + war-goal region every_scope_state.
+
+# Transfer every non-capital state share owned by GIVER inside STATE region to TAKER.
+# Using state_region scope (not country every_scope_state) catches all shares reliably.
+yettishar_transfer_region_shares = {
+	if = {
+		limit = {
+			exists = $GIVER$
+			exists = $TAKER$
+			$TAKER$ != $GIVER$
+			$STATE$ = {
+				any_scope_state = {
+					owner = $GIVER$
+					NOT = { is_capital = yes }
+				}
+			}
+		}
+		$STATE$ = {
+			every_scope_state = {
+				limit = {
+					owner = $GIVER$
+					NOT = { is_capital = yes }
+				}
+				set_state_owner = $TAKER$
+			}
+		}
+	}
+}
+
+# Same as above, then re-assert TAKER ownership of all its shares in the region
+# so the engine's split-state combiner runs after the transfer batch.
+yettishar_unify_owned_states_in_region = {
+	yettishar_transfer_region_shares = {
+		STATE = $STATE$
+		GIVER = $GIVER$
+		TAKER = $TAKER$
+	}
+	# Second pass: if GIVER somehow retained a leftover non-capital share, pull it again
+	yettishar_transfer_region_shares = {
+		STATE = $STATE$
+		GIVER = $GIVER$
+		TAKER = $TAKER$
+	}
+}
+
+# Turkmen PU: URALSK + TURKMENIA + MERZ under TRC (never player capital / never KHIVA).
+yettishar_trc_transfer_and_unify = {
+	if = {
+		limit = { exists = c:TRC }
+		yettishar_unify_owned_states_in_region = {
+			STATE = s:STATE_URALSK
+			GIVER = $GIVER$
+			TAKER = c:TRC
+		}
+		yettishar_unify_owned_states_in_region = {
+			STATE = s:STATE_TURKMENIA
+			GIVER = $GIVER$
+			TAKER = c:TRC
+		}
+		yettishar_unify_owned_states_in_region = {
+			STATE = s:STATE_MERZ
+			GIVER = $GIVER$
+			TAKER = c:TRC
+		}
+	}
+}
+
+# Mongol PU: hardcoded root→MGL XIN-style transfers (NO $GIVER$ nesting — that left MGL as one seed).
+# $CAPITAL$ = STATE_ULIASTAI or STATE_URGA
+yettishar_form_mongol_personal_union = {
+	# Step 1: create MGL if missing (seed from inside s:STATE_*)
+	if = {
+		limit = {
+			NOT = { exists = c:MGL }
+			any_scope_state = {
+				NOT = { yettishar_is_mongol_pu_transfer_state = yes }
+			}
+		}
+		s:STATE_ULIASTAI = {
+			random_scope_state = {
+				limit = {
+					owner = root
+					NOT = { is_capital = yes }
+				}
+				create_country = {
+					tag = MGL
+					origin = this.owner
+					state = this
+					on_created = {
+						set_capital = $CAPITAL$
+						set_state_religion = rel:sunni
+						activate_law = law_type:law_freedom_of_conscience
+					}
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { exists = c:MGL } }
+			s:STATE_URGA = {
+				random_scope_state = {
+					limit = {
+						owner = root
+						NOT = { is_capital = yes }
+					}
+					create_country = {
+						tag = MGL
+						origin = this.owner
+						state = this
+						on_created = {
+							set_capital = $CAPITAL$
+							set_state_religion = rel:sunni
+							activate_law = law_type:law_freedom_of_conscience
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { exists = c:MGL } }
+			s:STATE_ALXA = {
+				random_scope_state = {
+					limit = {
+						owner = root
+						NOT = { is_capital = yes }
+					}
+					create_country = {
+						tag = MGL
+						origin = this.owner
+						state = this
+						on_created = {
+							set_capital = $CAPITAL$
+							set_state_religion = rel:sunni
+							activate_law = law_type:law_freedom_of_conscience
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# Step 2: transfer all root-owned whitelist shares to MGL (Gansu/Qinghai excluded by whitelist)
+	if = {
+		limit = {
+			exists = c:MGL
+			NOT = { this = c:MGL }
+		}
+		s:STATE_ALXA = {
+			every_scope_state = {
+				limit = {
+					owner = root
+					NOT = { owner = c:MGL }
+				}
+				set_state_owner = c:MGL
+				set_state_type = incorporated
+			}
+		}
+		s:STATE_URGA = {
+			every_scope_state = {
+				limit = {
+					owner = root
+					NOT = { owner = c:MGL }
+				}
+				set_state_owner = c:MGL
+				set_state_type = incorporated
+			}
+		}
+		s:STATE_ULIASTAI = {
+			every_scope_state = {
+				limit = {
+					owner = root
+					NOT = { owner = c:MGL }
+				}
+				set_state_owner = c:MGL
+				set_state_type = incorporated
+			}
+		}
+		s:STATE_HINGGAN = {
+			every_scope_state = {
+				limit = {
+					owner = root
+					NOT = { owner = c:MGL }
+				}
+				set_state_owner = c:MGL
+				set_state_type = incorporated
+			}
+		}
+		s:STATE_TRANS_BAIKAL = {
+			every_scope_state = {
+				limit = {
+					owner = root
+					NOT = { owner = c:MGL }
+				}
+				set_state_owner = c:MGL
+				set_state_type = incorporated
+			}
+		}
+		s:STATE_BURYATIA = {
+			every_scope_state = {
+				limit = {
+					owner = root
+					NOT = { owner = c:MGL }
+				}
+				set_state_owner = c:MGL
+				set_state_type = incorporated
+			}
+		}
+		s:STATE_IRKUTSK = {
+			every_scope_state = {
+				limit = {
+					owner = root
+					NOT = { owner = c:MGL }
+				}
+				set_state_owner = c:MGL
+				set_state_type = incorporated
+			}
+		}
+		s:STATE_KALMYKIA = {
+			every_scope_state = {
+				limit = {
+					owner = root
+					NOT = { owner = c:MGL }
+				}
+				set_state_owner = c:MGL
+				set_state_type = incorporated
+			}
+		}
+
+		c:MGL = {
+			if = {
+				limit = { has_state_in_state_region = $CAPITAL$ }
+				set_capital = $CAPITAL$
+			}
+			else_if = {
+				limit = { has_state_in_state_region = STATE_ULIASTAI }
+				set_capital = STATE_ULIASTAI
+			}
+			else_if = {
+				limit = { has_state_in_state_region = STATE_URGA }
+				set_capital = STATE_URGA
+			}
+		}
+
+		if = {
+			limit = {
+				c:MGL = { is_subject_of = root }
+			}
+			c:MGL = {
+				change_subject_type = subject_type_personal_union
+			}
+		}
+		else = {
+			create_diplomatic_pact = {
+				country = c:MGL
+				type = personal_union
+			}
+		}
+	}
+}
+
+# Keep $COUNTRY$ on the initiator side of the CURRENT diplomatic play (play scope).
+# Wrong side (enemy of initiator) → remove_target then add_initiator once.
+# Not involved / left while still supposed to support → add_initiator only.
+# Already initiator ally → noop (avoids weekly leave/join thrash + relation bleed).
+yts_ensure_initiator_backer = {
+	if = {
+		limit = {
+			exists = $COUNTRY$
+			NOT = { initiator = $COUNTRY$ }
+		}
+		initiator = { save_temporary_scope_as = yts_play_initiator }
+		if = {
+			limit = {
+				$COUNTRY$ = { is_diplomatic_play_enemy_of = scope:yts_play_initiator }
+			}
+			remove_target_backers = { $COUNTRY$ }
+			add_initiator_backers = { $COUNTRY$ }
+		}
+		else_if = {
+			limit = {
+				NOT = { $COUNTRY$ = { is_diplomatic_play_ally_of = scope:yts_play_initiator } }
+			}
+			add_initiator_backers = { $COUNTRY$ }
+		}
+	}
+}
+
+# Force $COUNTRY$ out of BOTH sides — used when Russia accepted neutrality.
+# Call separately on subjects (see weekly pulse); do not recurse here.
+yts_ensure_neutral_out = {
+	if = {
+		limit = {
+			exists = $COUNTRY$
+			NOT = { initiator = $COUNTRY$ }
+		}
+		initiator = { save_temporary_scope_as = yts_play_initiator }
+		if = {
+			limit = {
+				$COUNTRY$ = { is_diplomatic_play_enemy_of = scope:yts_play_initiator }
+			}
+			remove_target_backers = { $COUNTRY$ }
+		}
+		if = {
+			limit = {
+				$COUNTRY$ = { is_diplomatic_play_ally_of = scope:yts_play_initiator }
+			}
+			remove_initiator_backers = { $COUNTRY$ }
+		}
+	}
+}
+
+# Expulsion by Rail (yettishar_events.210): move non-islamic pops of one culture
+# from THIS state to exile hubs. Called for russian; parameter kept for reuse.
+# Requires scopes: ingria_dest / moscow_dest / kiev_dest / capital_exile_dest.
+# Compound ratios leave ~30%: 3 dest 0.331, 2 dest 0.452, 1 dest 0.70
+yettishar_expel_non_islamic_culture_pops = {
+	every_scope_pop = {
+		limit = {
+			culture = $CULTURE$
+			NOT = {
+				religion = { has_discrimination_trait = heritage_islamic }
+			}
+		}
+		# All three: r = 0.331 → (1-0.331)^3 ≈ 0.30
+		if = {
+			limit = {
+				exists = scope:ingria_dest
+				exists = scope:moscow_dest
+				exists = scope:kiev_dest
+			}
+			move_partial_pop = {
+				state = scope:ingria_dest
+				population_ratio = 0.331
+			}
+			move_partial_pop = {
+				state = scope:moscow_dest
+				population_ratio = 0.331
+			}
+			move_partial_pop = {
+				state = scope:kiev_dest
+				population_ratio = 0.331
+			}
+		}
+		# Ingria + Moscow: r = 0.452 → (1-0.452)^2 ≈ 0.30
+		else_if = {
+			limit = {
+				exists = scope:ingria_dest
+				exists = scope:moscow_dest
+				NOT = { exists = scope:kiev_dest }
+			}
+			move_partial_pop = {
+				state = scope:ingria_dest
+				population_ratio = 0.452
+			}
+			move_partial_pop = {
+				state = scope:moscow_dest
+				population_ratio = 0.452
+			}
+		}
+		# Ingria + Kiev
+		else_if = {
+			limit = {
+				exists = scope:ingria_dest
+				exists = scope:kiev_dest
+				NOT = { exists = scope:moscow_dest }
+			}
+			move_partial_pop = {
+				state = scope:ingria_dest
+				population_ratio = 0.452
+			}
+			move_partial_pop = {
+				state = scope:kiev_dest
+				population_ratio = 0.452
+			}
+		}
+		# Moscow + Kiev
+		else_if = {
+			limit = {
+				exists = scope:moscow_dest
+				exists = scope:kiev_dest
+				NOT = { exists = scope:ingria_dest }
+			}
+			move_partial_pop = {
+				state = scope:moscow_dest
+				population_ratio = 0.452
+			}
+			move_partial_pop = {
+				state = scope:kiev_dest
+				population_ratio = 0.452
+			}
+		}
+		# Single dest: r = 0.70 → leave 30%
+		else_if = {
+			limit = { exists = scope:ingria_dest }
+			move_partial_pop = {
+				state = scope:ingria_dest
+				population_ratio = 0.70
+			}
+		}
+		else_if = {
+			limit = { exists = scope:moscow_dest }
+			move_partial_pop = {
+				state = scope:moscow_dest
+				population_ratio = 0.70
+			}
+		}
+		else_if = {
+			limit = { exists = scope:kiev_dest }
+			move_partial_pop = {
+				state = scope:kiev_dest
+				population_ratio = 0.70
+			}
+		}
+		else_if = {
+			limit = { exists = scope:capital_exile_dest }
+			move_partial_pop = {
+				state = scope:capital_exile_dest
+				population_ratio = 0.70
+			}
+		}
+	}
+}

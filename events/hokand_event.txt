@@ -1,0 +1,1243 @@
+namespace = hokand_events
+hokand_events.1 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.1.t
+	desc = hokand_events.1.d
+	flavor = hokand_events.1.f
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	on_created_soundeffect = "event_default"
+	immediate = {
+		if = {
+			limit = {
+				exists = heir
+			}
+			heir = {
+				kill_character = yes
+			}
+		}
+		if = {
+			limit = {
+				exists = ruler
+			}
+			ruler = {
+				kill_character = yes
+			}
+		}
+		create_character = {
+			template = KOK_murad_beg
+			save_scope_as = murad_beg_target
+		}
+	}
+	option = {
+		name = hokand_events.1.a
+		default_option = yes
+		scope:murad_beg_target ?= {
+			set_character_as_ruler = yes
+		}
+		add_journal_entry = {
+			type = je_hokand_void_of_authority
+		}
+	}
+}
+
+hokand_events.2 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.2.t
+	desc = hokand_events.2.d
+	flavor = hokand_events.2.f
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+	on_created_soundeffect = "event_default"
+	immediate = {
+		# Heir must die BEFORE ruler: killing the ruler first promotes the heir
+		# via succession, so a later `exists = heir` / heir kill never fires.
+		if = {
+			limit = {
+				exists = heir
+			}
+			heir = {
+				kill_character = yes
+			}
+		}
+		if = {
+			limit = {
+				exists = ruler
+			}
+			ruler = {
+				kill_character = yes
+			}
+		}
+		create_character = {
+			template = YTS_yakub_beg
+			is_general = yes
+			save_scope_as = yakub_beg_target
+			on_created = {
+				set_commander_rank = 6
+			}
+		}
+	}
+	option = {
+		name = hokand_events.2.a
+		default_option = yes
+		scope:yakub_beg_target ?= {
+			set_character_as_ruler = yes
+		}
+		
+		custom_tooltip = {
+			text = hokand_yakub_radicals_reduced_tt
+			add_radicals = {
+				value = -0.9
+				culture = cu:uzbek
+			}
+		}
+		add_loyalists = {
+			value = 0.9
+			culture = cu:uzbek
+		}
+		add_radicals = {
+			value = 0.2
+			culture = cu:kirgiz
+		}
+		add_primary_culture = cu:uzbek
+		remove_primary_culture = cu:kirgiz
+		set_capital = STATE_UZBEKIA
+		# East Turkestan homeland claims granted when Liberation JE opens (not on complete).
+		# Yakub Beg rule JE is added later in hokand_events.3 (tag → YTS).
+		# Unlock before add so JE possible/show stay true even if ruler template
+		# is not yet readable on the same tick.
+		set_variable = kashgar_rebellion_unlocked
+		add_journal_entry = {
+			type = je_hokand_secure_authority
+		}
+		add_journal_entry = {
+			type = je_kashgar_rebellion
+		}
+		custom_tooltip = {
+			text = kashgar_rebellion_east_claims_tt
+			s:STATE_KIRGHIZIA = { add_claim = root }
+			s:STATE_TIANSHAN = { add_claim = root }
+			s:STATE_DZUNGARIA = { add_claim = root }
+			s:STATE_JETISY = { add_claim = root }
+		}
+		c:GBR = {
+			add_involvement = {
+				strategic_region = sr:region_central_asia
+				value = 3000
+			}
+		}
+		if = {
+			limit = { exists = c:TUR }
+			c:TUR = {
+				add_involvement = {
+					strategic_region = sr:region_central_asia
+					value = 3000
+				}
+			}
+		}
+		add_involvement = {
+			strategic_region = sr:region_near_east
+			value = 3000
+		}
+		custom_tooltip = {
+			text = hokand_yakub_cavalry_tt
+			hidden_effect = {
+				create_military_formation = {
+					type = army
+					hq_region = root.capital.region
+					name = yakub_beg_cavalry
+					save_scope_as = yakub_cavalry_formation
+					combat_unit = {
+						type = unit_type:combat_unit_type_hussars
+						state_region = root.capital.state_region
+						count = 20
+					}
+				}
+				scope:yakub_beg_target = {
+					add_character_role = general
+					set_commander_rank = 6
+					transfer_to_formation = scope:yakub_cavalry_formation
+				}
+			}
+		}
+	}
+}
+
+hokand_events.3 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.3.t
+	desc = hokand_events.3.d
+	flavor = hokand_events.3.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	on_created_soundeffect = "event_default"
+	option = {
+		name = hokand_events.3.a
+		default_option = yes
+		change_tag = YTS
+		if = {
+			limit = { NOT = { has_journal_entry = je_yettishar_yakub_beg_rule } }
+			add_journal_entry = {
+				type = je_yettishar_yakub_beg_rule
+			}
+		}
+		add_primary_culture = cu:kirgiz
+		add_radicals = {
+			value = -0.9
+		}
+		add_loyalists = {
+			value = 0.9
+			culture = cu:uzbek
+		}
+		add_loyalists = {
+			value = 0.8
+			culture = cu:kirgiz
+		}
+	}
+}
+
+hokand_events.4 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.4.t
+	desc = hokand_events.4.d
+	flavor = hokand_events.4.f
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	option = {
+		name = hokand_events.4.a
+		default_option = yes
+	}
+}
+
+hokand_events.5 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.5.t
+	desc = hokand_events.5.d
+	flavor = hokand_events.5.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	option = {
+		name = hokand_events.5.a
+		default_option = yes
+	}
+}
+
+hokand_events.6 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.6.t
+	desc = hokand_events.6.d
+	flavor = hokand_events.6.f
+	event_image = {
+		video = "votp_barricade"
+	}
+	on_created_soundeffect = "event_default"
+	option = {
+		name = hokand_events.6.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_hokand_stagnant_ming_rule
+		}
+	}
+}
+
+# --- 10 TARİHSEL SARAY VE DİVAN OLAYI (10-19) ---
+hokand_events.10 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.10.t
+    desc = hokand_events.10.d
+    flavor = hokand_events.10.f
+
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.10.a
+        custom_tooltip = hokand_void_event_court_bars_tt
+        default_option = yes
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = 15 }
+            add_progress = { name = hokand_yakub_support_bar value = -10 }
+        }
+        add_treasury = 2500
+    }
+    option = {
+        name = hokand_events.10.b
+        custom_tooltip = hokand_void_event_yakub_bars_tt
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 15 }
+            add_progress = { name = hokand_authority_bar value = -10 }
+        }
+    }
+}
+
+hokand_events.11 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.11.t
+    desc = hokand_events.11.d
+    flavor = hokand_events.11.f
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.11.a
+        custom_tooltip = hokand_void_event_court_bars_tt
+        default_option = yes
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = 15 }
+            add_progress = { name = hokand_yakub_support_bar value = -10 }
+        }
+    }
+    option = {
+        name = hokand_events.11.b
+        custom_tooltip = hokand_void_event_yakub_bars_tt
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 15 }
+            add_progress = { name = hokand_authority_bar value = -10 }
+        }
+        add_radicals = { value = 0.05 }
+    }
+}
+
+hokand_events.12 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.12.t
+    desc = hokand_events.12.d
+    flavor = hokand_events.12.f
+
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.12.a
+        custom_tooltip = hokand_void_event_court_bars_tt
+        default_option = yes
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = 15 }
+            add_progress = { name = hokand_yakub_support_bar value = -10 }
+        }
+        add_treasury = 2500
+    }
+    option = {
+        name = hokand_events.12.b
+        custom_tooltip = hokand_void_event_yakub_bars_tt
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 15 }
+            add_progress = { name = hokand_authority_bar value = -10 }
+        }
+    }
+}
+
+hokand_events.13 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.13.t
+    desc = hokand_events.13.d
+    flavor = hokand_events.13.f
+
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.13.a
+        custom_tooltip = hokand_void_event_court_bars_tt
+        default_option = yes
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = 15 }
+            add_progress = { name = hokand_yakub_support_bar value = -10 }
+        }
+    }
+    option = {
+        name = hokand_events.13.b
+        custom_tooltip = hokand_void_event_yakub_bars_tt
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 15 }
+            add_progress = { name = hokand_authority_bar value = -10 }
+        }
+    }
+}
+
+hokand_events.14 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.14.t
+    desc = hokand_events.14.d
+    flavor = hokand_events.14.f
+
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.14.a
+        custom_tooltip = hokand_void_event_court_bars_tt
+        default_option = yes
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = 15 }
+            add_progress = { name = hokand_yakub_support_bar value = -10 }
+        }
+        add_treasury = -2000
+    }
+    option = {
+        name = hokand_events.14.b
+        custom_tooltip = hokand_void_event_yakub_bars_tt
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 15 }
+            add_progress = { name = hokand_authority_bar value = -10 }
+        }
+        add_treasury = 2000
+    }
+}
+
+hokand_events.15 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.15.t
+    desc = hokand_events.15.d
+    flavor = hokand_events.15.f
+
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.15.a
+        custom_tooltip = hokand_void_event_court_bars_tt
+        default_option = yes
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = 15 }
+            add_progress = { name = hokand_yakub_support_bar value = -10 }
+        }
+    }
+    option = {
+        name = hokand_events.15.b
+        custom_tooltip = hokand_void_event_yakub_bars_tt
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 15 }
+            add_progress = { name = hokand_authority_bar value = -10 }
+        }
+    }
+}
+
+hokand_events.16 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.16.t
+    desc = hokand_events.16.d
+    flavor = hokand_events.16.f
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.16.a
+        custom_tooltip = hokand_void_event_court_bars_tt
+        default_option = yes
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = 15 }
+            add_progress = { name = hokand_yakub_support_bar value = -10 }
+        }
+    }
+    option = {
+        name = hokand_events.16.b
+        custom_tooltip = hokand_void_event_yakub_bars_tt
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 15 }
+            add_progress = { name = hokand_authority_bar value = -10 }
+        }
+    }
+}
+
+hokand_events.17 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.17.t
+    desc = hokand_events.17.d
+    flavor = hokand_events.17.f
+
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.17.a
+        custom_tooltip = hokand_void_event_court_bars_tt
+        default_option = yes
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = 15 }
+            add_progress = { name = hokand_yakub_support_bar value = -10 }
+        }
+        add_treasury = -1500
+    }
+    option = {
+        name = hokand_events.17.b
+        custom_tooltip = hokand_void_event_yakub_bars_tt
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 15 }
+            add_progress = { name = hokand_authority_bar value = -10 }
+        }
+        add_radicals = { value = 0.05 }
+    }
+}
+
+hokand_events.18 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.18.t
+    desc = hokand_events.18.d
+    flavor = hokand_events.18.f
+
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.18.a
+        custom_tooltip = hokand_void_event_court_bars_tt
+        default_option = yes
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = 15 }
+            add_progress = { name = hokand_yakub_support_bar value = -10 }
+        }
+        add_treasury = 2500
+        add_radicals = { value = 0.05 }
+    }
+    option = {
+        name = hokand_events.18.b
+        custom_tooltip = hokand_void_event_yakub_bars_tt
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 15 }
+            add_progress = { name = hokand_authority_bar value = -10 }
+        }
+        add_treasury = -1500
+    }
+}
+
+hokand_events.19 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.19.t
+    desc = hokand_events.19.d
+    flavor = hokand_events.19.f
+
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.19.a
+        custom_tooltip = hokand_void_event_court_bars_tt
+        default_option = yes
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_authority_bar value = 15 }
+            add_progress = { name = hokand_yakub_support_bar value = -10 }
+        }
+    }
+    option = {
+        name = hokand_events.19.b
+        custom_tooltip = hokand_void_event_yakub_bars_tt
+        je:je_hokand_void_of_authority ?= {
+            add_progress = { name = hokand_yakub_support_bar value = 15 }
+            add_progress = { name = hokand_authority_bar value = -10 }
+        }
+    }
+}
+
+hokand_events.20 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.20.t
+	desc = hokand_events.20.d
+	flavor = hokand_events.20.f
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	option = {
+		name = hokand_events.20.a
+		custom_tooltip = hokand_void_followup_court_bars_tt
+		default_option = yes
+		add_radicals = {
+			value = 0.05
+		}
+		je:je_hokand_void_of_authority ?= {
+			add_progress = {
+				name = hokand_yakub_support_bar
+				value = -6
+			}
+			add_progress = {
+				name = hokand_authority_bar
+				value = 6
+			}
+		}
+	}
+	option = {
+		name = hokand_events.20.b
+		custom_tooltip = hokand_void_followup_yakub_bars_tt
+		add_treasury = -3000
+		je:je_hokand_void_of_authority ?= {
+			add_progress = {
+				name = hokand_authority_bar
+				value = -6
+			}
+			add_progress = {
+				name = hokand_yakub_support_bar
+				value = 6
+			}
+		}
+	}
+}
+
+hokand_events.21 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.21.t
+	desc = hokand_events.21.d
+	flavor = hokand_events.21.f
+	event_image = {
+		video = "ep1_cossacks"
+	}
+	option = {
+		name = hokand_events.21.a
+		custom_tooltip = hokand_void_followup_court_bars_tt
+		default_option = yes
+		add_modifier = {
+			name = modifier_hokand_trade_disruption
+			months = 6
+		}
+		je:je_hokand_void_of_authority ?= {
+			add_progress = {
+				name = hokand_yakub_support_bar
+				value = -6
+			}
+			add_progress = {
+				name = hokand_authority_bar
+				value = 6
+			}
+		}
+	}
+	option = {
+		name = hokand_events.21.b
+		custom_tooltip = hokand_void_followup_yakub_bars_tt
+		je:je_hokand_void_of_authority ?= {
+			add_progress = {
+				name = hokand_authority_bar
+				value = -6
+			}
+			add_progress = {
+				name = hokand_yakub_support_bar
+				value = 6
+			}
+		}
+	}
+}
+
+hokand_events.22 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.22.t
+	desc = hokand_events.22.d
+	flavor = hokand_events.22.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	option = {
+		name = hokand_events.22.a
+		custom_tooltip = hokand_void_followup_court_bars_tt
+		default_option = yes
+		je:je_hokand_void_of_authority ?= {
+			add_progress = {
+				name = hokand_yakub_support_bar
+				value = -6
+			}
+			add_progress = {
+				name = hokand_authority_bar
+				value = 6
+			}
+		}
+	}
+	option = {
+		name = hokand_events.22.b
+		custom_tooltip = hokand_void_followup_yakub_bars_tt
+		je:je_hokand_void_of_authority ?= {
+			add_progress = {
+				name = hokand_authority_bar
+				value = -6
+			}
+			add_progress = {
+				name = hokand_yakub_support_bar
+				value = 6
+			}
+		}
+	}
+}
+
+# --- OTORİTENİN TESİS EDİLMESİ (2. AŞAMA) RASTGELE OLAYLAR (40-49) ---
+
+# 40 — Andican Pazarında İsyan
+hokand_events.40 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.40.t
+    desc = hokand_events.40.d
+    flavor = hokand_events.40.f
+
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.40.a
+        custom_tooltip = hokand_secure_event_fergana_bars_tt
+        default_option = yes
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_fergana_bar value = 15 }
+        }
+        add_treasury = 2500
+    }
+    option = {
+        name = hokand_events.40.b
+        custom_tooltip = hokand_secure_event_nomad_bars_tt
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_nomad_bar value = 15 }
+        }
+        add_treasury = -1500
+    }
+}
+
+hokand_events.41 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.41.t
+    desc = hokand_events.41.d
+    flavor = hokand_events.41.f
+
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.41.a
+        custom_tooltip = hokand_secure_event_nomad_bars_tt
+        default_option = yes
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_nomad_bar value = 15 }
+        }
+    }
+    option = {
+        name = hokand_events.41.b
+        custom_tooltip = hokand_secure_event_fergana_bars_tt
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_fergana_bar value = 15 }
+        }
+        add_treasury = -2000
+    }
+}
+
+hokand_events.42 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.42.t
+    desc = hokand_events.42.d
+    flavor = hokand_events.42.f
+
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.42.a
+        custom_tooltip = hokand_secure_event_fergana_bars_tt
+        default_option = yes
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_fergana_bar value = 15 }
+        }
+    }
+    option = {
+        name = hokand_events.42.b
+        custom_tooltip = hokand_secure_event_nomad_bars_tt
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_nomad_bar value = 15 }
+        }
+        add_treasury = 3000
+    }
+}
+
+hokand_events.43 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.43.t
+    desc = hokand_events.43.d
+    flavor = hokand_events.43.f
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.43.a
+        custom_tooltip = hokand_secure_event_fergana_bars_tt
+        default_option = yes
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_fergana_bar value = 15 }
+        }
+        add_treasury = 3000
+    }
+    option = {
+        name = hokand_events.43.b
+        custom_tooltip = hokand_secure_event_nomad_bars_tt
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_nomad_bar value = 15 }
+        }
+    }
+}
+
+hokand_events.44 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.44.t
+    desc = hokand_events.44.d
+    flavor = hokand_events.44.f
+
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.44.a
+        custom_tooltip = hokand_secure_event_fergana_bars_tt
+        default_option = yes
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_fergana_bar value = 15 }
+        }
+        add_treasury = -2000
+    }
+    option = {
+        name = hokand_events.44.b
+        custom_tooltip = hokand_secure_event_nomad_bars_tt
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_nomad_bar value = 15 }
+        }
+    }
+}
+
+hokand_events.45 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.45.t
+    desc = hokand_events.45.d
+    flavor = hokand_events.45.f
+
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.45.a
+        custom_tooltip = hokand_secure_event_fergana_bars_tt
+        default_option = yes
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_fergana_bar value = 15 }
+        }
+        add_treasury = -2500
+    }
+    option = {
+        name = hokand_events.45.b
+        custom_tooltip = hokand_secure_event_nomad_bars_tt
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_nomad_bar value = 15 }
+        }
+        add_treasury = 2000
+    }
+}
+
+hokand_events.46 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.46.t
+    desc = hokand_events.46.d
+    flavor = hokand_events.46.f
+
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.46.a
+        custom_tooltip = hokand_secure_event_fergana_bars_tt
+        default_option = yes
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_fergana_bar value = 15 }
+        }
+    }
+    option = {
+        name = hokand_events.46.b
+        custom_tooltip = hokand_secure_event_nomad_bars_tt
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_nomad_bar value = 15 }
+        }
+    }
+}
+
+hokand_events.47 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.47.t
+    desc = hokand_events.47.d
+    flavor = hokand_events.47.f
+
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.47.a
+        custom_tooltip = hokand_secure_event_fergana_bars_tt
+        default_option = yes
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_fergana_bar value = 15 }
+        }
+        add_treasury = -3000
+    }
+    option = {
+        name = hokand_events.47.b
+        custom_tooltip = hokand_secure_event_nomad_bars_tt
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_nomad_bar value = 15 }
+        }
+        add_radicals = { value = 0.05 }
+    }
+}
+
+hokand_events.48 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.48.t
+    desc = hokand_events.48.d
+    flavor = hokand_events.48.f
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.48.a
+        custom_tooltip = hokand_secure_event_fergana_bars_tt
+        default_option = yes
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_fergana_bar value = 15 }
+        }
+        add_treasury = -2000
+    }
+    option = {
+        name = hokand_events.48.b
+        custom_tooltip = hokand_secure_event_nomad_bars_tt
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_nomad_bar value = 15 }
+        }
+        add_treasury = 2500
+    }
+}
+
+hokand_events.49 = {
+    type = country_event
+    placement = root
+    duration = 3
+    title = hokand_events.49.t
+    desc = hokand_events.49.d
+    flavor = hokand_events.49.f
+
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	on_created_soundeffect = "event_default"
+    option = {
+        name = hokand_events.49.a
+        custom_tooltip = hokand_secure_event_fergana_bars_tt
+        default_option = yes
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_fergana_bar value = 15 }
+        }
+        add_radicals = { value = 0.05 }
+    }
+    option = {
+        name = hokand_events.49.b
+        custom_tooltip = hokand_secure_event_nomad_bars_tt
+        je:je_hokand_secure_authority ?= {
+            add_progress = { name = hokand_secure_nomad_bar value = 15 }
+        }
+        add_treasury = -2000
+    }
+}
+
+hokand_events.50 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.50.t
+	desc = hokand_events.50.d
+	flavor = hokand_events.50.f
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event_default"
+	option = {
+		name = hokand_events.50.a
+		default_option = yes
+		add_radicals = {
+			value = 0.10
+		}
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_fergana_bar value = 30 }
+			add_progress = { name = hokand_secure_nomad_bar value = -4 }
+		}
+	}
+	option = {
+		name = hokand_events.50.b
+		add_treasury = -3000
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_fergana_bar value = 15 }
+		}
+	}
+}
+
+# 51 — Ulema Şer'i Desteği (Buton Eventı)
+hokand_events.51 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.51.t
+	desc = hokand_events.51.d
+	flavor = hokand_events.51.f
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	on_created_soundeffect = "event_default"
+	option = {
+		name = hokand_events.51.a
+		default_option = yes
+		
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_fergana_bar value = 27 }
+			add_progress = { name = hokand_secure_nomad_bar value = -4 }
+		}
+	}
+	option = {
+		name = hokand_events.51.b
+		add_treasury = -2000
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_fergana_bar value = 18 }
+		}
+	}
+}
+
+# 52 — Alimbek Datka ile Kırgız Antlaşması (Buton Eventı)
+hokand_events.52 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.52.t
+	desc = hokand_events.52.d
+	flavor = hokand_events.52.f
+	event_image = {
+		video = "ep1_cossacks"
+	}
+	on_created_soundeffect = "event_default"
+	option = {
+		name = hokand_events.52.a
+		default_option = yes
+		add_treasury = -5000
+		create_character = {
+			template = YTS_alimbek_datka
+		}
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_fergana_bar value = 27 }
+			add_progress = { name = hokand_secure_nomad_bar value = 27 }
+		}
+	}
+	option = {
+		name = hokand_events.52.b
+		create_character = {
+			template = YTS_alimbek_datka
+		}
+		add_loyalists = {
+			value = 0.03
+			culture = cu:kirgiz
+		}
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_fergana_bar value = 15 }
+			add_progress = { name = hokand_secure_nomad_bar value = 15 }
+		}
+	}
+}
+
+# 53 — Akıncı Süvarilerini Seferber Et (Buton Eventı)
+hokand_events.53 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.53.t
+	desc = hokand_events.53.d
+	flavor = hokand_events.53.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	on_created_soundeffect = "event_default"
+	option = {
+		name = hokand_events.53.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_hokand_nomad_cavalry_raids
+			days = 180
+		}
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_nomad_bar value = 22 }
+			add_progress = { name = hokand_secure_fergana_bar value = -4 }
+		}
+	}
+	option = {
+		name = hokand_events.53.b
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_nomad_bar value = 12 }
+		}
+	}
+}
+
+# 54 — İsyancı Kamplarını Bas (Buton Eventı)
+hokand_events.54 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.54.t
+	desc = hokand_events.54.d
+	flavor = hokand_events.54.f
+	event_image = {
+		video = "votp_barricade"
+	}
+	on_created_soundeffect = "event_default"
+	option = {
+		name = hokand_events.54.a
+		default_option = yes
+		add_radicals = {
+			value = 0.10
+		}
+		
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_nomad_bar value = 27 }
+			add_progress = { name = hokand_secure_fergana_bar value = -4 }
+		}
+	}
+	option = {
+		name = hokand_events.54.b
+		add_treasury = -3000
+		add_radicals = {
+			value = 0.05
+		}
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_nomad_bar value = 15 }
+		}
+	}
+}
+
+# 55 — Sınır Devriyelerini Güçlendir (Buton Eventı)
+hokand_events.55 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.55.t
+	desc = hokand_events.55.d
+	flavor = hokand_events.55.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	on_created_soundeffect = "event_default"
+	option = {
+		name = hokand_events.55.a
+		default_option = yes
+		add_treasury = -4000
+		add_modifier = {
+			name = modifier_hokand_border_patrols
+			days = 365
+		}
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_nomad_bar value = 15 }
+			add_progress = { name = hokand_secure_fergana_bar value = 9 }
+		}
+	}
+	option = {
+		name = hokand_events.55.b
+		add_treasury = -2000
+		add_modifier = {
+			name = modifier_hokand_border_patrols
+			days = 180
+		}
+		je:je_hokand_secure_authority ?= {
+			add_progress = { name = hokand_secure_nomad_bar value = 9 }
+			add_progress = { name = hokand_secure_fergana_bar value = 4 }
+		}
+	}
+}
+
+# --- YAKUB BEG OTORİTESİNİ TESİS EDİYOR — AÇILIŞ OLAYI (35) ---
+hokand_events.35 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = hokand_events.35.t
+	desc = hokand_events.35.d
+	flavor = hokand_events.35.f
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	on_created_soundeffect = "event_default"
+	option = {
+		name = hokand_events.35.a
+		default_option = yes
+	}
+}

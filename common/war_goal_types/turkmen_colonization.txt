@@ -1,0 +1,163 @@
+# Colonization war: take Harezm (STATE_KHIVA) + Uralsk (STATE_URALSK) from TRM.
+# Uses conquer_state + can_target_decentralized — annex_country against
+# decentralized TRM fails silently and never opens the diplomatic play.
+# Infamy: 2 (Harezm) + 2 (Uralsk) = 4 total — modest dual-target cost.
+
+turkmen_colonization = {
+	icon = "gfx/interface/icons/war_goals/conquer_state.dds"
+	kind = conquer_state
+	settings = {
+		require_target_be_part_of_war
+		annexes_entire_state
+		skip_build_list
+		can_target_decentralized
+		validate_conflicts_war_goals_all
+		validate_conflicts_conquer_state
+	}
+	# Script/JE-button only: never listed in attack lens or add-war-goal UI.
+	# Primary is created by dp_turkmen_colonization (possible=always no on the DP);
+	# secondary via add_war_goal inside an active dp_turkmen_colonization play.
+	# valid must stay yes — always=no here removes the demand after a tick.
+	possible = {
+		always = no
+	}
+	contestion_type = control_target_state
+	target_type = state
+	infamy = {
+		value = 0
+		add = {
+			desc = "INFAMY_BASE_VALUE"
+			value = 2
+		}
+	}
+	valid = {
+		always = yes
+	}
+	on_enforced = {
+		# root = war goal holder (initiator)
+		root = {
+			# Ensure TRM-held Harezm + Uralsk provinces transfer (split-state safety)
+			s:STATE_KHIVA = {
+				every_scope_state = {
+					limit = {
+						NOT = { owner = root }
+						OR = {
+							owner = c:TRM
+							AND = {
+								exists = scope:target_country
+								owner = scope:target_country
+							}
+						}
+					}
+					set_state_owner = root
+				}
+			}
+			s:STATE_URALSK = {
+				every_scope_state = {
+					limit = {
+						NOT = { owner = root }
+						OR = {
+							owner = c:TRM
+							AND = {
+								exists = scope:target_country
+								owner = scope:target_country
+							}
+						}
+					}
+					set_state_owner = root
+				}
+			}
+			if = {
+				limit = {
+					NOT = { has_variable = yettishar_turkmen_colonization_war_won }
+				}
+				set_variable = yettishar_turkmen_colonization_war_won
+				je:je_yettishar_turkmenistan ?= {
+					add_progress = {
+						name = yettishar_turkmen_meselesi_bar
+						value = 40
+					}
+				}
+			}
+			remove_variable = yettishar_turkmen_colonization_play_active
+		}
+	}
+}
+
+# Secondary war goal: Uralsk share (2 Infamy). Added via add_war_goal after play opens.
+turkmen_colonization_uralsk = {
+	icon = "gfx/interface/icons/war_goals/conquer_state.dds"
+	kind = conquer_state
+	settings = {
+		require_target_be_part_of_war
+		annexes_entire_state
+		skip_build_list
+		can_target_decentralized
+		validate_conflicts_war_goals_all
+		validate_conflicts_conquer_state
+	}
+	# Same as primary: not selectable in any attack / add-war-goal UI.
+	# Only add_war_goal while is_diplomatic_play_type = dp_turkmen_colonization.
+	possible = {
+		always = no
+	}
+	contestion_type = control_target_state
+	target_type = state
+	infamy = {
+		value = 0
+		add = {
+			desc = "INFAMY_BASE_VALUE"
+			value = 2
+		}
+	}
+	valid = {
+		always = yes
+	}
+	on_enforced = {
+		root = {
+			s:STATE_URALSK = {
+				every_scope_state = {
+					limit = {
+						NOT = { owner = root }
+						OR = {
+							owner = c:TRM
+							AND = {
+								exists = scope:target_country
+								owner = scope:target_country
+							}
+						}
+					}
+					set_state_owner = root
+				}
+			}
+			s:STATE_KHIVA = {
+				every_scope_state = {
+					limit = {
+						NOT = { owner = root }
+						OR = {
+							owner = c:TRM
+							AND = {
+								exists = scope:target_country
+								owner = scope:target_country
+							}
+						}
+					}
+					set_state_owner = root
+				}
+			}
+			if = {
+				limit = {
+					NOT = { has_variable = yettishar_turkmen_colonization_war_won }
+				}
+				set_variable = yettishar_turkmen_colonization_war_won
+				je:je_yettishar_turkmenistan ?= {
+					add_progress = {
+						name = yettishar_turkmen_meselesi_bar
+						value = 40
+					}
+				}
+			}
+			remove_variable = yettishar_turkmen_colonization_play_active
+		}
+	}
+}

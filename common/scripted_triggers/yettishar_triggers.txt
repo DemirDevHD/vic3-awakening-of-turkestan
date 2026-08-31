@@ -1,0 +1,150 @@
+﻿is_yts_or_trh = {
+	custom_tooltip = {
+		text = is_yts_or_trh_tt
+		OR = {
+			c:YTS ?= THIS
+			c:TRH ?= THIS
+		}
+	}
+}
+
+is_trh_only = {
+	custom_tooltip = {
+		text = is_trh_only_tt
+		c:TRH ?= THIS
+	}
+}
+
+# Full Harezm control — entire STATE_KHIVA, not a split-state share with TRM.
+yettishar_turkmen_owns_full_harezm = {
+	owns_entire_state_region = STATE_KHIVA
+	OR = {
+		NOT = { exists = c:TRM }
+		c:TRM = {
+			NOT = { has_state_in_state_region = STATE_KHIVA }
+		}
+	}
+}
+
+# Contested Harezm secured: we hold KHIVA and TRM no longer holds any share.
+# Does NOT pass on a pre-existing YTS/TRH split share while TRM still owns part.
+yettishar_turkmen_contested_harezm_secured = {
+	OR = {
+		yettishar_turkmen_owns_full_harezm = yes
+		AND = {
+			exists = c:TRM
+			has_state_in_state_region = STATE_KHIVA
+			c:TRM = {
+				NOT = { has_state_in_state_region = STATE_KHIVA }
+			}
+		}
+	}
+}
+
+# Contested Uralsk secured: we hold a share of STATE_URALSK and TRM holds none.
+# Does NOT require entire region (RUS/KZH also hold provinces).
+yettishar_turkmen_contested_uralsk_secured = {
+	has_state_in_state_region = STATE_URALSK
+	OR = {
+		NOT = { exists = c:TRM }
+		c:TRM = {
+			NOT = { has_state_in_state_region = STATE_URALSK }
+		}
+	}
+}
+
+# Both colonization objectives: contested Harezm + contested Uralsk.
+# Used for war_won — never from a mere pre-existing KHIVA split share alone.
+yettishar_turkmen_colonization_objectives_secured = {
+	yettishar_turkmen_contested_harezm_secured = yes
+	yettishar_turkmen_contested_uralsk_secured = yes
+}
+
+# Instant-win path: full Harezm + Uralsk TRM share already gone / held by us.
+yettishar_turkmen_already_owns_colonization_targets = {
+	yettishar_turkmen_owns_full_harezm = yes
+	yettishar_turkmen_contested_uralsk_secured = yes
+}
+
+# Mongol PU transfer whitelist (state scope). Excludes Gansu / Qinghai by design.
+yettishar_is_mongol_pu_transfer_state = {
+	OR = {
+		state_region = s:STATE_ALXA
+		state_region = s:STATE_URGA
+		state_region = s:STATE_ULIASTAI
+		state_region = s:STATE_HINGGAN
+		state_region = s:STATE_TRANS_BAIKAL
+		state_region = s:STATE_BURYATIA
+		state_region = s:STATE_IRKUTSK
+		state_region = s:STATE_KALMYKIA
+	}
+}
+
+# Proclaim Turkestan: own at least 9 of 17 core Central Asian states.
+# Match je_yettishar_modernization complete: RAW engine triggers only.
+# No outer/per-state custom_tooltip — those replace TRIGGER_HAS_STATE_IN_STATE_REGION
+# (nestable STATE_REGION concepts) with flat prose.
+yettishar_can_proclaim_turkestan_states = {
+	calc_true_if = {
+		amount >= 9
+		has_state_in_state_region = STATE_UZBEKIA
+		has_state_in_state_region = STATE_FERGANA
+		has_state_in_state_region = STATE_KIRGHIZIA
+		has_state_in_state_region = STATE_TAJIKISTAN
+		has_state_in_state_region = STATE_TIANSHAN
+		has_state_in_state_region = STATE_JETISY
+		has_state_in_state_region = STATE_DZUNGARIA
+		has_state_in_state_region = STATE_BALKH
+		has_state_in_state_region = STATE_KHORASAN
+		has_state_in_state_region = STATE_TURKMENIA
+		has_state_in_state_region = STATE_MERZ
+		has_state_in_state_region = STATE_KHIVA
+		has_state_in_state_region = STATE_URALSK
+		has_state_in_state_region = STATE_AKMOLINSK
+		has_state_in_state_region = STATE_AKTOBE
+		has_state_in_state_region = STATE_SYRDARYA
+		has_state_in_state_region = STATE_SEMIRECHE
+	}
+}
+
+# Mongol PU subject still under root (not annexed / not self).
+yettishar_mongol_is_pu_subject = {
+	custom_tooltip = {
+		text = yettishar_mongol_is_pu_subject_tt
+		exists = c:MGL
+		NOT = { c:MGL ?= THIS }
+		c:MGL = {
+			is_subject_of = root
+			is_subject_type = subject_type_personal_union
+		}
+	}
+}
+
+# Colonization war button: root or any subject borders TRM / Turkmenia / Merz.
+# Raw OR — engine hoverable neighbour/owner triggers (no flat custom_tooltip wrapper).
+yettishar_borders_turkmen_lands = {
+	OR = {
+		any_neighbouring_state = {
+			OR = {
+				AND = {
+					exists = c:TRM
+					owner = c:TRM
+				}
+				state_region = s:STATE_TURKMENIA
+				state_region = s:STATE_MERZ
+			}
+		}
+		any_subject_or_below = {
+			any_neighbouring_state = {
+				OR = {
+					AND = {
+						exists = c:TRM
+						owner = c:TRM
+					}
+					state_region = s:STATE_TURKMENIA
+					state_region = s:STATE_MERZ
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,330 @@
+﻿dp_yts_liberation = {
+	requires_interest_marker = no
+	war_goal = yts_liberation
+	texture = "gfx/interface/icons/war_goals/liberate_country.dds"
+
+	allow_negotiated_peace = yes
+	initiator_can_add_war_goals = yes
+	target_can_add_war_goals = yes
+	aggressive_diplomatic_plays_permitted = yes
+	enable_switch_sides = no
+
+	# Script/event only — possible=yes leaks into province demand menu
+	# (same fix as dp_turkmen_colonization / vanilla dp_balkan_war).
+	possible = {
+		always = no
+	}
+
+	additional_involvement_trigger = {
+		NOT = { is_country_type = decentralized }
+		aggressive_diplomatic_plays_permitted = yes
+		NOT = {
+			AND = {
+				c:RUS ?= THIS
+				scope:initiator = { has_variable = kashgar_russian_neutral }
+			}
+		}
+	}
+
+	selectable_in_lens = {
+		always = no
+	}
+
+	ai_acceptance_max = 75
+
+	# Keep scripted supporters on the initiator side for the whole play.
+	# Only intervene when wrong-side or not involved — never remove+readd
+	# if already an initiator ally (that thrash tanks relations weekly).
+	# Neutral Russia must be yanked off BOTH sides every week (AI otherwise
+	# re-joins China via interest/relations; can_join scripted_rule is dead without replace_path).
+	on_weekly_pulse = {
+		if = {
+			limit = {
+				exists = c:RUS
+				OR = {
+					initiator = { has_variable = kashgar_russian_neutral }
+					c:RUS = { has_variable = kashgar_temp_neutral_locked }
+				}
+			}
+			yts_ensure_neutral_out = { COUNTRY = c:RUS }
+			c:RUS = {
+				every_subject_or_below = {
+					prev.prev = {
+						yts_ensure_neutral_out = { COUNTRY = prev }
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = c:RUS
+				initiator = { has_variable = kashgar_has_russian_support }
+				NOT = { initiator = { has_variable = kashgar_russian_neutral } }
+				NOT = { c:RUS = { has_variable = kashgar_temp_neutral_locked } }
+			}
+			yts_ensure_initiator_backer = { COUNTRY = c:RUS }
+			c:RUS = {
+				every_subject_or_below = {
+					prev.prev = {
+						yts_ensure_initiator_backer = { COUNTRY = prev }
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = c:GBR
+				initiator = { has_variable = kashgar_has_british_support }
+			}
+			yts_ensure_initiator_backer = { COUNTRY = c:GBR }
+			c:GBR = {
+				every_subject_or_below = {
+					prev.prev = {
+						yts_ensure_initiator_backer = { COUNTRY = prev }
+					}
+				}
+			}
+			if = {
+				limit = { exists = c:BIC }
+				yts_ensure_initiator_backer = { COUNTRY = c:BIC }
+			}
+			if = {
+				limit = { exists = c:RAJ }
+				yts_ensure_initiator_backer = { COUNTRY = c:RAJ }
+			}
+		}
+		if = {
+			limit = {
+				exists = c:TUR
+				initiator = { has_variable = kashgar_has_ottoman_support }
+			}
+			yts_ensure_initiator_backer = { COUNTRY = c:TUR }
+			c:TUR = {
+				every_subject_or_below = {
+					prev.prev = {
+						yts_ensure_initiator_backer = { COUNTRY = prev }
+					}
+				}
+			}
+		}
+	}
+
+	on_war_begins = {
+		initiator = {
+			save_scope_as = kashgar_play_initiator
+			if = {
+				limit = { NOT = { has_modifier = modifier_yettishar_liberation_war_bonus } }
+				add_modifier = {
+					name = modifier_yettishar_liberation_war_bonus
+					months = 120
+				}
+			}
+			if = {
+				limit = { exists = c:RUS NOT = { c:RUS = scope:kashgar_play_initiator } c:RUS = { has_variable = kashgar_temp_relations_locked } }
+				c:RUS = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:GBR NOT = { c:GBR = scope:kashgar_play_initiator } c:GBR = { has_variable = kashgar_temp_relations_locked } }
+				c:GBR = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:TUR NOT = { c:TUR = scope:kashgar_play_initiator } c:TUR = { has_variable = kashgar_temp_relations_locked } }
+				c:TUR = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:KOK NOT = { c:KOK = scope:kashgar_play_initiator } c:KOK = { has_variable = kashgar_temp_relations_locked } }
+				c:KOK = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:RUS NOT = { c:RUS = scope:kashgar_play_initiator } c:RUS = { has_variable = kashgar_temp_neutral_locked } }
+				c:RUS = {
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 80 } }
+					remove_variable = kashgar_temp_neutral_locked
+				}
+			}
+			if = {
+				limit = { exists = c:YTS c:YTS = { has_variable = kashgar_temp_relations_locked } }
+				c:YTS = { remove_variable = kashgar_temp_relations_locked }
+			}
+			if = {
+				limit = { exists = c:XIN c:XIN = { has_variable = kashgar_temp_relations_locked } }
+				c:XIN = { remove_variable = kashgar_temp_relations_locked }
+			}
+		}
+		if = {
+			limit = {
+				exists = c:CHI
+				c:CHI = { NOT = { has_modifier = modifier_china_east_turkestan_war_penalty } }
+			}
+			c:CHI = {
+				add_modifier = {
+					name = modifier_china_east_turkestan_war_penalty
+					months = 120
+				}
+			}
+		}
+	}
+
+	on_war_end = {
+		initiator = {
+			save_scope_as = kashgar_play_initiator
+			if = {
+				limit = { has_modifier = modifier_yettishar_liberation_war_bonus }
+				remove_modifier = modifier_yettishar_liberation_war_bonus
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_variable = kashgar_war_won
+					}
+				}
+				set_variable = kashgar_war_lost
+			}
+			if = {
+				limit = { exists = c:RUS NOT = { c:RUS = scope:kashgar_play_initiator } c:RUS = { has_variable = kashgar_temp_relations_locked } }
+				c:RUS = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:GBR NOT = { c:GBR = scope:kashgar_play_initiator } c:GBR = { has_variable = kashgar_temp_relations_locked } }
+				c:GBR = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:TUR NOT = { c:TUR = scope:kashgar_play_initiator } c:TUR = { has_variable = kashgar_temp_relations_locked } }
+				c:TUR = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:KOK NOT = { c:KOK = scope:kashgar_play_initiator } c:KOK = { has_variable = kashgar_temp_relations_locked } }
+				c:KOK = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:RUS NOT = { c:RUS = scope:kashgar_play_initiator } c:RUS = { has_variable = kashgar_temp_neutral_locked } }
+				c:RUS = {
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 80 } }
+					remove_variable = kashgar_temp_neutral_locked
+				}
+			}
+			if = {
+				limit = { exists = c:YTS c:YTS = { has_variable = kashgar_temp_relations_locked } }
+				c:YTS = { remove_variable = kashgar_temp_relations_locked }
+			}
+			if = {
+				limit = { exists = c:XIN c:XIN = { has_variable = kashgar_temp_relations_locked } }
+				c:XIN = { remove_variable = kashgar_temp_relations_locked }
+			}
+		}
+		if = {
+			limit = {
+				exists = c:CHI
+				c:CHI = { has_modifier = modifier_china_east_turkestan_war_penalty }
+			}
+			c:CHI = {
+				remove_modifier = modifier_china_east_turkestan_war_penalty
+			}
+		}
+	}
+
+	on_demand_accepted = {
+		initiator = {
+			save_scope_as = kashgar_play_initiator
+			if = {
+				limit = { has_modifier = modifier_yettishar_liberation_war_bonus }
+				remove_modifier = modifier_yettishar_liberation_war_bonus
+			}
+			# Qing accepted the ultimatum — success, not loss
+			set_variable = kashgar_war_won
+			set_variable = kashgar_crisis_won
+			if = {
+				limit = { NOT = { has_variable = kashgar_victory_event_fired } }
+				trigger_event = { id = kashgar_victory_events.1 days = 1 popup = yes }
+			}
+			if = {
+				limit = { exists = c:RUS NOT = { c:RUS = scope:kashgar_play_initiator } c:RUS = { has_variable = kashgar_temp_relations_locked } }
+				c:RUS = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:GBR NOT = { c:GBR = scope:kashgar_play_initiator } c:GBR = { has_variable = kashgar_temp_relations_locked } }
+				c:GBR = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:TUR NOT = { c:TUR = scope:kashgar_play_initiator } c:TUR = { has_variable = kashgar_temp_relations_locked } }
+				c:TUR = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:KOK NOT = { c:KOK = scope:kashgar_play_initiator } c:KOK = { has_variable = kashgar_temp_relations_locked } }
+				c:KOK = {
+					change_relations = { country = scope:kashgar_play_initiator value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:RUS NOT = { c:RUS = scope:kashgar_play_initiator } c:RUS = { has_variable = kashgar_temp_neutral_locked } }
+				c:RUS = {
+					if = { limit = { exists = c:CHI NOT = { c:CHI = scope:kashgar_play_initiator } } change_relations = { country = c:CHI value = 80 } }
+					remove_variable = kashgar_temp_neutral_locked
+				}
+			}
+			if = {
+				limit = { exists = c:YTS c:YTS = { has_variable = kashgar_temp_relations_locked } }
+				c:YTS = { remove_variable = kashgar_temp_relations_locked }
+			}
+			if = {
+				limit = { exists = c:XIN c:XIN = { has_variable = kashgar_temp_relations_locked } }
+				c:XIN = { remove_variable = kashgar_temp_relations_locked }
+			}
+		}
+		if = {
+			limit = {
+				exists = c:CHI
+				c:CHI = { has_modifier = modifier_china_east_turkestan_war_penalty }
+			}
+			c:CHI = {
+				remove_modifier = modifier_china_east_turkestan_war_penalty
+			}
+		}
+	}
+}

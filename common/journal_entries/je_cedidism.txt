@@ -1,0 +1,127 @@
+﻿je_cedidism = {
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	group = je_group_yettishar
+
+	is_shown_when_inactive = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = cedidism_year_1880_tt
+			year >= 1880
+		}
+		custom_tooltip = {
+			text = cedidism_je_not_completed_tt
+			NOT = {
+				has_variable = cedidism_je_completed
+			}
+		}
+	}
+
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = cedidism_year_1880_tt
+			year >= 1880
+		}
+		custom_tooltip = {
+			text = cedidism_je_not_completed_tt
+			NOT = {
+				has_variable = cedidism_je_completed
+			}
+		}
+	}
+
+	immediate = {
+		# Ensure movement exists (create if missing; keep if already present)
+		if = {
+			limit = {
+				NOT = {
+					any_political_movement = {
+						is_political_movement_type = movement_cedidist
+					}
+				}
+			}
+			create_political_movement = { type = movement_cedidist }
+		}
+	}
+
+	modifiers_while_active = {
+		modifier_cedidism_active
+	}
+
+	# Safety net: if the movement dissolved after the 12-month low-support grace,
+	# recreate it while the JE is still active (on_created enthusiasm covers start boost).
+	on_monthly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					NOT = {
+						any_political_movement = {
+							is_political_movement_type = movement_cedidist
+						}
+					}
+				}
+				create_political_movement = { type = movement_cedidist }
+			}
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_cedidism_status
+				trigger = {
+					always = yes
+				}
+			}
+		}
+	}
+
+	scripted_button = btn_cedidism_invite_gaspirali
+
+	# Raw law/institution/building triggers = rich interactive tooltips (mirror je_yettishar_modernization)
+	# Variables / is_subject keep custom_tooltip; law_subjecthood is raw for law rich tooltip
+	complete = {
+		custom_tooltip = {
+			text = cedidism_gaspirali_invited_tt
+			has_variable = yts_gaspirali_invited
+		}
+		has_institution = institution_schools
+		institution_investment_level = {
+			institution = institution_schools
+			value >= 3
+		}
+		has_law_or_variant = law_type:law_slavery_banned
+		has_law_or_variant = law_type:law_compulsory_primary_school
+		NOT = {
+			has_law_or_variant = law_type:law_serfdom
+		}
+		literacy_rate > 0.6
+		custom_tooltip = {
+			text = cedidism_not_subject_tt
+			is_subject = no
+		}
+		NOT = {
+			has_law_or_variant = law_type:law_subjecthood
+		}
+		NOT = {
+			has_law_or_variant = law_type:law_multicultural
+		}
+		country_has_building_type_levels = {
+			target = bt:building_university
+			value >= 20
+		}
+		has_law_or_variant = law_type:law_freedom_of_conscience
+	}
+
+	# Bare add_modifier (like je_yettishar_modernization) so JE complete preview shows full effect list
+	on_complete = {
+		set_variable = cedidism_je_completed
+		add_modifier = {
+			name = modifier_cedidism_completed
+			months = 240
+		}
+	}
+
+	weight = 4500
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}

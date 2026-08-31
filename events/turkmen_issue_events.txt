@@ -1,0 +1,406 @@
+﻿namespace = turkmen_issue_events
+
+# Button: Halk/aşiret ikna
+# Tempo: 90g CD → ~4–5 kullanım / 12–15 ay. Başarı +18 → ana bar kaynağı.
+turkmen_issue_events.1 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = turkmen_issue_events.1.t
+	desc = turkmen_issue_events.1.d
+	flavor = turkmen_issue_events.1.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	on_created_soundeffect = "event_default"
+	option = {
+		name = turkmen_issue_events.1.a
+		default_option = yes
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 18
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_18_tt
+		}
+	}
+	option = {
+		name = turkmen_issue_events.1.b
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 10
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_10_tt
+		}
+		random_scope_state = {
+			limit = {
+				OR = {
+					state_region = s:STATE_TURKMENIA
+					state_region = s:STATE_URALSK
+					is_capital = yes
+				}
+			}
+			add_radicals_in_state = {
+				value = 0.03
+			}
+		}
+	}
+	option = {
+		name = turkmen_issue_events.1.c
+		add_radicals = {
+			value = 0.05
+			strata = lower
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_0_tt
+		}
+	}
+}
+
+# Button: Göçebe direnişi
+turkmen_issue_events.2 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = turkmen_issue_events.2.t
+	desc = turkmen_issue_events.2.d
+	flavor = turkmen_issue_events.2.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	on_created_soundeffect = "event_default"
+	option = {
+		name = turkmen_issue_events.2.a
+		default_option = yes
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 20
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_20_tt
+		}
+		add_modifier = {
+			name = modifier_turkmen_nomad_suppressed
+			months = 12
+		}
+	}
+	option = {
+		name = turkmen_issue_events.2.b
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 12
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_12_tt
+		}
+	}
+	option = {
+		name = turkmen_issue_events.2.c
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 6
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_6_tt
+		}
+		add_radicals = {
+			value = 0.04
+			strata = lower
+		}
+	}
+}
+
+# MTTH: Teke pazarlık
+turkmen_issue_events.10 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = turkmen_issue_events.10.t
+	desc = turkmen_issue_events.10.d
+	flavor = turkmen_issue_events.10.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	on_created_soundeffect = "event_default"
+	trigger = {
+		OR = {
+			c:YTS ?= THIS
+			c:TRH ?= THIS
+		}
+		has_variable = yettishar_turkmenistan_started
+		NOT = { has_variable = yettishar_turkmenistan_completed }
+		has_journal_entry = je_yettishar_turkmenistan
+	}
+	option = {
+		name = turkmen_issue_events.10.a
+		default_option = yes
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 12
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_12_tt
+		}
+	}
+	option = {
+		name = turkmen_issue_events.10.b
+		add_radicals = {
+			value = 0.03
+			strata = lower
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_0_tt
+		}
+	}
+}
+
+# MTTH: Yomut otlak
+turkmen_issue_events.11 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = turkmen_issue_events.11.t
+	desc = turkmen_issue_events.11.d
+	flavor = turkmen_issue_events.11.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	on_created_soundeffect = "event_default"
+	trigger = {
+		OR = {
+			c:YTS ?= THIS
+			c:TRH ?= THIS
+		}
+		has_variable = yettishar_turkmenistan_started
+		NOT = { has_variable = yettishar_turkmenistan_completed }
+		has_journal_entry = je_yettishar_turkmenistan
+	}
+	option = {
+		name = turkmen_issue_events.11.a
+		default_option = yes
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 10
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_10_tt
+		}
+	}
+	option = {
+		name = turkmen_issue_events.11.b
+		random_scope_state = {
+			limit = { is_capital = yes }
+			add_radicals_in_state = {
+				value = 0.04
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_0_tt
+		}
+	}
+}
+
+# MTTH: Kervan yağması
+turkmen_issue_events.12 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = turkmen_issue_events.12.t
+	desc = turkmen_issue_events.12.d
+	flavor = turkmen_issue_events.12.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	on_created_soundeffect = "event_default"
+	trigger = {
+		OR = {
+			c:YTS ?= THIS
+			c:TRH ?= THIS
+		}
+		has_variable = yettishar_turkmenistan_started
+		NOT = { has_variable = yettishar_turkmenistan_completed }
+		has_journal_entry = je_yettishar_turkmenistan
+	}
+	option = {
+		name = turkmen_issue_events.12.a
+		default_option = yes
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 8
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_8_tt
+		}
+		custom_tooltip = {
+			text = turkmen_alaman_encouraged_tt
+		}
+	}
+}
+
+# MTTH: Pers şikâyet
+turkmen_issue_events.13 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = turkmen_issue_events.13.t
+	desc = turkmen_issue_events.13.d
+	flavor = turkmen_issue_events.13.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	on_created_soundeffect = "event_default"
+	trigger = {
+		OR = {
+			c:YTS ?= THIS
+			c:TRH ?= THIS
+		}
+		has_variable = yettishar_turkmenistan_started
+		NOT = { has_variable = yettishar_turkmenistan_completed }
+		has_journal_entry = je_yettishar_turkmenistan
+		exists = c:PER
+	}
+	option = {
+		name = turkmen_issue_events.13.a
+		default_option = yes
+		c:PER = {
+			change_relations = {
+				country = root
+				value = -5
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_0_tt
+		}
+	}
+	option = {
+		name = turkmen_issue_events.13.b
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 5
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_5_tt
+		}
+		custom_tooltip = {
+			text = turkmen_alaman_encouraged_tt
+		}
+	}
+}
+
+# MTTH: Göçebe düğünü
+turkmen_issue_events.14 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = turkmen_issue_events.14.t
+	desc = turkmen_issue_events.14.d
+	flavor = turkmen_issue_events.14.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	on_created_soundeffect = "event_default"
+	trigger = {
+		OR = {
+			c:YTS ?= THIS
+			c:TRH ?= THIS
+		}
+		has_variable = yettishar_turkmenistan_started
+		NOT = { has_variable = yettishar_turkmenistan_completed }
+		has_journal_entry = je_yettishar_turkmenistan
+	}
+	option = {
+		name = turkmen_issue_events.14.a
+		default_option = yes
+		je:je_yettishar_turkmenistan ?= {
+			add_progress = {
+				name = yettishar_turkmen_meselesi_bar
+				value = 14
+			}
+		}
+		custom_tooltip = {
+			text = turkmen_bar_gain_14_tt
+		}
+	}
+}
+
+# MTTH: Koloni bürosu
+turkmen_issue_events.16 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = turkmen_issue_events.16.t
+	desc = turkmen_issue_events.16.d
+	flavor = turkmen_issue_events.16.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	on_created_soundeffect = "event_default"
+	trigger = {
+		OR = {
+			c:YTS ?= THIS
+			c:TRH ?= THIS
+		}
+		has_variable = yettishar_turkmenistan_started
+		NOT = { has_variable = yettishar_turkmenistan_completed }
+		has_journal_entry = je_yettishar_turkmenistan
+	}
+	option = {
+		name = turkmen_issue_events.16.a
+		default_option = yes
+		if = {
+			limit = {
+				has_institution = institution_colonial_affairs
+			}
+			je:je_yettishar_turkmenistan ?= {
+				add_progress = {
+					name = yettishar_turkmen_meselesi_bar
+					value = 12
+				}
+			}
+			custom_tooltip = {
+				text = turkmen_bar_gain_12_tt
+			}
+		}
+		else = {
+			je:je_yettishar_turkmenistan ?= {
+				add_progress = {
+					name = yettishar_turkmen_meselesi_bar
+					value = 4
+				}
+			}
+			custom_tooltip = {
+				text = turkmen_bar_gain_4_tt
+			}
+			custom_tooltip = {
+				text = turkmen_need_colonial_affairs_tt
+			}
+		}
+	}
+}

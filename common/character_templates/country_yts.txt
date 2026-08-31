@@ -1,0 +1,194 @@
+﻿YTS_yakub_beg = {
+	first_name = "Yakub"
+	last_name = "Beg"
+	historical = yes
+	culture = cu:uzbek
+	dna = dna_yakub_beg
+	# Tarihsel doğum tarihi: 1820 (Piskent, Hokand Hanlığı)
+	birth_date = 1820.1.1 
+	
+	is_general = yes
+	commander_rank = commander_rank_ruler
+	interest_group = ig_armed_forces 
+	ideology = ideology_jingoist_leader
+	home_region = STATE_FERGANA
+	
+	# "Atalık Gazi" ve "Türkistan Arslanı" unvanlarına sahip, devleti demir yumrukla yöneten güçlü bir lider
+	traits = {
+		ambitious
+		pious
+		basic_diplomat
+		charismatic
+		basic_defensive_strategist
+		basic_offensive_planner
+		
+	}
+}
+
+YTS_beg_kuli_beg = {
+	first_name = "Beg_Kuli"
+	last_name = "Beg"
+	historical = yes
+	culture = cu:uzbek
+	# Tarihsel doğum tarihi: 1848 (Hicri 1265, Yakub Beg'in en büyük oğlu)
+	birth_date = 1848.1.1 
+	
+	interest_group = ig_armed_forces 
+	ideology = ideology_jingoist_leader
+	home_region = STATE_FERGANA
+	
+	traits = {
+		brave
+		ambitious
+		basic_offensive_planner
+	}
+}
+
+YTS_ismail_gaspirali = {
+	first_name = Ismail
+	last_name = Gaspirali
+	historical = yes
+	culture = cu:tatar
+	dna = dna_ismail_gaspirali
+	# Tarihsel doğum tarihi: 20 Mart 1851 (Avcıköy, Kırım)
+	birth_date = 1851.3.20 
+	
+	ig_leader = yes
+	role = character_role_politician
+	interest_group = ig_intelligentsia 
+	ideology = ideology_cedidism
+	home_region = STATE_CRIMEA
+	
+	traits = {
+		erudite
+		charismatic
+		tactful
+	}
+}
+
+YTS_kamil_harezmi = {
+	first_name = Kamil
+	last_name = Harezmi
+	historical = yes
+	culture = cu:uzbek
+	# Tarihsel doğum tarihi: 1825 (Pahlavon Niyoz Muhammad / Komil Xorazmiy, Hive)
+	birth_date = 1825.1.1 
+	
+	ig_leader = yes
+	role = character_role_politician
+	interest_group = ig_intelligentsia 
+	ideology = ideology_reformer
+	home_region = STATE_KHIVA
+	
+	traits = {
+		erudite
+		aesthete
+		romantic
+	}
+}
+
+YTS_alim_kul_muhammad = {
+	first_name = Alim_Kul
+	last_name = Muhammad
+	historical = yes
+	culture = cu:uzbek
+	# Tarihsel doğum tarihi: 1833 (Mulla Alimqul Hasanoghli, Batken)
+	birth_date = 1833.1.1 
+	
+	ig_leader = yes
+	is_general = yes
+	interest_group = ig_devout
+	ideology = ideology_jingoist_leader
+	home_region = STATE_FERGANA
+	
+	traits = {
+		brave
+		ambitious
+		basic_offensive_planner
+	}
+}
+
+YTS_alimbek_datka = {
+	first_name = Alimbek
+	last_name = Datka
+	historical = yes
+	culture = cu:kirgiz
+	# Tarihsel doğum tarihi: 1799 (Alay)
+	birth_date = 1799.1.1 
+	
+	ig_leader = yes
+	interest_group = ig_armed_forces
+	ideology = ideology_traditionalist
+	home_region = STATE_FERGANA
+	
+	traits = {
+		brave
+		ambitious
+		imperious
+		reckless
+	}
+}
+
+YTS_kurmancan_datka = {
+	first_name = "Kurmancan"
+	last_name = "Datka"
+	historical = yes
+	culture = cu:kirgiz
+	# Tarihsel doğum tarihi: 22 Mayıs 1811 (Oş/Alay, "Güneyin Kraliçesi")
+	birth_date = 1811.5.22 
+	female = yes
+	ig_leader = yes
+	interest_group = ig_landowners
+	ideology = ideology_traditionalist
+	home_region = STATE_FERGANA
+	
+	traits = {
+		brave
+		cautious
+		tactful
+		charismatic
+	}
+}
+
+YTS_ahmad_donish = {
+	first_name = Ahmad
+	last_name = Donish
+	historical = yes
+	culture = cu:uzbek
+	# Tarihsel doğum tarihi: 1827 (Ahmet Daniş / Ahmad Mahdumi Kalla, Buhara)
+	birth_date = 1827.1.1 
+	
+	ig_leader = yes
+	role = character_role_politician
+	interest_group = ig_intelligentsia
+	ideology = ideology_modernizer_leader
+	home_region = STATE_KHIVA
+	
+	traits = {
+		erudite
+		meticulous
+		innovative
+	}
+}
+
+
+YTS_sadyk_sultan = {
+	first_name = "Sadyk"
+	last_name = "Sultan"
+	historical = yes
+	culture = cu:kazak
+	# Tarihsel doğum tarihi: 1837 (Sultan Sadık / Syzdyk Sultan, Kenesarı Han'ın oğlu)
+	birth_date = 1837.1.1
+
+	is_general = yes
+	interest_group = ig_armed_forces
+	ideology = ideology_jingoist_leader
+	home_region = STATE_SYRDARYA
+
+	traits = {
+		brave
+		ambitious
+		popular_commander
+		basic_offensive_planner
+	}
+}

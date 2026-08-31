@@ -1,0 +1,2005 @@
+﻿# --- JE_KASHGAR_REBELLION ---
+je_kashgar_rebellion = {
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	group = je_group_hokand
+	is_shown_in_lobby = {
+		OR = {
+			c:YTS ?= THIS
+			c:KOK ?= THIS
+		}
+	}
+	# Show inactive only after Yakub path (event.2 sets kashgar_rebellion_unlocked)
+	# or when Yakub already rules — prevents early-game KOK auto-show/fail lock.
+	is_shown_when_inactive = {
+		OR = {
+			AND = {
+				c:YTS ?= THIS
+				custom_tooltip = {
+					text = yakub_beg_is_ruler_tt
+					ruler = {
+						has_template = YTS_yakub_beg
+					}
+				}
+			}
+			AND = {
+				c:KOK ?= THIS
+				OR = {
+					custom_tooltip = {
+						text = kashgar_rebellion_unlocked_tt
+						has_variable = kashgar_rebellion_unlocked
+					}
+					custom_tooltip = {
+						text = yakub_beg_is_ruler_tt
+						ruler = {
+							has_template = YTS_yakub_beg
+						}
+					}
+				}
+			}
+		}
+	}
+	# Auto-possible only with Yakub as ruler OR after hokand_events.2 unlock.
+	# Event add_journal_entry still works; unlocked var covers same-day timing.
+	possible = {
+		OR = {
+			AND = {
+				c:YTS ?= THIS
+				custom_tooltip = {
+					text = yakub_beg_is_ruler_tt
+					ruler = {
+						has_template = YTS_yakub_beg
+					}
+				}
+			}
+			AND = {
+				c:KOK ?= THIS
+				OR = {
+					custom_tooltip = {
+						text = kashgar_rebellion_unlocked_tt
+						has_variable = kashgar_rebellion_unlocked
+					}
+					custom_tooltip = {
+						text = yakub_beg_is_ruler_tt
+						ruler = {
+							has_template = YTS_yakub_beg
+						}
+					}
+				}
+			}
+		}
+		game_date >= 1830.1.1
+		custom_tooltip = {
+			text = kashgar_rebellion_not_finished_tt
+			NOT = {
+				has_variable = kashgar_rebellion_finished
+			}
+		}
+	}
+	immediate = {
+		set_variable = kashgar_rebellion_unlocked
+		# Gate "Yakub died" fail: only after he actually existed for this JE.
+		if = {
+			limit = {
+				OR = {
+					any_character = {
+						has_template = YTS_yakub_beg
+					}
+					ruler = {
+						has_template = YTS_yakub_beg
+					}
+				}
+			}
+			set_variable = kashgar_yakub_present
+		}
+	}
+	scripted_button = btn_kashgar_support_ottoman
+	scripted_button = btn_kashgar_support_british
+	scripted_button = btn_kashgar_support_russian
+	scripted_button = btn_trigger_kashgar_crisis
+	# Diplomatik durum Ã¶zeti (status bar'da gÃ¶rÃ¼nÃ¼r)
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_kashgar_rebellion_status
+				trigger = {
+					always = yes
+				}
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				desc = status_russian_war
+				trigger = {
+					has_variable = kashgar_has_russian_support
+				}
+			}
+			triggered_desc = {
+				desc = status_russian_neutral
+				trigger = {
+					has_variable = kashgar_russian_neutral
+				}
+			}
+			triggered_desc = {
+				desc = status_russian_refused
+				trigger = {
+					has_variable = kashgar_russian_refused
+				}
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				desc = status_british_support
+				trigger = {
+					has_variable = kashgar_has_british_support
+				}
+			}
+			triggered_desc = {
+				desc = status_british_refused
+				trigger = {
+					has_variable = kashgar_british_refused
+				}
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				desc = status_ottoman_support
+				trigger = {
+					has_variable = kashgar_has_ottoman_support
+				}
+			}
+			triggered_desc = {
+				desc = status_ottoman_refused
+				trigger = {
+					has_variable = kashgar_ottoman_refused
+				}
+			}
+		}
+	}
+	# Tamamlanma: Tarim (Tianshan) + Cungarya (Dzungaria) sahiplenildi
+	# (dogrudan veya tabi/PU — zafer sonrasi XIN'e aktarim dahil)
+	complete = {
+		custom_tooltip = {
+			text = kashgar_holds_tarim_tt
+			OR = {
+				has_state_in_state_region = STATE_TIANSHAN
+				any_subject_or_below = { has_state_in_state_region = STATE_TIANSHAN }
+			}
+		}
+		custom_tooltip = {
+			text = kashgar_holds_dzungaria_tt
+			OR = {
+				has_state_in_state_region = STATE_DZUNGARIA
+				any_subject_or_below = { has_state_in_state_region = STATE_DZUNGARIA }
+			}
+		}
+	}
+	on_complete = {
+		set_variable = kashgar_rebellion_finished
+		remove_variable = kashgar_rebellion_unlocked
+		remove_variable = kashgar_yakub_present
+		if = { limit = { exists = c:YTS } c:YTS = { set_variable = kashgar_rebellion_finished } }
+		if = { limit = { exists = c:XIN } c:XIN = { set_variable = kashgar_rebellion_finished } }
+		if = { limit = { exists = c:KOK } c:KOK = { set_variable = kashgar_rebellion_finished } }
+		# East Turkestan homeland claims are granted when the JE opens (hokand_events.2), not on complete.
+		if = {
+			limit = {
+				NOT = { has_variable = kashgar_victory_event_fired }
+			}
+			trigger_event = {
+				id = kashgar_victory_events.1
+				days = 1
+				popup = yes
+			}
+		}
+		if = {
+			limit = { has_modifier = modifier_yettishar_liberation_war_bonus }
+			remove_modifier = modifier_yettishar_liberation_war_bonus
+		}
+		remove_variable = kashgar_crisis_triggered
+		remove_variable = kashgar_chi_temp_rel_drop
+		remove_variable = kashgar_kok_temp_rel_drop
+		remove_variable = kashgar_has_russian_support
+		remove_variable = kashgar_has_british_support
+		remove_variable = kashgar_has_ottoman_support
+		remove_variable = kashgar_russian_neutral
+		remove_variable = kashgar_support_ottoman_asked
+		remove_variable = kashgar_support_british_asked
+		remove_variable = kashgar_support_russian_asked
+		remove_variable = kashgar_ottoman_refused
+		remove_variable = kashgar_british_refused
+		remove_variable = kashgar_russian_refused
+		remove_variable = kashgar_ottoman_modifier_granted
+		remove_variable = kashgar_liberation_play_started
+		remove_variable = is_yts_liberation_play
+		remove_variable = kashgar_temp_relations_locked
+		remove_variable = kashgar_war_won
+		remove_variable = kashgar_crisis_won
+		remove_variable = kashgar_war_lost
+		if = {
+			limit = { exists = c:YTS }
+			c:YTS = {
+				if = { limit = { has_modifier = modifier_yettishar_liberation_war_bonus } remove_modifier = modifier_yettishar_liberation_war_bonus }
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:XIN }
+			c:XIN = {
+				if = { limit = { has_modifier = modifier_yettishar_liberation_war_bonus } remove_modifier = modifier_yettishar_liberation_war_bonus }
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:KOK }
+			c:KOK = {
+				if = { limit = { has_modifier = modifier_yettishar_liberation_war_bonus } remove_modifier = modifier_yettishar_liberation_war_bonus }
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:CHI }
+			c:CHI = {
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:RUS }
+			c:RUS = {
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:GBR }
+			c:GBR = {
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:TUR }
+			c:TUR = {
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+	}
+	# Fail only on real war loss, or Yakub death AFTER he was present for this JE.
+	# Do NOT fail the same day JE is added (no blanket "Yakub missing" at start).
+	fail = {
+		OR = {
+			custom_tooltip = {
+				text = kashgar_war_lost_tt
+				has_variable = kashgar_war_lost
+			}
+			custom_tooltip = {
+				text = yakub_beg_died_tt
+				AND = {
+					has_variable = kashgar_yakub_present
+					NOT = {
+						ruler = {
+							has_template = YTS_yakub_beg
+						}
+					}
+					NOT = {
+						any_character = {
+							has_template = YTS_yakub_beg
+						}
+					}
+				}
+			}
+		}
+	}
+	on_fail = {
+		set_variable = kashgar_rebellion_finished
+		remove_variable = kashgar_rebellion_unlocked
+		remove_variable = kashgar_yakub_present
+		if = { limit = { exists = c:YTS } c:YTS = { set_variable = kashgar_rebellion_finished } }
+		if = { limit = { exists = c:XIN } c:XIN = { set_variable = kashgar_rebellion_finished } }
+		if = { limit = { exists = c:KOK } c:KOK = { set_variable = kashgar_rebellion_finished } }
+		if = {
+			limit = { has_modifier = modifier_yettishar_liberation_war_bonus }
+			remove_modifier = modifier_yettishar_liberation_war_bonus
+		}
+		remove_variable = kashgar_crisis_triggered
+		remove_variable = kashgar_chi_temp_rel_drop
+		remove_variable = kashgar_kok_temp_rel_drop
+		remove_variable = kashgar_has_russian_support
+		remove_variable = kashgar_has_british_support
+		remove_variable = kashgar_has_ottoman_support
+		remove_variable = kashgar_russian_neutral
+		remove_variable = kashgar_support_ottoman_asked
+		remove_variable = kashgar_support_british_asked
+		remove_variable = kashgar_support_russian_asked
+		remove_variable = kashgar_ottoman_refused
+		remove_variable = kashgar_british_refused
+		remove_variable = kashgar_russian_refused
+		remove_variable = kashgar_ottoman_modifier_granted
+		remove_variable = kashgar_liberation_play_started
+		remove_variable = is_yts_liberation_play
+		remove_variable = kashgar_temp_relations_locked
+		remove_variable = kashgar_war_won
+		remove_variable = kashgar_crisis_won
+		remove_variable = kashgar_war_lost
+		if = {
+			limit = { exists = c:YTS }
+			c:YTS = {
+				if = { limit = { has_modifier = modifier_yettishar_liberation_war_bonus } remove_modifier = modifier_yettishar_liberation_war_bonus }
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:XIN }
+			c:XIN = {
+				if = { limit = { has_modifier = modifier_yettishar_liberation_war_bonus } remove_modifier = modifier_yettishar_liberation_war_bonus }
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:KOK }
+			c:KOK = {
+				if = { limit = { has_modifier = modifier_yettishar_liberation_war_bonus } remove_modifier = modifier_yettishar_liberation_war_bonus }
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:CHI }
+			c:CHI = {
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:RUS }
+			c:RUS = {
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:GBR }
+			c:GBR = {
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+		if = {
+			limit = { exists = c:TUR }
+			c:TUR = {
+				remove_variable = kashgar_crisis_triggered
+				remove_variable = kashgar_chi_temp_rel_drop
+				remove_variable = kashgar_kok_temp_rel_drop
+				remove_variable = kashgar_has_russian_support
+				remove_variable = kashgar_has_british_support
+				remove_variable = kashgar_has_ottoman_support
+				remove_variable = kashgar_russian_neutral
+				remove_variable = kashgar_support_ottoman_asked
+				remove_variable = kashgar_support_british_asked
+				remove_variable = kashgar_support_russian_asked
+				remove_variable = kashgar_ottoman_refused
+				remove_variable = kashgar_british_refused
+				remove_variable = kashgar_russian_refused
+				remove_variable = kashgar_ottoman_modifier_granted
+				remove_variable = kashgar_liberation_play_started
+				remove_variable = is_yts_liberation_play
+				remove_variable = kashgar_temp_relations_locked
+				remove_variable = kashgar_war_won
+				remove_variable = kashgar_crisis_won
+				remove_variable = kashgar_war_lost
+			}
+		}
+	}
+	weight = 5000
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_YETTISHAR_MODERNIZATION ---
+je_yettishar_modernization = {
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	group = je_group_yettishar
+	is_shown_in_lobby = {
+		c:YTS ?= THIS
+	}
+	is_shown_when_inactive = {
+		c:YTS ?= THIS
+		has_variable = yettishar_modernization_started
+		NOT = { has_variable = yts_modernization_je_completed }
+	}
+	possible = {
+		c:YTS ?= THIS
+		custom_tooltip = {
+			text = yettishar_modernization_started_tt
+			has_variable = yettishar_modernization_started
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = yts_modernization_je_completed
+			}
+		}
+	}
+	modifiers_while_active = {
+		modifier_yettishar_modernization_active
+	}
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_yettishar_modernization_status
+				trigger = {
+					always = yes
+				}
+			}
+		}
+	}
+	scripted_progress_bar = yettishar_central_administration_bar
+	scripted_button = btn_yettishar_invite_kamil_harezmi
+	scripted_button = btn_yettishar_promote_ahmad_danish
+	scripted_button = btn_yettishar_military_reform_start
+	scripted_button = btn_yettishar_central_administration
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_variable = yts_central_administration_started }
+				NOT = { has_variable = yts_central_administration_completed }
+			}
+			set_variable = yts_central_administration_started
+		}
+	}
+	on_monthly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					NOT = {
+						has_variable = yts_civil_task_1_done
+					}
+					has_institution = institution_home_affairs
+					institution_investment_level = {
+						institution = institution_home_affairs
+						value >= 2
+					}
+				}
+				set_variable = yts_civil_task_1_done
+				add_modifier = {
+					name = modifier_yettishar_home_affairs_bonus
+					months = 60
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_variable = yts_civil_task_2_done
+					}
+					has_institution = institution_police
+					institution_investment_level = {
+						institution = institution_police
+						value >= 2
+					}
+				}
+				set_variable = yts_civil_task_2_done
+				add_modifier = {
+					name = modifier_yettishar_police_bonus
+					months = 60
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_variable = yts_civil_task_3_done
+					}
+					NOT = {
+						has_law = law_type:law_traditionalism
+					}
+				}
+				set_variable = yts_civil_task_3_done
+				add_modifier = {
+					name = modifier_yettishar_economic_reform_bonus
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_variable = yts_civil_task_4_done
+					}
+					and = {
+						country_has_building_type_levels = {
+							target = bt:building_government_administration
+							value >= 8
+						}
+						country_has_building_type_levels = {
+							target = bt:building_paper_mill
+							value >= 2
+						}
+					}
+				}
+				set_variable = yts_civil_task_4_done
+				add_modifier = {
+					name = modifier_yettishar_admin_building_bonus
+					months = 60
+				}
+			}
+		}
+	}
+	complete = {
+		has_institution = institution_home_affairs
+		institution_investment_level = {
+			institution = institution_home_affairs
+			value >= 2
+		}
+		has_institution = institution_police
+		institution_investment_level = {
+			institution = institution_police
+			value >= 2
+		}
+		custom_tooltip = {
+			text = yettishar_modernization_no_traditionalism_tt
+			NOT = {
+				has_law = law_type:law_traditionalism
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_modernization_admin_buildings_tt
+			country_has_building_type_levels = {
+				target = bt:building_government_administration
+				value >= 8
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_modernization_paper_mills_tt
+			country_has_building_type_levels = {
+				target = bt:building_paper_mill
+				value >= 2
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_civil_reform_complete_tt
+			has_variable = yts_military_reform_je_completed
+		}
+		custom_tooltip = {
+			text = yts_central_administration_completed_tt
+			has_variable = yts_central_administration_completed
+		}
+	}
+	on_complete = {
+		set_variable = yts_modernization_je_completed
+		if = {
+			limit = {
+				has_modifier = modifier_yettishar_economic_reform_bonus
+			}
+			remove_modifier = modifier_yettishar_economic_reform_bonus
+		}
+		add_modifier = {
+			name = modifier_yettishar_modernization_completed
+			months = 180
+		}
+		add_loyalists = {
+			value = 0.1
+		}
+	}
+	weight = 4300
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_YETTISHAR_MILITARY_REFORM ---
+je_yettishar_military_reform = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	group = je_group_yettishar
+	is_shown_in_lobby = {
+		c:YTS ?= THIS
+		hidden_trigger = {
+			has_variable = yts_military_reform_je_opened
+		}
+	}
+	is_shown_when_inactive = {
+		c:YTS ?= THIS
+		hidden_trigger = {
+			has_variable = yts_military_reform_je_opened
+		}
+	}
+	possible = {
+		c:YTS ?= THIS
+		custom_tooltip = {
+			text = yettishar_military_reform_opened_tt
+			has_variable = yts_military_reform_je_opened
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = yts_military_reform_je_completed
+			}
+		}
+	}
+	modifiers_while_active = {
+		modifier_yettishar_military_reform_active
+	}
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_yettishar_military_reform_status
+				trigger = {
+					always = yes
+				}
+			}
+		}
+	}
+	scripted_button = btn_yettishar_ottoman_military_mission
+	scripted_button = btn_yettishar_war_college
+	scripted_button = btn_yettishar_london_mission
+	scripted_button = btn_yettishar_regular_battalions
+	on_monthly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					NOT = {
+						has_variable = yts_mil_task_1_done
+					}
+					OR = {
+						and = {
+							NOT = {
+								any_scope_building = {
+									is_building_type = building_barrack
+									has_active_production_method = pm_no_organization
+								}
+							}
+							NOT = {
+								any_military_formation = {
+									filter = {
+										is_army = yes
+									}
+									any_combat_unit = {
+										OR = {
+											has_unit_type = unit_type:combat_unit_type_irregular_infantry
+											has_unit_type = unit_type:combat_unit_type_hussars
+										}
+									}
+									percent >= 0.2
+								}
+							}
+						}
+						has_variable = yts_mil_task_1_done
+					}
+				}
+				set_variable = yts_mil_task_1_done
+				add_modifier = {
+					name = modifier_yettishar_barracks_bonus
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_variable = yts_mil_task_2_done
+					}
+					OR = {
+						and = {
+							country_has_building_type_levels = {
+								target = bt:building_arms_industry
+								value >= 2
+							}
+							country_has_building_type_levels = {
+								target = bt:building_artillery_foundry
+								value >= 1
+							}
+						}
+						has_variable = yts_mil_task_2_done
+					}
+				}
+				set_variable = yts_mil_task_2_done
+				add_modifier = {
+					name = modifier_yettishar_arms_bonus
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_variable = yts_mil_task_3_done
+					}
+					OR = {
+						NOT = {
+							has_law = law_type:law_peasant_levies
+						}
+						has_variable = yts_mil_task_3_done
+					}
+				}
+				set_variable = yts_mil_task_3_done
+				add_modifier = {
+					name = modifier_yettishar_professional_army_bonus
+				}
+			}
+		}
+	}
+	complete = {
+		any_scope_building = {
+			filter = {
+				is_building_type = building_barrack
+			}
+			NOT = {
+				has_active_production_method = pm_no_organization
+			}
+			percent = 1
+		}
+		NOT = {
+			any_military_formation = {
+				filter = {
+					is_army = yes
+				}
+				any_combat_unit = {
+					OR = {
+						has_unit_type = unit_type:combat_unit_type_irregular_infantry
+						has_unit_type = unit_type:combat_unit_type_hussars
+					}
+				}
+				percent >= 0.2
+			}
+		}
+		country_has_building_type_levels = {
+			target = bt:building_arms_industry
+			value >= 2
+		}
+		country_has_building_type_levels = {
+			target = bt:building_artillery_foundry
+			value >= 1
+		}
+		NOT = {
+			has_law = law_type:law_peasant_levies
+		}
+		custom_tooltip = {
+			text = yts_ottoman_military_mission_required_tt
+			has_variable = yts_ottoman_military_mission_done
+		}
+		custom_tooltip = {
+			text = yts_war_college_required_tt
+			has_variable = yts_war_college_founded
+		}
+	}
+	on_complete = {
+		set_variable = yts_military_reform_je_completed
+		if = {
+			limit = {
+				has_modifier = modifier_yettishar_barracks_bonus
+			}
+			remove_modifier = modifier_yettishar_barracks_bonus
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_yettishar_arms_bonus
+			}
+			remove_modifier = modifier_yettishar_arms_bonus
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_yettishar_professional_army_bonus
+			}
+			remove_modifier = modifier_yettishar_professional_army_bonus
+		}
+		add_modifier = {
+			name = modifier_yettishar_military_reform_completed
+			months = 180
+		}
+		add_loyalists = {
+			value = 0.05
+		}
+	}
+	weight = 4250
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_YETTISHAR_FOREIGN_RELATIONS ---
+je_yettishar_foreign_relations = {
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	group = je_group_hokand
+	is_shown_in_lobby = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_foreign_started_tt
+			has_variable = yettishar_foreign_relations_started
+		}
+	}
+	is_shown_when_inactive = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_foreign_started_tt
+			has_variable = yettishar_foreign_relations_started
+		}
+	}
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_foreign_started_tt
+			has_variable = yettishar_foreign_relations_started
+		}
+	}
+	scripted_progress_bar = yettishar_diplomacy_bar
+	scripted_button = btn_foreign_ottoman_pact
+	scripted_button = btn_foreign_british_pact
+	scripted_button = btn_foreign_russian_pact
+	complete = {
+		custom_tooltip = {
+			text = yettishar_diplomacy_bar_100_tt
+			scope:journal_entry = {
+				"scripted_bar_progress(yettishar_diplomacy_bar)" >= 100
+			}
+		}
+	}
+	on_complete = {
+		add_modifier = {
+			name = modifier_yettishar_diplomacy_completed
+		}
+	}
+	weight = 4000
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_YETTISHAR_YAKUB_BEG_RULE ---
+je_yettishar_yakub_beg_rule = {
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	group = je_group_yettishar
+	is_shown_in_lobby = {
+		is_yts_or_trh = yes
+	}
+	is_shown_when_inactive = {
+		is_yts_or_trh = yes
+	}
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yakub_beg_is_ruler_tt
+			OR = {
+				ruler = {
+					has_template = YTS_yakub_beg
+				}
+				has_variable = yakub_beg_ruled
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_yakub_beg_not_died_tt
+			NOT = {
+				has_variable = yettishar_yakub_beg_died
+			}
+		}
+	}
+	immediate = {
+		set_variable = yakub_beg_ruled
+		ruler ?= {
+			if = {
+				limit = {
+					has_template = YTS_yakub_beg
+					is_immortal = no
+				}
+				set_character_immortal = yes
+			}
+		}
+	}
+	modifiers_while_active = {
+		modifier_yettishar_yakub_beg_rule
+	}
+	scripted_button = btn_yettishar_modernization
+	scripted_button = btn_yettishar_turkestan_istikbal
+	scripted_button = btn_yettishar_turkestan_hakimiyet
+	scripted_button = btn_yettishar_send_heir_to_porte
+	complete = {
+		custom_tooltip = {
+			text = yakub_beg_died_tt
+			NOT = {
+				ruler = {
+					has_template = YTS_yakub_beg
+				}
+			}
+		}
+	}
+	on_complete = {
+		set_variable = yettishar_yakub_beg_died
+	}
+	weight = 5000
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_YETTISHAR_TURKESTAN_ISTIKBAL ---
+je_yettishar_turkestan_istikbal = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	group = je_group_hokand
+	is_shown_in_lobby = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_istikbal_started_tt
+			has_variable = yettishar_istikbal_started
+		}
+	}
+	is_shown_when_inactive = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_istikbal_started_tt
+			has_variable = yettishar_istikbal_started
+		}
+	}
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_istikbal_started_tt
+			has_variable = yettishar_istikbal_started
+		}
+		custom_tooltip = {
+			text = turkestan_istikbal_not_completed_tt
+			NOT = {
+				has_variable = turkestan_istikbal_completed
+			}
+		}
+	}
+	scripted_button = btn_istikbal_uyghur_path
+	scripted_button = btn_istikbal_open_turkmenistan
+	complete = {
+		custom_tooltip = {
+			text = yettishar_istikbal_complete_tt
+			has_variable = istikbal_uyghur_path_done
+		}
+		custom_tooltip = {
+			text = yettishar_istikbal_turkmen_complete_tt
+			has_variable = yettishar_turkmenistan_completed
+		}
+	}
+	on_complete = {
+		hidden_effect = {
+			set_variable = turkestan_istikbal_completed
+		}
+		add_technology_progress = {
+			progress = 75000
+			technology = pan-nationalism
+		}
+		add_modifier = {
+			name = modifier_yettishar_istikbal_completed
+			months = 60
+		}
+		# Mongol / Inner Asia claims (unlocks Mongol PU decision via turkestan_istikbal_completed)
+		s:STATE_ALTAI = { add_claim = root }
+		s:STATE_TUVA = { add_claim = root }
+		s:STATE_ULIASTAI = { add_claim = root }
+		s:STATE_URGA = { add_claim = root }
+		s:STATE_HINGGAN = { add_claim = root }
+		s:STATE_ALXA = { add_claim = root }
+		s:STATE_GANSU = { add_claim = root }
+		s:STATE_QINGHAI = { add_claim = root }
+		s:STATE_XIAN = { add_claim = root }
+	}
+	weight = 4500
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_YETTISHAR_TURKESTAN_HAKIMIYET ---
+je_yettishar_turkestan_hakimiyet = {
+	icon = "gfx/interface/icons/event_icons/event_flag.dds"
+	group = je_group_hokand
+	is_shown_in_lobby = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_hakimiyet_started_tt
+			has_variable = yettishar_hakimiyet_started
+		}
+	}
+	is_shown_when_inactive = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_hakimiyet_started_tt
+			has_variable = yettishar_hakimiyet_started
+		}
+	}
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_hakimiyet_started_tt
+			has_variable = yettishar_hakimiyet_started
+		}
+		custom_tooltip = {
+			text = turkestan_istikbal_completed_tt
+			has_variable = turkestan_istikbal_completed
+		}
+	}
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_variable = yettishar_tradition_turkic_stripped }
+			}
+			cu:uzbek = { remove_tradition_trait = tradition_turkic }
+			cu:kazak = { remove_tradition_trait = tradition_turkic }
+			cu:kirgiz = { remove_tradition_trait = tradition_turkic }
+			cu:uighur = { remove_tradition_trait = tradition_turkic }
+			cu:turkmen = { remove_tradition_trait = tradition_turkic }
+			cu:hazara = { remove_tradition_trait = tradition_turkic }
+			cu:tuvan = { remove_tradition_trait = tradition_turkic }
+			cu:tatar = { remove_tradition_trait = tradition_turkic }
+			cu:chuvash = { remove_tradition_trait = tradition_turkic }
+			cu:yakut = { remove_tradition_trait = tradition_turkic }
+			cu:bashkir = { remove_tradition_trait = tradition_turkic }
+			set_variable = yettishar_tradition_turkic_stripped
+		}
+	}
+	scripted_button = btn_hakimiyet_kazakh_path
+	scripted_button = btn_hegemony_cultural_unity
+	scripted_button = btn_hakimiyet_proclaim_turkestan
+	scripted_button = btn_hakimiyet_centralize
+	complete = {
+		custom_tooltip = {
+			text = yettishar_kazakh_completed_tt
+			has_variable = yettishar_kazakh_completed
+		}
+		custom_tooltip = {
+			text = yettishar_cultural_unity_completed_tt
+			has_variable = yettishar_cultural_unity_completed
+		}
+		custom_tooltip = {
+			text = yettishar_hakimiyet_proclaim_complete_tt
+			has_variable = yettishar_turkestan_proclaimed
+		}
+		custom_tooltip = {
+			text = yettishar_centralize_completed_tt
+			has_variable = yettishar_centralize_completed
+		}
+	}
+	on_complete = {
+		set_variable = turkestan_hegemony_completed
+		add_modifier = {
+			name = modifier_yettishar_turkestan_hegemony
+		}
+		s:STATE_SAMARA = { add_claim = root }
+		s:STATE_KAZAN = { add_claim = root }
+		s:STATE_UFA = { add_claim = root }
+		s:STATE_CHELYABINSK = { add_claim = root }
+		s:STATE_CHUVASHIA = { add_claim = root }
+	}
+	weight = 4200
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_YETTISHAR_TURKMENISTAN ---
+je_yettishar_turkmenistan = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	group = je_group_hokand
+	is_shown_in_lobby = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_turkmenistan_started_tt
+			has_variable = yettishar_turkmenistan_started
+		}
+	}
+	is_shown_when_inactive = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_turkmenistan_started_tt
+			has_variable = yettishar_turkmenistan_started
+		}
+	}
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_turkmenistan_started_tt
+			has_variable = yettishar_turkmenistan_started
+		}
+		custom_tooltip = {
+			text = yettishar_turkmenistan_not_completed_tt
+			NOT = {
+				has_variable = yettishar_turkmenistan_completed
+			}
+		}
+	}
+	immediate = {
+		s:STATE_KHIVA = {
+			add_claim = root
+		}
+		s:STATE_TURKMENIA = {
+			add_claim = root
+		}
+		# No Uralsk claim on start — only granted later via the colonization war goal.
+		# Merv hub lives in STATE_MERZ
+		s:STATE_MERZ = {
+			add_claim = root
+		}
+	}
+	scripted_progress_bar = yettishar_turkmen_meselesi_bar
+	scripted_button = btn_turkmen_persuade_people
+	scripted_button = btn_turkmen_nomad_crisis
+	scripted_button = btn_turkmen_colonization_war
+	scripted_button = btn_turkmen_ban_alaman
+	on_monthly_pulse = {
+		# War won is set only by colonization WG enforce / demand accepted — not by ownership.
+		random_events = {
+			70 = 0
+			5 = turkmen_issue_events.10
+			5 = turkmen_issue_events.11
+			5 = turkmen_issue_events.12
+			5 = turkmen_issue_events.13
+			5 = turkmen_issue_events.14
+			5 = turkmen_issue_events.16
+		}
+	}
+	complete = {
+		custom_tooltip = {
+			text = yettishar_turkmen_bar_200_tt
+			scope:journal_entry = {
+				"scripted_bar_progress(yettishar_turkmen_meselesi_bar)" >= 200
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_turkmen_war_won_tt
+			has_variable = yettishar_turkmen_colonization_war_won
+		}
+	}
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_variable = yettishar_turkmen_colonization_war_won
+					scope:journal_entry = {
+						"scripted_bar_progress(yettishar_turkmen_meselesi_bar)" >= 200
+					}
+				}
+				desc = je_yettishar_turkmenistan_status_ready
+			}
+			triggered_desc = {
+				trigger = {
+					has_variable = yettishar_turkmen_colonization_war_won
+				}
+				desc = je_yettishar_turkmenistan_status_war_done
+			}
+			triggered_desc = {
+				trigger = {
+					scope:journal_entry = {
+						"scripted_bar_progress(yettishar_turkmen_meselesi_bar)" >= 200
+					}
+				}
+				desc = je_yettishar_turkmenistan_status_bar_done
+			}
+			triggered_desc = {
+				trigger = {
+					has_variable = yettishar_turkmen_colonization_play_active
+				}
+				desc = je_yettishar_turkmenistan_status_war_pending
+			}
+			triggered_desc = {
+				trigger = {
+					scope:journal_entry = {
+						"scripted_bar_progress(yettishar_turkmen_meselesi_bar)" >= 150
+					}
+				}
+				desc = je_yettishar_turkmenistan_status_near
+			}
+			triggered_desc = {
+				trigger = {
+					scope:journal_entry = {
+						"scripted_bar_progress(yettishar_turkmen_meselesi_bar)" >= 50
+					}
+				}
+				desc = je_yettishar_turkmenistan_status_mid
+			}
+			desc = je_yettishar_turkmenistan_status
+		}
+	}
+	on_complete = {
+		s:STATE_KHORASAN = { add_claim = root }
+		s:STATE_MAZANDARAN = { add_claim = root }
+		s:STATE_SEMNAN = { add_claim = root }
+		s:STATE_BALKH = { add_claim = root }
+		s:STATE_CENTRAL_HIGHLANDS = { add_claim = root }
+		s:STATE_HERAT = { add_claim = root }
+		# Unified provinces under PU Turkmenistan (hide raw set_state_owner tooltip spam)
+		custom_tooltip = yettishar_turkmen_unified_provinces_tt
+		add_modifier = {
+			name = modifier_turkmen_issue_completed
+			months = 60
+		}
+		hidden_effect = {
+			# 1) Absorb remaining TRM so player holds TRC seed lands
+			if = {
+				limit = { exists = c:TRM }
+				annex = c:TRM
+			}
+			# 2) Create TRC from a seed state (Uralsk / Turkmenia / Merv=MERZ)
+			#    Never seed from player capital.
+			if = {
+				limit = { NOT = { exists = c:TRC } }
+				random_scope_state = {
+					limit = {
+						state_region = s:STATE_TURKMENIA
+						NOT = { is_capital = yes }
+					}
+					save_scope_as = trc_seed_state
+				}
+				if = {
+					limit = { NOT = { exists = scope:trc_seed_state } }
+					random_scope_state = {
+						limit = {
+							state_region = s:STATE_MERZ
+							NOT = { is_capital = yes }
+						}
+						save_scope_as = trc_seed_state
+					}
+				}
+				if = {
+					limit = { NOT = { exists = scope:trc_seed_state } }
+					random_scope_state = {
+						limit = {
+							state_region = s:STATE_URALSK
+							NOT = { is_capital = yes }
+						}
+						save_scope_as = trc_seed_state
+					}
+				}
+				if = {
+					limit = { exists = scope:trc_seed_state }
+					create_country = {
+						tag = TRC
+						origin = root
+						state = scope:trc_seed_state
+					}
+				}
+			}
+			# 3) Region-scoped transfer + engine auto-unify of split shares under TRC
+			#    (chris transfer_state pattern). KHIVA stays with the player.
+			#    Never transfers player capital.
+			yettishar_trc_transfer_and_unify = {
+				GIVER = root
+			}
+			# 3a) Also pull leftover shares from player subjects (not TRC itself)
+			if = {
+				limit = { exists = c:TRC }
+				every_subject_or_below = {
+					limit = { NOT = { this = c:TRC } }
+					yettishar_trc_transfer_and_unify = {
+						GIVER = this
+					}
+				}
+			}
+			# 3b) Capital MUST be Turkmenistan, never the Merv/Uralsk shares.
+			#     STATE_MERZ and STATE_URALSK stay as separate regions under TRC —
+			#     they are never merged into one state (vanilla set_capital pattern,
+			#     see game/common/journal_entries/00_meiji_restoration.txt).
+			if = {
+				limit = {
+					exists = c:TRC
+					c:TRC = {
+						any_scope_state = {
+							state_region = s:STATE_TURKMENIA
+						}
+					}
+				}
+				c:TRC = {
+					set_capital = STATE_TURKMENIA
+				}
+			}
+			# 4) Personal union under player (YTS/TRH)
+			if = {
+				limit = { exists = c:TRC }
+				if = {
+					limit = {
+						c:TRC = { is_subject_of = root }
+					}
+					c:TRC = {
+						change_subject_type = subject_type_personal_union
+					}
+				}
+				else = {
+					create_diplomatic_pact = {
+						country = c:TRC
+						type = personal_union
+					}
+				}
+			}
+			set_variable = yettishar_turkmenistan_completed
+		}
+	}
+	weight = 4000
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_GREATER_TURKESTAN ---
+je_greater_turkestan = {
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	group = je_group_hokand
+	is_shown_in_lobby = {
+		is_trh_only = yes
+		custom_tooltip = {
+			text = greater_turkestan_not_completed_tt
+			NOT = {
+				has_variable = greater_turkestan_completed
+			}
+		}
+	}
+	is_shown_when_inactive = {
+		is_trh_only = yes
+		custom_tooltip = {
+			text = greater_turkestan_not_completed_tt
+			NOT = {
+				has_variable = greater_turkestan_completed
+			}
+		}
+	}
+	possible = {
+		is_trh_only = yes
+		has_state_in_state_region = STATE_AKTOBE
+		has_state_in_state_region = STATE_AKMOLINSK
+		has_state_in_state_region = STATE_SYRDARYA
+		custom_tooltip = {
+			text = greater_turkestan_not_completed_tt
+			NOT = {
+				has_variable = greater_turkestan_completed
+			}
+		}
+	}
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_variable = greater_turkestan_opened }
+			}
+			s:STATE_TARTARIA = { add_claim = root }
+			s:STATE_URAL = { add_claim = root }
+			s:STATE_ASTRAKHAN = { add_claim = root }
+			s:STATE_CHUVASHIA = { add_claim = root }
+			cu:turkish = { add_tradition_trait = tradition_turkic }
+			cu:azerbaijani = { add_tradition_trait = tradition_turkic }
+			set_variable = greater_turkestan_opened
+		}
+	}
+	scripted_button = btn_gt_break_russosphere
+	scripted_button = btn_gt_expel_russians
+	scripted_button = btn_gt_idel_ural_primary
+	complete = {
+		is_trh_only = yes
+		has_state_in_state_region = STATE_SAMARA
+		has_state_in_state_region = STATE_KAZAN
+		has_state_in_state_region = STATE_UFA
+		has_state_in_state_region = STATE_CHELYABINSK
+		has_state_in_state_region = STATE_TARTARIA
+		has_state_in_state_region = STATE_URAL
+		has_state_in_state_region = STATE_TOMSK
+		has_state_in_state_region = STATE_TOBOLSK
+		has_state_in_state_region = STATE_ASTRAKHAN
+		has_state_in_state_region = STATE_CHUVASHIA
+		custom_tooltip = {
+			text = yettishar_gt_russosphere_broken_tt
+			has_variable = yettishar_gt_russosphere_broken
+		}
+		custom_tooltip = {
+			text = yettishar_gt_russians_expelled_or_na_tt
+			OR = {
+				has_variable = yettishar_gt_russians_expelled
+				NOT = { exists = c:RUS }
+				NOT = {
+					any_scope_state = {
+						any_scope_pop = {
+							culture = cu:russian
+						}
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_gt_idel_ural_done_tt
+			has_variable = yettishar_gt_idel_ural_primary
+		}
+	}
+	on_complete = {
+		set_variable = greater_turkestan_completed
+		custom_tooltip = yettishar_gt_homeland_swap_tt
+		if = {
+			limit = { has_state_in_state_region = STATE_KAZAN }
+			s:STATE_KAZAN = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_SAMARA }
+			s:STATE_SAMARA = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_UFA }
+			s:STATE_UFA = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_ASTRAKHAN }
+			s:STATE_ASTRAKHAN = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_CHUVASHIA }
+			s:STATE_CHUVASHIA = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_CHELYABINSK }
+			s:STATE_CHELYABINSK = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_URAL }
+			s:STATE_URAL = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_TOBOLSK }
+			s:STATE_TOBOLSK = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_TOMSK }
+			s:STATE_TOMSK = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_KRASNOYARSK }
+			s:STATE_KRASNOYARSK = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		if = {
+			limit = { has_state_in_state_region = STATE_TARTARIA }
+			s:STATE_TARTARIA = {
+				remove_homeland = cu:russian
+				add_homeland = cu:tatar
+			}
+		}
+		s:STATE_SURGUT = { add_claim = root }
+		s:STATE_OB = { add_claim = root }
+		s:STATE_UPPER_YENISEYSK = { add_claim = root }
+		s:STATE_YAKUTSK = { add_claim = root }
+		s:STATE_KOLYMA = { add_claim = root }
+		s:STATE_STAVROPOL = { add_claim = root }
+		s:STATE_KUBAN = { add_claim = root }
+		s:STATE_ROSTOV = { add_claim = root }
+		s:STATE_TAURIDA = { add_claim = root }
+		s:STATE_CRIMEA = { add_claim = root }
+		if = {
+			limit = { has_modifier = modifier_yettishar_turkestan_hegemony }
+			remove_modifier = modifier_yettishar_turkestan_hegemony
+		}
+		add_modifier = {
+			name = modifier_greater_turkestan
+		}
+		if = {
+			limit = { NOT = { is_country_type = recognized } }
+			set_country_type = recognized
+		}
+	}
+	weight = 4100
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_YETTISHAR_KAZAKH ---
+je_yettishar_kazakh = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	group = je_group_hokand
+	is_shown_in_lobby = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_kazakh_started_tt
+			has_variable = yettishar_kazakh_started
+		}
+	}
+	is_shown_when_inactive = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_kazakh_started_tt
+			has_variable = yettishar_kazakh_started
+		}
+	}
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_kazakh_started_tt
+			has_variable = yettishar_kazakh_started
+		}
+		custom_tooltip = {
+			text = yettishar_kazakh_not_completed_tt
+			NOT = { has_variable = yettishar_kazakh_completed }
+		}
+	}
+	immediate = {
+		s:STATE_AKTOBE = { add_claim = root }
+		s:STATE_AKMOLINSK = { add_claim = root }
+		s:STATE_SEMIRECHE = { add_claim = root }
+		s:STATE_SYRDARYA = { add_claim = root }
+		s:STATE_URALSK = { add_claim = root }
+	}
+	scripted_progress_bar = yettishar_kazakh_bar
+	scripted_button = btn_kazakh_negotiate_zhuz
+	scripted_button = btn_kazakh_consolidate_influence
+	scripted_button = btn_kazakh_invite_sadyk
+	scripted_button = btn_kazakh_raise_cavalry
+	complete = {
+		custom_tooltip = {
+			text = yettishar_kazakh_bar_200_tt
+			scope:journal_entry = {
+				"scripted_bar_progress(yettishar_kazakh_bar)" >= 200
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_sadyk_recruited_tt
+			has_variable = yettishar_sadyk_recruited
+		}
+		custom_tooltip = {
+			text = yettishar_kazakh_army_raised_tt
+			has_variable = yettishar_kazakh_army_raised
+		}
+	}
+	on_complete = {
+		if = {
+			limit = { NOT = { country_has_primary_culture = cu:kazak } }
+			add_primary_culture = cu:kazak
+		}
+		set_variable = yettishar_kazakh_completed
+	}
+	weight = 4150
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_YETTISHAR_CENTRALIZE ---
+je_yettishar_centralize = {
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	group = je_group_hokand
+	is_shown_in_lobby = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_centralize_started_tt
+			has_variable = yettishar_centralize_started
+		}
+	}
+	is_shown_when_inactive = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_centralize_started_tt
+			has_variable = yettishar_centralize_started
+		}
+	}
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_centralize_started_tt
+			has_variable = yettishar_centralize_started
+		}
+		custom_tooltip = {
+			text = yettishar_turkestan_proclaimed_tt
+			has_variable = yettishar_turkestan_proclaimed
+		}
+		custom_tooltip = {
+			text = yettishar_centralize_not_completed_tt
+			NOT = { has_variable = yettishar_centralize_completed }
+		}
+	}
+	complete = {
+		has_institution = institution_home_affairs
+		institution_investment_level = {
+			institution = institution_home_affairs
+			value >= 3
+		}
+		NOT = { has_law = law_type:law_serfdom }
+		NOT = { has_law = law_type:law_traditionalism }
+		NOT = { has_law = law_type:law_industry_banned }
+		any_scope_building = {
+			is_building_type = building_urban_center
+			OR = {
+				has_active_production_method = pm_covered_markets
+				has_active_production_method = pm_arcades
+			}
+		}
+		country_has_building_type_levels = {
+			target = bt:building_railway
+			value >= 8
+		}
+	}
+	on_complete = {
+		set_variable = yettishar_centralize_completed
+	}
+	weight = 4120
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}
+
+# --- JE_MONGOL_STEPPE_UNITY ---
+je_mongol_steppe_unity = {
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	group = je_group_hokand
+	is_shown_in_lobby = {
+		always = no
+	}
+	is_shown_when_inactive = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_mongol_decision_taken_tt
+			has_variable = yettishar_mongol_decision_taken
+		}
+		custom_tooltip = {
+			text = yettishar_mongol_not_annexed_tt
+			NOT = { has_variable = yettishar_mongol_annexed }
+		}
+	}
+	possible = {
+		is_yts_or_trh = yes
+		custom_tooltip = {
+			text = yettishar_mongol_decision_taken_tt
+			has_variable = yettishar_mongol_decision_taken
+		}
+		custom_tooltip = {
+			text = yettishar_mongol_not_annexed_tt
+			NOT = { has_variable = yettishar_mongol_annexed }
+		}
+	}
+	immediate = {
+		if = {
+			limit = {
+				exists = c:MGL
+				NOT = { has_variable = yettishar_mongol_baikal_transferred }
+			}
+			s:STATE_BURYATIA = {
+				every_scope_state = {
+					limit = { owner = root }
+					set_state_owner = c:MGL
+				}
+			}
+			s:STATE_IRKUTSK = {
+				every_scope_state = {
+					limit = { owner = root }
+					set_state_owner = c:MGL
+				}
+			}
+			s:STATE_TRANS_BAIKAL = {
+				every_scope_state = {
+					limit = { owner = root }
+					set_state_owner = c:MGL
+				}
+			}
+			set_variable = yettishar_mongol_baikal_transferred
+		}
+	}
+	scripted_button = btn_mongol_spread_steppe_tradition
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_mongol_steppe_unity_status
+				trigger = { always = yes }
+			}
+		}
+	}
+	complete = {
+		custom_tooltip = {
+			text = yettishar_mongol_has_pan_nationalism_tt
+			has_technology_researched = pan-nationalism
+		}
+		custom_tooltip = {
+			text = yettishar_mongol_holds_buryatia_tt
+			OR = {
+				has_state_in_state_region = STATE_BURYATIA
+				any_subject_or_below = { has_state_in_state_region = STATE_BURYATIA }
+				AND = {
+					exists = c:MGL
+					c:MGL = { has_state_in_state_region = STATE_BURYATIA }
+				}
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_mongol_holds_irkutsk_tt
+			OR = {
+				has_state_in_state_region = STATE_IRKUTSK
+				any_subject_or_below = { has_state_in_state_region = STATE_IRKUTSK }
+				AND = {
+					exists = c:MGL
+					c:MGL = { has_state_in_state_region = STATE_IRKUTSK }
+				}
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_mongol_holds_trans_baikal_tt
+			OR = {
+				has_state_in_state_region = STATE_TRANS_BAIKAL
+				any_subject_or_below = { has_state_in_state_region = STATE_TRANS_BAIKAL }
+				AND = {
+					exists = c:MGL
+					c:MGL = { has_state_in_state_region = STATE_TRANS_BAIKAL }
+				}
+			}
+		}
+		custom_tooltip = {
+			text = yettishar_mongol_steppe_spread_tt
+			has_variable = yettishar_mongol_steppe_spread
+		}
+	}
+	fail = {
+		OR = {
+			custom_tooltip = {
+				text = yettishar_mongol_pu_lost_tt
+				OR = {
+					NOT = { exists = c:MGL }
+					AND = {
+						exists = c:MGL
+						NOT = { c:MGL ?= THIS }
+						c:MGL = {
+							OR = {
+								NOT = { is_subject_of = root }
+								NOT = { is_subject_type = subject_type_personal_union }
+							}
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				text = yettishar_mongol_is_self_tt
+				c:MGL ?= THIS
+			}
+		}
+	}
+	on_complete = {
+		if = {
+			limit = {
+				exists = c:MGL
+				NOT = { c:MGL ?= THIS }
+			}
+			annex_with_incorporation = c:MGL
+		}
+		if = {
+			limit = { has_modifier = modifier_mongol_brotherhood_25 }
+			remove_modifier = modifier_mongol_brotherhood_25
+		}
+		if = {
+			limit = { has_modifier = modifier_mongol_brotherhood_20 }
+			remove_modifier = modifier_mongol_brotherhood_20
+		}
+		add_modifier = {
+			name = modifier_mongol_brotherhood_30
+		}
+		set_variable = yettishar_mongol_annexed
+	}
+	weight = 4050
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}

@@ -1,0 +1,52 @@
+﻿KOK_muhammad_ali_ming = {
+	# Muhammad Ali Khan of Kokand
+	first_name = "Muhammad_Ali"
+	last_name = "Ming"
+	historical = yes
+	culture = primary_culture
+	ruler = yes
+	age = 28
+	interest_group = ig_landowners
+	ideology = ideology_traditionalist
+	home_region = STATE_FERGANA
+	traits = {
+		cautious
+	}
+}
+KOK_shir_ali_ming = {
+	# Shir Ali Khan
+	first_name = "Shir_Ali"
+	last_name = "Ming"
+	historical = yes
+	culture = primary_culture
+	heir = yes
+	age = 44 # older relative of Muhammad Ali
+	interest_group = ig_landowners
+	ideology = ideology_traditionalist
+	home_region = STATE_FERGANA
+	traits = {
+		meticulous
+	}
+}
+KOK_murad_beg = {
+	# Murad Beg (Alim Han'ın Oğlu) - Kukla Han
+	first_name = "Murat"
+	last_name = "Beg"
+	historical = yes
+	culture = primary_culture
+	
+	# Yaşını 1842'de 30 olacak şekilde doğum tarihiyle sabitliyoruz
+	birth_date = 1812.1.1 
+	
+	interest_group = ig_landowners 
+	ideology = ideology_traditionalist
+	home_region = STATE_FERGANA
+	
+	# Güçsüz ve kukla bir karakter olduğunu yansıtan özellikler
+	traits = {
+		compliant
+		reserved
+		political_appointee
+		inept
+	}
+}

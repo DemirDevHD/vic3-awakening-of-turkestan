@@ -1,0 +1,72 @@
+﻿# Append-only hooks (do NOT put effect= on vanilla on_action names — that overwrites).
+
+on_wargoal_enforced = {
+	on_actions = {
+		yettishar_turkmen_on_wargoal_enforced
+	}
+}
+
+on_war_end = {
+	on_actions = {
+		yettishar_turkmen_on_war_end
+	}
+}
+
+# Root = Country that enforced the wargoal
+# scope:target = country the wargoal was enforced against
+# War won is marked by the custom WG on_enforced / demand accepted.
+# This is a safety net when those fire for this colonization play context —
+# NO Harezm+Uralsk ownership gate.
+yettishar_turkmen_on_wargoal_enforced = {
+	effect = {
+		if = {
+			limit = {
+				OR = {
+					c:YTS ?= THIS
+					c:TRH ?= THIS
+				}
+				has_variable = yettishar_turkmenistan_started
+				NOT = { has_variable = yettishar_turkmen_colonization_war_won }
+				OR = {
+					has_variable = yettishar_turkmen_colonization_war_started
+					has_variable = yettishar_turkmen_colonization_play_active
+				}
+			}
+			set_variable = yettishar_turkmen_colonization_war_won
+			remove_variable = yettishar_turkmen_colonization_play_active
+			je:je_yettishar_turkmenistan ?= {
+				add_progress = {
+					name = yettishar_turkmen_meselesi_bar
+					value = 40
+				}
+			}
+		}
+	}
+}
+
+# Root = Diplomatic Play
+# scope:actor = Initiator
+# scope:target = Target
+yettishar_turkmen_on_war_end = {
+	effect = {
+		if = {
+			limit = {
+				is_diplomatic_play_type = dp_turkmen_colonization
+			}
+			scope:actor = {
+				if = {
+					limit = {
+						NOT = { has_variable = yettishar_turkmen_colonization_war_won }
+						has_variable = yettishar_turkmen_colonization_play_active
+					}
+					# Lost / white peace without enforcing goals
+					set_variable = {
+						name = cooldown_turkmen_colonization_war
+						days = 365
+					}
+					remove_variable = yettishar_turkmen_colonization_play_active
+				}
+			}
+		}
+	}
+}

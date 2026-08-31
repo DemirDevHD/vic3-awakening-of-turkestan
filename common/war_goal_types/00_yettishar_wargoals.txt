@@ -1,0 +1,54 @@
+# YTS Liberation - Ana Savaş Hedefi
+yts_liberation = {
+	icon = "gfx/interface/icons/war_goals/liberate_country.dds"
+	kind = return_state
+	settings = {
+		require_target_be_part_of_war
+		annexes_entire_state
+		can_add_for_other_country
+		validate_target_not_treaty_port
+		skip_build_list
+		validate_conflicts_war_goals_all
+	}
+	# Script/DP only: never listed in attack lens or add-war-goal UI.
+	# Created only by scripted create_diplomatic_play (dp_yts_liberation possible=always no).
+	# valid must stay yes — always=no here removes the demand after a tick.
+	possible = {
+		always = no
+	}
+	contestion_type = control_target_state
+	target_type = state
+	infamy = {
+		value = 0
+		add = {
+			desc = "INFAMY_BASE_VALUE"
+			value = 4
+		}
+	}
+	valid = {
+		always = yes
+	}
+	on_enforced = {
+		c:CHI = {
+			every_scope_state = {
+				limit = {
+					OR = {
+						state_region = s:STATE_TIANSHAN
+						state_region = s:STATE_DZUNGARIA
+						state_region = s:STATE_JETISY
+						state_region = s:STATE_KIRGHIZIA
+					}
+				}
+				set_state_owner = root
+			}
+		}
+		root = {
+			set_variable = kashgar_war_won
+			set_variable = kashgar_crisis_won
+		if = {
+			limit = { NOT = { has_variable = kashgar_victory_event_fired } }
+			trigger_event = { id = kashgar_victory_events.1 days = 1 popup = yes }
+		}
+		}
+	}
+}

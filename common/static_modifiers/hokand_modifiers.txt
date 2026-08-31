@@ -1,0 +1,249 @@
+﻿modifier_hokand_authority_crisis = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_negative.dds
+    
+    country_bureaucracy_mult = -0.25
+    country_authority_mult = -0.25
+    state_tax_capacity_mult = -0.25
+    country_legitimacy_base_add = -60
+	state_radicals_from_political_movements_mult = 0.25
+    
+	interest_group_ig_armed_forces_pol_str_mult = 1.0
+	interest_group_ig_armed_forces_pop_attraction_mult = 0.8
+}
+modifier_hokand_secure_authority = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds
+    
+    country_bureaucracy_mult = -0.15
+    country_authority_mult = -0.25
+    country_legitimacy_base_add = -30
+	state_radicals_from_political_movements_mult = 0.1
+    
+	interest_group_ig_armed_forces_pol_str_mult = 1.0
+	interest_group_ig_armed_forces_pop_attraction_mult = 1.0
+}
+
+modifier_hokand_yakub_military_influence = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds
+    
+    unit_offense_mult = 0.03
+    unit_defense_mult = 0.03
+    country_authority_mult = -0.10
+    interest_group_ig_armed_forces_pop_attraction_mult = 1.25
+}
+
+modifier_hokand_tashkent_nobility_pact = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+    
+    state_tax_capacity_mult = 0.15
+    country_bureaucracy_mult = -0.15
+    interest_group_ig_landowners_pop_attraction_mult = 0.10
+    interest_group_ig_intelligentsia_pop_attraction_mult = 1.15
+}
+
+modifier_hokand_palace_intrigue = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_mask_negative.dds
+    
+    country_authority_mult = -0.20
+    state_radicals_from_political_movements_mult = 0.15
+    country_legitimacy_base_add = -10
+}
+
+modifier_hokand_ghazi_fervor = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_positive.dds
+    
+    interest_group_ig_devout_pop_attraction_mult = 1.30
+    unit_morale_recovery_mult = 0.05
+    state_radicals_from_political_movements_mult = -0.20
+}
+
+modifier_hokand_peasant_militia_support = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds
+    
+    state_tax_capacity_mult = -0.10
+    interest_group_ig_rural_folk_pop_attraction_mult = 1.25
+    unit_morale_recovery_mult = 0.10
+}
+
+modifier_hokand_nomad_friction = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_negative.dds
+    
+    unit_morale_recovery_mult = -0.10
+    state_radicals_from_political_movements_mult = 0.15
+}
+
+modifier_hokand_trade_disruption = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+    
+    state_tax_capacity_mult = -0.15
+    country_prestige_mult = -0.10
+}
+
+modifier_hokand_irrigation_dispute = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_negative.dds
+    
+    state_tax_capacity_mult = -0.10
+    interest_group_ig_rural_folk_pop_attraction_mult = 1.15
+}
+
+modifier_hokand_russian_recon = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds
+    
+    unit_defense_mult = 0.03
+    country_bureaucracy_mult = -0.10
+}
+
+modifier_hokand_tribal_appeasement = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds
+    
+    unit_morale_recovery_mult = -0.10
+    interest_group_ig_landowners_pol_str_mult = 0.25
+    state_tax_capacity_mult = -0.10
+}
+
+modifier_hokand_stagnant_ming_rule = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_negative.dds
+    
+    country_prestige_mult = -0.30
+    country_authority_mult = -0.25
+    country_bureaucracy_mult = -0.15
+    country_tech_spread_mult = -0.15
+    country_legitimacy_base_add = -20
+}
+
+# --- YENİ EKLENEN 6 MODİFİYER (BUTONLAR VE OLAYLAR İÇİN) ---
+
+modifier_hokand_frontier_command = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds
+    
+    unit_offense_mult = 0.03
+    unit_defense_mult = 0.03
+    country_authority_mult = -0.10
+    interest_group_ig_armed_forces_pop_attraction_mult = 0.15
+}
+
+modifier_hokand_tashkent_pact = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+    
+    state_tax_capacity_mult = 0.05
+    interest_group_ig_landowners_pop_attraction_mult = 0.10
+    interest_group_ig_intelligentsia_pop_attraction_mult = 0.10
+}
+
+modifier_hokand_ulema_fatwa = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_positive.dds
+    
+    interest_group_ig_devout_pop_attraction_mult = 0.15
+    unit_morale_recovery_mult = 0.05
+    country_legitimacy_base_add = -15
+}
+
+modifier_hokand_officer_arsenal = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds
+    
+    unit_offense_mult = 0.03
+    country_bureaucracy_mult = -0.10
+    interest_group_ig_armed_forces_pop_attraction_mult = 0.10
+}
+
+modifier_hokand_tribal_loyalty = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds
+    
+    unit_morale_recovery_mult = -0.05
+    interest_group_ig_landowners_pol_str_mult = 0.20
+    state_tax_capacity_mult = -0.10
+}
+
+modifier_hokand_patrol_order = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds
+    
+    state_tax_capacity_mult = 0.05
+    unit_defense_mult = 0.05
+}
+# --- 2. AŞAMA (OTORİTENİN TESİS EDİLMESİ) DEBUFF VE MODİFİYERLERİ ---
+
+# Aktif Debuff 1: Otorite Boşluğu
+modifier_hokand_authority_vacuum = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_negative.dds
+    country_authority_mult = -0.15
+    country_bureaucracy_mult = -0.10
+    country_legitimacy_base_add = -20
+    interest_group_ig_armed_forces_pol_str_mult = 1.0
+}
+
+# Aktif Debuff 2: Göçebe İsyan Huzursuzluğu
+modifier_hokand_nomad_unrest = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_negative.dds
+    unit_morale_recovery_mult = -0.10
+    state_tax_capacity_mult = -0.10
+    state_radicals_from_political_movements_mult = 0.15
+}
+
+# Başarıyla Yedişehir Kurulduğunda Gelen Kalıcı Ödül
+modifier_hokand_yettishar_established = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds
+    country_authority_mult = 0.15
+    country_legitimacy_base_add = 30
+    unit_morale_recovery_mult = 0.10
+    interest_group_ig_armed_forces_pol_str_mult = 1.0
+    interest_group_ig_armed_forces_pop_attraction_mult = 1.0
+}
+
+# Secure Authority JE bar milestones (je_hokand_secure_authority on_monthly_pulse)
+modifier_hokand_fergana_mint_100 = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+    country_minting_mult = 0.05
+    state_tax_capacity_mult = 0.05
+}
+
+modifier_hokand_fergana_fatwa_175 = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_positive.dds
+    country_legitimacy_base_add = 10
+    interest_group_ig_devout_pol_str_mult = 0.10
+}
+
+modifier_hokand_nomad_cavalry_100 = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds
+    unit_offense_mult = 0.05
+    unit_morale_recovery_mult = 0.05
+}
+
+modifier_hokand_nomad_silkroad_150 = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+    state_trade_capacity_mult = 0.10
+    state_trade_advantage_mult = 0.10
+}
+
+# Buton Süreli Etkileri
+modifier_hokand_nomad_cavalry_raids = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_rifle_positive.dds
+    unit_offense_mult = 0.05
+    unit_morale_recovery_mult = 0.05
+}
+
+modifier_hokand_border_patrols = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+    state_trade_advantage_mult = 0.20
+    state_trade_capacity_mult = 0.15
+    state_turmoil_effects_mult = -0.10
+}
+
+# Buton Cooldown Bekleme Etkenleri
+cooldown_hokand_nomad_cavalry = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds
+}
+cooldown_hokand_rebel_camps = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds
+}
+cooldown_hokand_border_patrols = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds
+}
+cooldown_hokand_tashkent_privileges = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds
+}
+cooldown_hokand_kipchak_bribe = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds
+}
+cooldown_hokand_fergana_patrols = {
+    icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds
+}
+

@@ -1,0 +1,62 @@
+﻿l_english:
+
+ ideology_cedidism:0 "Cedidism"
+
+ ideology_cedidism_desc:0 "A reformist Turkic ideology favoring public schools, compulsory education, freedom of conscience, and the abolition of slavery and serfdom, with interventionist modernization over traditionalism."
+
+ ideology_cedidist_movement:0 "Cedidism"
+
+ ideology_cedidist_movement_desc:0 "Educators, clerks, and reformist intellectuals pressing for public schools, freedom of conscience, interventionist modernization, and an end to serfdom and slavery."
+
+ movement_cedidist:0 "Cedidism"
+
+ movement_cedidist_short:0 "Cedidism"
+
+ movement_cedidist_name:0 "$movement_cedidist$"
+
+ movement_cedidist_desc:0 "Reformist educators and urban professionals seeking modern schools, literacy, conscience rights, and gradual emancipation."
+
+ je_cedidism:0 "Cedidism and National Awakening"
+
+ je_cedidism_reason:0 "From the 1880s, Cedidist ideas of modern schooling and social reform spread among Turkic intellectuals. Inviting Ismail Gaspirali and carrying out his program could reshape our society."
+
+ je_cedidism_status:0 "Invite Gaspirali, expand schools, abolish slavery and serfdom, raise literacy, and secure the legal foundations of Cedidist reform."
+
+ je_cedidism_goal:0 "Complete the Cedidist program by inviting Gaspirali and meeting all educational and social requirements."
+
+ btn_cedidism_invite_gaspirali_name:0 "Invite Ismail Gaspirali"
+
+ btn_cedidism_invite_gaspirali_desc:0 "Invite the Crimean Tatar educator Ismail Gaspirali to lead the Intelligentsia and strengthen the Cedidist movement."
+
+ cedidism_year_1880_tt:0 "The year is 1880 or later"
+
+ cedidism_gaspirali_year_1880_tt:0 "The year is 1880 or later"
+
+ cedidism_gaspirali_not_invited_tt:0 "Ismail Gaspirali has not yet been invited"
+
+ cedidism_je_not_completed_tt:0 "Cedidism and National Awakening has not yet been completed"
+
+ cedidism_not_subject_tt:0 "Must not be a subject of another country"
+
+ yettishar_events.130.t:0 "Gaspirali in Turkestan"
+
+ yettishar_events.130.d:0 "Ismail Gaspirali arrives from Crimea with the usul-i cedid program — vernacular schools, literacy in the mother tongue, and measured reform. He stands ready to lead the Intelligentsia and rally Cedidist supporters in our cities."
+
+ yettishar_events.130.f:0 "Dilde, fikirde, işte birlik."
+
+ yettishar_events.130.a:0 "Welcome the educator of usul-i cedid"
+
+ modifier_cedidism_active:0 "Cedidist Awakening"
+
+ modifier_cedidism_active_desc:0 "The Cedidist awakening strengthens the Intelligentsia and draws the Petty Bourgeoisie toward reform."
+
+ modifier_cedidism_movement_boost_gaspirali:0 "Gaspirali's Cedidist Appeal"
+
+ modifier_cedidism_movement_boost_gaspirali_desc:0 "Ismail Gaspirali's arrival grants the Cedidist movement +200% movement pop attraction for 30 years."
+
+ modifier_cedidism_completed:0 "Triumph of Cedidism"
+
+ modifier_cedidism_completed_desc:0 "Cedidist reforms have entrenched modern education and empowered reformist interest groups. This effect lasts 20 years."
+
+ cedidism_gaspirali_invited_tt:0 "Ismail Gaspirali has been invited"
+

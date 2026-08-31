@@ -1,0 +1,64 @@
+﻿l_english:
+
+ dyn_c_yettishar:0 "Yettishar"
+
+ dyn_c_yettishar_emirate:0 "Emirate of Yettishar"
+
+ YTS:0 "Yettishar"
+
+ YTS_ADJ:0 "Yettishari"
+
+ YTS_DEF:0 "Emirate of Yettishar"
+
+ YTS_monarchy:0 "Emirate of Yettishar"
+
+ TRH:0 "Turkestan"
+
+ TRH_ADJ:0 "Turkestani"
+
+ TRH_DEF:0 "Turkestan"
+
+ TRH_monarchy:0 "Empire of Turkestan"
+
+ TRH_monarchy_adj:0 "Turkestani"
+
+ TRH_republic:0 "Republic of Turkestan"
+
+ TRH_republic_adj:0 "Turkestani"
+
+ TRH_theocracy:0 "Emirate of Turkestan"
+
+ TRH_theocracy_adj:0 "Turkestani"
+
+ TRH_dictatorship:0 "Empire of Turkestan"
+
+ TRH_dictatorship_adj:0 "Turkestani"
+
+ dyn_c_turkestan:0 "Turkestan"
+
+ dyn_c_turkestan_adj:0 "Turkestani"
+
+ dyn_c_kashgar:0 "Kashgar"
+
+ dyn_c_kashgar_khanate:0 "Emirate of Kashgar"
+
+ dyn_c_kashgar_adj:0 "Kashgari"
+
+ XIN:0 "Kashgar"
+
+ XIN_ADJ:0 "Kashgari"
+
+ XIN_DEF:0 "Emirate of Kashgar"
+
+ XIN_monarchy:0 "Emirate of Kashgar"
+
+ dyn_c_xinjiang_clique:0 "Emirate of Kashgar"
+
+ gov_yts_khanate:0 "Emirate"
+
+ gov_yts_khanate_desc:0 "This is a [concept_government_type] ruled by the [Concept('concept_ruler','$RULER_TITLE_EMIR$')], the absolute and traditional ruler of the nation.\n\n$TRANSFER_OF_POWER_NAME_DESC$"
+
+ gov_yts_regency_khanate:0 "Emirate"
+
+ gov_yts_regency_khanate_desc:0 "This is a [concept_government_type] ruled by a regency in the name of the [Concept('concept_ruler','$RULER_TITLE_EMIR$')], the absolute and traditional ruler of the nation.\n\n$TRANSFER_OF_POWER_NAME_DESC$"
+

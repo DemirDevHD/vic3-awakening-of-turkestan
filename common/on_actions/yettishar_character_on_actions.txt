@@ -1,0 +1,86 @@
+﻿# Append-only hooks (do NOT put effect= on vanilla on_action names — that overwrites).
+
+on_yearly_pulse_country = {
+	on_actions = {
+		yettishar_character_yearly_pulse
+	}
+}
+
+# Root = Country
+# Order: immortal guard → Alim Kul 1855 → Beg Kuli heir 1860 → death window 1870–1879
+yettishar_character_yearly_pulse = {
+	effect = {
+		if = {
+			limit = {
+				is_yts_or_trh = yes
+			}
+
+			# --- 1) Immortal guard (before 1870) ---
+			if = {
+				limit = {
+					ruler = { has_template = YTS_yakub_beg }
+					ruler = { is_immortal = no }
+					game_date < 1870.1.1
+					NOT = { has_variable = yettishar_yakub_beg_died }
+				}
+				ruler = { set_character_immortal = yes }
+			}
+
+			# --- 2) Alim Kul 1855 ---
+			if = {
+				limit = {
+					game_date >= 1855.1.1
+					ruler = { has_template = YTS_yakub_beg }
+					NOT = { has_variable = yts_alim_kul_spawned }
+					NOT = {
+						any_character = { has_template = YTS_alim_kul_muhammad }
+					}
+				}
+				set_variable = yts_alim_kul_spawned
+				trigger_event = { id = yettishar_events.110 popup = yes }
+			}
+
+			# --- 3) Beg Kuli heir 1860 ---
+			if = {
+				limit = {
+					game_date >= 1860.1.1
+					ruler = { has_template = YTS_yakub_beg }
+					NOT = { has_variable = yts_beg_kuli_heir_done }
+				}
+				set_variable = yts_beg_kuli_heir_done
+				trigger_event = { id = yettishar_events.1 popup = yes }
+			}
+
+			# --- 4) Death window (1870–74 20%, 1875–78 40%, 1879 forced) ---
+			if = {
+				limit = {
+					ruler = { has_template = YTS_yakub_beg }
+					year >= 1870
+					year <= 1879
+					NOT = { has_variable = yettishar_yakub_beg_died }
+				}
+				if = {
+					limit = { year >= 1879 }
+					trigger_event = { id = yettishar_events.3 popup = yes }
+				}
+				else_if = {
+					limit = {
+						year >= 1875
+						year <= 1878
+					}
+					random_list = {
+						40 = { trigger_event = { id = yettishar_events.3 popup = yes } }
+						60 = { }
+					}
+				}
+				else = {
+					# 1870–1874
+					random_list = {
+						20 = { trigger_event = { id = yettishar_events.3 popup = yes } }
+						80 = { }
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,1051 @@
+﻿namespace = yettishar_events
+yettishar_events.1 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.1.t
+	desc = yettishar_events.1.d
+	flavor = yettishar_events.1.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	immediate = {
+		if = {
+			limit = {
+				any_character = {
+					has_template = YTS_beg_kuli_beg
+				}
+			}
+			random_character = {
+				limit = {
+					has_template = YTS_beg_kuli_beg
+				}
+				save_scope_as = kuli_beg_target
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					exists = heir
+				}
+				heir = {
+					kill_character = yes
+				}
+			}
+			create_character = {
+				template = YTS_beg_kuli_beg
+				save_scope_as = kuli_beg_target
+			}
+		}
+	}
+	option = {
+		name = yettishar_events.1.a
+		default_option = yes
+		set_heir = scope:kuli_beg_target
+	}
+}
+
+yettishar_events.3 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.3.t
+	desc = yettishar_events.3.d
+	flavor = yettishar_events.3.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	immediate = {
+		set_variable = yettishar_yakub_beg_died
+		ruler = {
+			save_scope_as = dying_yakub_beg
+		}
+	}
+	option = {
+		name = yettishar_events.3.a
+		default_option = yes
+		set_variable = yettishar_yakub_beg_died
+		scope:dying_yakub_beg = {
+			set_character_immortal = no
+			kill_character = yes
+		}
+	}
+}
+
+yettishar_events.101 = {
+	type = country_event
+	placement = root
+	duration = 90
+	title = yettishar_events.101.t
+	desc = yettishar_events.101.d
+	flavor = yettishar_events.101.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	option = {
+		name = yettishar_events.101.a
+		default_option = yes
+		if = {
+			limit = {
+				ig:ig_intelligentsia ?= {
+					exists = leader
+				}
+			}
+			ig:ig_intelligentsia = {
+				leader = {
+					retire_character = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_character = {
+					has_template = YTS_kamil_harezmi
+				}
+			}
+			random_character = {
+				limit = {
+					has_template = YTS_kamil_harezmi
+				}
+				hidden_effect = {
+					free_character_from_void = yes
+				}
+				set_interest_group = root.ig:ig_intelligentsia
+				set_ideology = ideology:ideology_reformer
+				set_as_interest_group_leader = yes
+			}
+		}
+		else = {
+			create_character = {
+				template = YTS_kamil_harezmi
+				interest_group = ig_intelligentsia
+				ideology = ideology_reformer
+			}
+		}
+		if = {
+			limit = {
+				any_political_movement = {
+					is_political_movement_type = movement_modernizer
+				}
+			}
+			random_political_movement = {
+				limit = {
+					is_political_movement_type = movement_modernizer
+				}
+				add_modifier = {
+					name = modifier_kamil_harezmi_movement_support
+					months = 120
+				}
+			}
+		}
+		else = {
+			create_political_movement = { type = movement_modernizer }
+			random_political_movement = {
+				limit = {
+					is_political_movement_type = movement_modernizer
+				}
+				add_modifier = {
+					name = modifier_kamil_harezmi_movement_support
+					months = 120
+				}
+			}
+		}
+		add_modifier = {
+			name = modifier_kamil_harezmi_test_bonus
+			months = 300
+		}
+		set_variable = yts_kamil_harezmi_invited
+	}
+}
+
+yettishar_events.102 = {
+	type = country_event
+	placement = root
+	duration = 90
+	title = yettishar_events.102.t
+	desc = yettishar_events.102.d
+	flavor = yettishar_events.102.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	option = {
+		name = yettishar_events.102.a
+		default_option = yes
+		if = {
+			limit = {
+				ig:ig_intelligentsia ?= {
+					exists = leader
+				}
+			}
+			ig:ig_intelligentsia = {
+				leader = {
+					retire_character = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_character = {
+					has_template = YTS_ahmad_donish
+				}
+			}
+			random_character = {
+				limit = {
+					has_template = YTS_ahmad_donish
+				}
+				hidden_effect = {
+					free_character_from_void = yes
+				}
+				set_interest_group = root.ig:ig_intelligentsia
+				set_ideology = ideology:ideology_modernizer_leader
+				set_as_interest_group_leader = yes
+			}
+		}
+		else = {
+			create_character = {
+				template = YTS_ahmad_donish
+				interest_group = ig_intelligentsia
+				ideology = ideology_modernizer_leader
+			}
+		}
+		if = {
+			limit = {
+				any_political_movement = {
+					is_political_movement_type = movement_modernizer
+				}
+			}
+			random_political_movement = {
+				limit = {
+					is_political_movement_type = movement_modernizer
+				}
+				add_modifier = {
+					name = modifier_ahmad_donish_movement_support
+					months = 300
+				}
+			}
+		}
+		else = {
+			create_political_movement = { type = movement_modernizer }
+			random_political_movement = {
+				limit = {
+					is_political_movement_type = movement_modernizer
+				}
+				add_modifier = {
+					name = modifier_ahmad_donish_movement_support
+					months = 300
+				}
+			}
+		}
+		add_modifier = {
+			name = modifier_ahmad_donish_reform
+			months = 120
+		}
+		set_variable = yts_ahmad_danish_promoted
+	}
+}
+
+yettishar_events.103 = {
+	type = country_event
+	placement = root
+	title = yettishar_events.103.t
+	desc = yettishar_events.103.d
+	flavor = yettishar_events.103.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	# Flavor only: JE already opened via yts_military_reform_je_opened.
+	option = {
+		name = yettishar_events.103.a
+		default_option = yes
+	}
+}
+
+# ===========================================================================
+# 104. Osmanli Zabit Heyeti Kasgar'da (legacy orphan)
+# ===========================================================================
+yettishar_events.104 = {
+	type = country_event
+	placement = root
+	title = yettishar_events.104.t
+	desc = yettishar_events.104.d
+	flavor = yettishar_events.104.f
+	event_image = { video = "ep1_persian_court" }
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	trigger = { always = yes }
+	option = {
+		name = yettishar_events.104.a
+	}
+}
+
+# ===========================================================================
+# 105. Forsyth Misyonu ve Martini-Henry Alimi (legacy orphan)
+# ===========================================================================
+yettishar_events.105 = {
+	type = country_event
+	placement = root
+	title = yettishar_events.105.t
+	desc = yettishar_events.105.d
+	flavor = yettishar_events.105.f
+	event_image = { video = "ep1_redcoats" }
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	trigger = { always = yes }
+	option = {
+		name = yettishar_events.105.a
+	}
+}
+
+# ===========================================================================
+# 110. Alim Kul joins as Devout leader / general
+# ===========================================================================
+yettishar_events.110 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.110.t
+	desc = yettishar_events.110.d
+	flavor = yettishar_events.110.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	option = {
+		name = yettishar_events.110.a
+		default_option = yes
+		if = {
+			limit = {
+				ig:ig_devout ?= {
+					exists = leader
+				}
+			}
+			ig:ig_devout = {
+				leader = {
+					retire_character = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_character = {
+					has_template = YTS_alim_kul_muhammad
+				}
+			}
+			random_character = {
+				limit = {
+					has_template = YTS_alim_kul_muhammad
+				}
+				set_interest_group = root.ig:ig_devout
+				set_ideology = ideology:ideology_jingoist_leader
+				set_as_interest_group_leader = yes
+			}
+		}
+		else = {
+			create_character = {
+				template = YTS_alim_kul_muhammad
+				interest_group = ig_devout
+				ideology = ideology_jingoist_leader
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# 111. Beg Kuli departs for Porte education
+# ===========================================================================
+yettishar_events.111 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.111.t
+	desc = yettishar_events.111.d
+	flavor = yettishar_events.111.f
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	option = {
+		name = yettishar_events.111.a
+		default_option = yes
+		add_treasury = -5000
+		if = {
+			limit = { exists = c:TUR }
+			c:TUR = {
+				change_relations = {
+					country = root
+					value = 10
+				}
+			}
+		}
+		trigger_event = {
+			id = yettishar_events.112
+			days = 730
+		}
+	}
+}
+
+# ===========================================================================
+# 112. Beg Kuli returns from Porte education
+# ===========================================================================
+yettishar_events.112 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.112.t
+	desc = yettishar_events.112.d
+	flavor = yettishar_events.112.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	option = {
+		name = yettishar_events.112.a
+		default_option = yes
+		set_variable = yts_beg_kuli_porte_returned
+		if = {
+			limit = {
+				exists = heir
+				heir = { has_template = YTS_beg_kuli_beg }
+			}
+			heir = {
+				set_ideology = ideology:ideology_modernizer_leader
+				add_trait = erudite
+				add_trait = innovative
+				add_trait = basic_diplomat
+			}
+		}
+		else_if = {
+			limit = {
+				any_character = {
+					has_template = YTS_beg_kuli_beg
+				}
+			}
+			random_character = {
+				limit = {
+					has_template = YTS_beg_kuli_beg
+				}
+				set_ideology = ideology:ideology_modernizer_leader
+				add_trait = erudite
+				add_trait = innovative
+				add_trait = basic_diplomat
+			}
+		}
+		add_modifier = {
+			name = modifier_yettishar_beg_kuli_porte_education
+			months = 120
+		}
+		if = {
+			limit = { exists = c:TUR }
+			c:TUR = {
+				change_relations = {
+					country = root
+					value = 15
+				}
+			}
+		}
+	}
+}
+
+# ===========================================================================
+# 120. Ottoman military mission
+# ===========================================================================
+yettishar_events.120 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.120.t
+	desc = yettishar_events.120.d
+	flavor = yettishar_events.120.f
+	event_image = {
+		video = "ep1_persian_court"
+	}
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	option = {
+		name = yettishar_events.120.a
+		default_option = yes
+		set_variable = yts_ottoman_military_mission_done
+		add_modifier = {
+			name = modifier_yettishar_ottoman_military_mission
+			months = 60
+		}
+	}
+}
+
+# ===========================================================================
+# 121. War college founded
+# ===========================================================================
+yettishar_events.121 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.121.t
+	desc = yettishar_events.121.d
+	flavor = yettishar_events.121.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	option = {
+		name = yettishar_events.121.a
+		default_option = yes
+		set_variable = yts_war_college_founded
+		capital = {
+			create_building = {
+				building = building_university
+				level = 3
+				reserves = 1
+			}
+		}
+		add_modifier = {
+			name = modifier_yettishar_war_college
+			months = 180
+		}
+	}
+}
+
+# ===========================================================================
+# 122. London military advisory mission (11 options)
+# ===========================================================================
+yettishar_events.122 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.122.t
+	desc = yettishar_events.122.d
+	flavor = yettishar_events.122.f
+	event_image = {
+		video = "ep1_redcoats"
+	}
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	immediate = {
+		set_variable = yts_london_mission_done
+		add_modifier = {
+			name = modifier_yettishar_london_mission
+			months = 120
+		}
+	}
+	option = {
+		name = yettishar_events.122.a
+		trigger = {
+			exists = c:GBR
+			c:GBR = { has_technology_researched = rifling }
+			NOT = { has_technology_researched = rifling }
+			can_research = rifling
+		}
+		add_technology_progress = { progress = 16000 technology = rifling }
+	}
+	option = {
+		name = yettishar_events.122.b
+		trigger = {
+			exists = c:GBR
+			c:GBR = { has_technology_researched = general_staff }
+			NOT = { has_technology_researched = general_staff }
+			can_research = general_staff
+		}
+		add_technology_progress = { progress = 16000 technology = general_staff }
+	}
+	option = {
+		name = yettishar_events.122.c
+		trigger = {
+			exists = c:GBR
+			c:GBR = { has_technology_researched = field_works }
+			NOT = { has_technology_researched = field_works }
+			can_research = field_works
+		}
+		add_technology_progress = { progress = 16000 technology = field_works }
+	}
+	option = {
+		name = yettishar_events.122.g
+		trigger = {
+			exists = c:GBR
+			c:GBR = { has_technology_researched = logistics }
+			NOT = { has_technology_researched = logistics }
+			can_research = logistics
+		}
+		add_technology_progress = { progress = 16000 technology = logistics }
+	}
+	option = {
+		name = yettishar_events.122.i
+		trigger = {
+			exists = c:GBR
+			c:GBR = { has_technology_researched = percussion_cap }
+			NOT = { has_technology_researched = percussion_cap }
+			can_research = percussion_cap
+		}
+		add_technology_progress = { progress = 16000 technology = percussion_cap }
+	}
+	option = {
+		name = yettishar_events.122.j
+		trigger = {
+			exists = c:GBR
+			c:GBR = { has_technology_researched = shell_gun }
+			NOT = { has_technology_researched = shell_gun }
+			can_research = shell_gun
+		}
+		add_technology_progress = { progress = 16000 technology = shell_gun }
+	}
+	option = {
+		name = yettishar_events.122.k
+		trigger = {
+			exists = c:GBR
+			c:GBR = { has_technology_researched = triage }
+			NOT = { has_technology_researched = triage }
+			can_research = triage
+		}
+		add_technology_progress = { progress = 16000 technology = triage }
+	}
+	option = {
+		name = yettishar_events.122.e
+		trigger = {
+			exists = c:GBR
+			c:GBR = { has_technology_researched = screw_frigate }
+			NOT = { has_technology_researched = screw_frigate }
+			can_research = screw_frigate
+		}
+		add_technology_progress = { progress = 16000 technology = screw_frigate }
+	}
+	option = {
+		name = yettishar_events.122.l
+		trigger = {
+			exists = c:GBR
+			c:GBR = { has_technology_researched = power_of_the_purse }
+			NOT = { has_technology_researched = power_of_the_purse }
+			can_research = power_of_the_purse
+		}
+		add_technology_progress = { progress = 16000 technology = power_of_the_purse }
+	}
+	option = {
+		name = yettishar_events.122.m
+		trigger = {
+			exists = c:GBR
+			c:GBR = { has_technology_researched = hydraulic_cranes }
+			NOT = { has_technology_researched = hydraulic_cranes }
+			can_research = hydraulic_cranes
+		}
+		add_technology_progress = { progress = 16000 technology = hydraulic_cranes }
+	}
+	option = {
+		name = yettishar_events.122.h
+		default_option = yes
+		add_modifier = {
+			name = modifier_yettishar_london_mission_speed
+			months = 60
+		}
+	}
+}
+
+# ===========================================================================
+# 123. Regular battalions formed
+# ===========================================================================
+yettishar_events.123 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.123.t
+	desc = yettishar_events.123.d
+	flavor = yettishar_events.123.f
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	option = {
+		name = yettishar_events.123.a
+		default_option = yes
+		set_variable = yts_regular_battalions_formed
+		add_modifier = {
+			name = modifier_yettishar_regular_battalions
+			months = 180
+		}
+	}
+}
+
+# ===========================================================================
+# 130. Ismail Gaspirali — Cedidist Intelligentsia leader
+# +200% Cedidist movement attraction for 360 months (30 years); stacks with start boost.
+# ===========================================================================
+yettishar_events.130 = {
+	type = country_event
+	placement = root
+	duration = 90
+	title = yettishar_events.130.t
+	desc = yettishar_events.130.d
+	flavor = yettishar_events.130.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	option = {
+		name = yettishar_events.130.a
+		default_option = yes
+		if = {
+			limit = {
+				ig:ig_intelligentsia ?= {
+					exists = leader
+				}
+			}
+			ig:ig_intelligentsia = {
+				leader = {
+					retire_character = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_character = {
+					has_template = YTS_ismail_gaspirali
+				}
+			}
+			random_character = {
+				limit = {
+					has_template = YTS_ismail_gaspirali
+				}
+				hidden_effect = {
+					free_character_from_void = yes
+				}
+				set_interest_group = root.ig:ig_intelligentsia
+				set_ideology = ideology:ideology_cedidism
+				set_as_interest_group_leader = yes
+			}
+		}
+		else = {
+			# Template already sets IG/ideology/ig_leader; do not use set_interest_group
+			# inside on_created — root is not country there and crashes/invalidates IG target.
+			create_character = {
+				template = YTS_ismail_gaspirali
+				interest_group = ig_intelligentsia
+				ideology = ideology_cedidism
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_political_movement = {
+						is_political_movement_type = movement_cedidist
+					}
+				}
+			}
+			create_political_movement = { type = movement_cedidist }
+		}
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_cedidist
+			}
+			add_modifier = {
+				name = modifier_cedidism_movement_boost_gaspirali
+				months = 360
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = yts_gaspirali_invited }
+			}
+			set_variable = yts_gaspirali_invited
+		}
+	}
+}
+
+# ===========================================================================
+# 200. Türkistan ilan edildi (TRH) — confirms change_tag + refreshes UI name
+# ===========================================================================
+yettishar_events.200 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.200.t
+	desc = yettishar_events.200.d
+	flavor = yettishar_events.200.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	trigger = {
+		c:TRH ?= THIS
+	}
+	option = {
+		name = yettishar_events.200.a
+		default_option = yes
+		# Ensure dyn name / tag display settled after proclaim
+		if = {
+			limit = { NOT = { has_variable = yettishar_turkestan_proclaimed } }
+			set_variable = yettishar_turkestan_proclaimed
+		}
+	}
+}
+
+# ===========================================================================
+# 201. Kazakh zhuz negotiation
+# ===========================================================================
+yettishar_events.201 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.201.t
+	desc = yettishar_events.201.d
+	flavor = yettishar_events.201.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	on_created_soundeffect = "event_default"
+	option = {
+		name = yettishar_events.201.a
+		default_option = yes
+		je:je_yettishar_kazakh ?= {
+			add_progress = {
+				name = yettishar_kazakh_bar
+				value = 12
+			}
+		}
+	}
+	option = {
+		name = yettishar_events.201.b
+		je:je_yettishar_kazakh ?= {
+			add_progress = {
+				name = yettishar_kazakh_bar
+				value = 6
+			}
+		}
+		add_radicals = {
+			value = 0.02
+			strata = lower
+		}
+	}
+}
+
+# ===========================================================================
+# 202. Sadyk Sultan arrives
+# ===========================================================================
+yettishar_events.202 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.202.t
+	desc = yettishar_events.202.d
+	flavor = yettishar_events.202.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	on_created_soundeffect = "event_default"
+	option = {
+		name = yettishar_events.202.a
+		default_option = yes
+	}
+}
+
+# ===========================================================================
+# 210. Expel Russians (Greater Turkestan) — retaliation via railways
+# Order: create_pop tatar 15%
+#        → move non-islamic russian (leave 30% of original)
+#          across Ingria/Moscow/Kiev (capital fallback if none)
+#        → create_mass_migration: russian → Moscow (else Ingria, else Kiev)
+#          Ingria covered by 3-way instant move only
+#        → 12-month push on origin states + pull on dests (soft leftover wave)
+#        → SoL modifier + RUS −100 (no culture acceptance penalty)
+# No kill step: kill_population_percent_in_state has no religion filter (would
+# hit islamic Russians); every_scope_pop + kill_population_in_state had the
+# total_size*ratio → 0 bug. Move-only guarantees Muslims survive and exact
+# 30% non-islamic remain. Sequential move_partial_pop compounds: for N dest,
+# each r satisfies (1-r)^N = 0.30 → 3:0.331 / 2:0.452 / 1:0.70
+# Mass migration is culture-wide (no religion arg) — soft leftover OK.
+# ===========================================================================
+yettishar_events.210 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = yettishar_events.210.t
+	desc = yettishar_events.210.d
+	flavor = yettishar_events.210.f
+	event_image = {
+		video = "ep1_central_asian_city"
+	}
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	on_created_soundeffect = "event_default"
+	option = {
+		name = yettishar_events.210.a
+		default_option = yes
+		custom_tooltip = {
+			text = yettishar_events.210.a_tt
+			hidden_effect = {
+				if = {
+					limit = { exists = c:RUS }
+					c:RUS = {
+						random_scope_state = {
+							limit = { state_region = s:STATE_INGRIA }
+							save_scope_as = ingria_dest
+						}
+						random_scope_state = {
+							limit = { state_region = s:STATE_MOSCOW }
+							save_scope_as = moscow_dest
+						}
+						random_scope_state = {
+							limit = { state_region = s:STATE_KIEV }
+							save_scope_as = kiev_dest
+						}
+					}
+					# Capital fallback only when none of the three exist
+					if = {
+						limit = {
+							NOT = { exists = scope:ingria_dest }
+							NOT = { exists = scope:moscow_dest }
+							NOT = { exists = scope:kiev_dest }
+						}
+						c:RUS = {
+							if = {
+								limit = { exists = capital }
+								capital = { save_scope_as = capital_exile_dest }
+							}
+						}
+					}
+				}
+				every_scope_state = {
+					limit = {
+						any_scope_pop = {
+							culture = cu:russian
+						}
+					}
+					# 1) Tatar settlement first (pre-expulsion population base)
+					create_pop = {
+						culture = tatar
+						religion = sunni
+						size = {
+							value = this.state_population
+							multiply = 0.15
+						}
+					}
+					# 2) Move non-islamic Russian — leave 30% of original.
+					#    Compound ratios: (1-r)^N = 0.30
+					yettishar_expel_non_islamic_culture_pops = { CULTURE = cu:russian }
+				}
+				# Mass migration: one create (same-culture multi-target overwrites).
+				# russian → Moscow preferred; no eligibility gate.
+				if = {
+					limit = { exists = scope:moscow_dest }
+					scope:moscow_dest = {
+						create_mass_migration = { origin = root culture = cu:russian }
+					}
+				}
+				else_if = {
+					limit = { exists = scope:ingria_dest }
+					scope:ingria_dest = {
+						create_mass_migration = { origin = root culture = cu:russian }
+					}
+				}
+				else_if = {
+					limit = { exists = scope:kiev_dest }
+					scope:kiev_dest = {
+						create_mass_migration = { origin = root culture = cu:russian }
+					}
+				}
+				# Fallback mass mig only when none of the three exist
+				if = {
+					limit = {
+						NOT = { exists = scope:ingria_dest }
+						NOT = { exists = scope:moscow_dest }
+						NOT = { exists = scope:kiev_dest }
+						exists = c:RUS
+					}
+					c:RUS = {
+						if = {
+							limit = { exists = capital }
+							capital = {
+								create_mass_migration = { origin = root culture = cu:russian }
+							}
+						}
+						else = {
+							ordered_scope_state = {
+								order_by = migration_pull
+								position = 0
+								check_range_bounds = no
+								create_mass_migration = { origin = root culture = cu:russian }
+							}
+						}
+					}
+				}
+				# Soft wave: push leftover russian out; pull into exile hubs (12 months)
+				every_scope_state = {
+					limit = {
+						any_scope_pop = {
+							culture = cu:russian
+						}
+					}
+					add_modifier = {
+						name = modifier_gt_expulsion_push
+						months = 12
+					}
+				}
+				if = {
+					limit = { exists = scope:ingria_dest }
+					scope:ingria_dest = {
+						add_modifier = {
+							name = modifier_gt_exile_pull
+							months = 12
+						}
+					}
+				}
+				if = {
+					limit = { exists = scope:moscow_dest }
+					scope:moscow_dest = {
+						add_modifier = {
+							name = modifier_gt_exile_pull
+							months = 12
+						}
+					}
+				}
+				if = {
+					limit = { exists = scope:kiev_dest }
+					scope:kiev_dest = {
+						add_modifier = {
+							name = modifier_gt_exile_pull
+							months = 12
+						}
+					}
+				}
+				if = {
+					limit = {
+						NOT = { exists = scope:ingria_dest }
+						NOT = { exists = scope:moscow_dest }
+						NOT = { exists = scope:kiev_dest }
+						exists = scope:capital_exile_dest
+					}
+					scope:capital_exile_dest = {
+						add_modifier = {
+							name = modifier_gt_exile_pull
+							months = 12
+						}
+					}
+				}
+				set_variable = yettishar_gt_russians_expelled
+				# Culture acceptance must use add_culture_acceptance_modifier
+				# (country_*_cultural_acceptance_add in static modifiers does not apply).
+				add_culture_acceptance_modifier = {
+					culture = cu:russian
+					multiplier = -15
+				}
+				add_culture_acceptance_modifier = {
+					culture = cu:ukrainian
+					multiplier = -15
+				}
+				add_modifier = {
+					name = modifier_gt_russian_unwelcome
+				}
+				if = {
+					limit = { exists = c:RUS }
+					c:RUS = {
+						change_relations = {
+							country = root
+							value = -100
+						}
+					}
+				}
+			}
+		}
+	}
+}

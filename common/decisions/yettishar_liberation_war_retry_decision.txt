@@ -1,0 +1,183 @@
+﻿# Restart East Turkestan liberation after a lost war.
+# Vic3 decisions: NO icon field; ai_chance uses value=.
+# Effects are hidden behind custom_tooltip so scopes never leak into the Decisions UI.
+
+yettishar_liberation_war_retry_decision = {
+	is_shown = {
+		OR = {
+			c:YTS ?= THIS
+			c:KOK ?= THIS
+			c:TRH ?= THIS
+		}
+		custom_tooltip = {
+			text = kashgar_war_lost_tt
+			has_variable = kashgar_war_lost
+		}
+		NOT = { has_variable = kashgar_war_won }
+	}
+
+	possible = {
+		exists = c:CHI
+		custom_tooltip = {
+			text = yettishar_liberation_not_at_war_chi_tt
+			NOT = { has_war_with = c:CHI }
+		}
+		custom_tooltip = {
+			text = yettishar_liberation_no_truce_chi_tt
+			NOT = { has_truce_with = c:CHI }
+		}
+		custom_tooltip = {
+			text = yettishar_liberation_chi_holds_east_tt
+			OR = {
+				s:STATE_TIANSHAN = {
+					any_scope_state = { owner = c:CHI }
+				}
+				s:STATE_DZUNGARIA = {
+					any_scope_state = { owner = c:CHI }
+				}
+			}
+		}
+	}
+
+	when_taken = {
+		custom_tooltip = yettishar_liberation_retry_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_modifier = modifier_yettishar_liberation_war_bonus } }
+				add_modifier = {
+					name = modifier_yettishar_liberation_war_bonus
+					months = 120
+				}
+			}
+			if = {
+				limit = {
+					s:STATE_TIANSHAN = {
+						any_scope_state = { owner = c:CHI }
+					}
+				}
+				s:STATE_TIANSHAN = {
+					random_scope_state = {
+						limit = { owner = c:CHI }
+						save_scope_as = kashgar_target_state_tianshan
+						add_claim = root
+					}
+				}
+				create_diplomatic_play = {
+					target_country = c:CHI
+					type = dp_yts_liberation
+					target_state = scope:kashgar_target_state_tianshan
+				}
+				random_diplomatic_play = {
+					limit = { is_diplomatic_play_type = dp_yts_liberation }
+					if = {
+						limit = {
+							exists = c:RUS
+							OR = {
+								root = { has_variable = kashgar_russian_neutral }
+								c:RUS = { has_variable = kashgar_temp_neutral_locked }
+							}
+						}
+						c:RUS = { set_variable = kashgar_temp_neutral_locked }
+						yts_ensure_neutral_out = { COUNTRY = c:RUS }
+						c:RUS = {
+							every_subject_or_below = {
+								prev.prev = {
+									yts_ensure_neutral_out = { COUNTRY = prev }
+								}
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					s:STATE_DZUNGARIA = {
+						any_scope_state = { owner = c:CHI }
+					}
+				}
+				s:STATE_DZUNGARIA = {
+					random_scope_state = {
+						limit = { owner = c:CHI }
+						save_scope_as = kashgar_target_state_dzungaria
+						add_claim = root
+					}
+				}
+				create_diplomatic_play = {
+					target_country = c:CHI
+					type = dp_yts_liberation
+					target_state = scope:kashgar_target_state_dzungaria
+				}
+				random_diplomatic_play = {
+					limit = { is_diplomatic_play_type = dp_yts_liberation }
+					if = {
+						limit = {
+							exists = c:RUS
+							OR = {
+								root = { has_variable = kashgar_russian_neutral }
+								c:RUS = { has_variable = kashgar_temp_neutral_locked }
+							}
+						}
+						c:RUS = { set_variable = kashgar_temp_neutral_locked }
+						yts_ensure_neutral_out = { COUNTRY = c:RUS }
+						c:RUS = {
+							every_subject_or_below = {
+								prev.prev = {
+									yts_ensure_neutral_out = { COUNTRY = prev }
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	ai_chance = {
+		value = 100
+	}
+}
+hokand_annex_uzh_decision = {
+	is_shown = {
+		# Sadece Hokand (KOK) veya Yedişehir (YTS) olarak oynarken görünür
+		OR = {
+			AND = {
+				exists = c:KOK
+				c:KOK = ROOT
+			}
+			AND = {
+				exists = c:YTS
+				c:YTS = ROOT
+			}
+		}
+		exists = c:UZH
+		exists = c:RUS
+		c:UZH = {
+			is_subject_type = subject_type_protectorate
+		}
+	}
+	
+	possible = {
+		c:UZH = {
+			# Ulu Cüz'ün Rusya'nın vasalı/protektorası olması ve ilişkinin 30+ olması gerekir
+			is_subject_of = c:RUS
+			is_subject_type = subject_type_protectorate
+			relations:root >= 30
+		}
+
+	}
+	
+	when_taken = {
+		root = {
+			# Ulu Cüz'ü ilhak eder
+			annex_with_incorporation = c:UZH
+		} 
+		change_relations = {
+			country = c:RUS
+			value = -15
+		}
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}

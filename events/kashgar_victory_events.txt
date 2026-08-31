@@ -1,0 +1,532 @@
+﻿namespace = kashgar_victory_events
+
+# Victory Event - Kaşgar Zaferi
+# Bu event on_enforced (savaş) veya barışçıl transfer (event 6) yoluyla tetiklenir.
+# Toprak transferi on_enforced'da yapılır, burada sadece ödüller ve XIN kurulumu var.
+kashgar_victory_events.1 = {
+	type = country_event
+	placement = root
+	duration = 3
+	title = kashgar_victory_events.1.t
+	desc = kashgar_victory_events.1.d
+	flavor = kashgar_victory_events.1.f
+	event_image = { video = "unspecific_signed_contract" }
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	trigger = {
+		always = yes
+		NOT = { has_variable = kashgar_victory_event_fired }
+	}
+
+	immediate = {
+		set_variable = kashgar_victory_event_fired
+
+		# ── 2. RUSYA ÖDÜLÜ ─────────────────────────────────────────────────
+		if = {
+			limit = {
+				has_variable = kashgar_has_russian_support
+				exists = c:RUS
+			}
+			# Rusya savaşa katıldıysa vaad edilen toprakları (Amur, Dış Mançurya ve Sahalin) alır
+			s:STATE_AMUR = {
+				every_scope_state = {
+					limit = { owner = c:CHI }
+					set_state_owner = c:RUS
+				}
+			}
+			s:STATE_OUTER_MANCHURIA = {
+				every_scope_state = {
+					limit = { owner = c:CHI }
+					set_state_owner = c:RUS
+				}
+			}
+			s:STATE_SAKHALIN = {
+				every_scope_state = {
+					limit = { owner = c:CHI }
+					set_state_owner = c:RUS
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_variable = kashgar_russian_neutral
+				exists = c:RUS
+			}
+			# Rusya sadece tarafsız kaldıysa toprak verilmez, sadece yükümlülük borçlanılır
+			root = { set_owes_obligation_to = { country = c:RUS setting = yes } }
+		}
+
+		# ── 3. İNGİLTERE ÖDÜLÜ (Ticari İmtiyaz Antlaşmaları) ──
+		if = {
+			limit = {
+				has_variable = kashgar_has_british_support
+				exists = c:GBR
+			}
+			
+			# Yedişehir ile İngiltere arasında 20 Yıllık Ticari İmtiyaz Antlaşması (1.8 Treaty Sistemi)
+			create_treaty = {
+				first_country = root
+				second_country = c:GBR
+				is_draft = no
+				binding_period = { years = 20 }
+				articles_to_create = {
+					{
+						article = trade_privilege
+						source_country = root
+						target_country = c:GBR
+					}
+				}
+			}
+			# Çin ile İngiltere arasında 20 Yıllık Ticari İmtiyaz Antlaşması (1.8 Treaty Sistemi)
+			if = {
+				limit = { exists = c:CHI }
+				
+				create_treaty = {
+					first_country = c:CHI
+					second_country = c:GBR
+					is_draft = no
+					binding_period = { years = 20 }
+					articles_to_create = {
+						{
+							article = trade_privilege
+							source_country = c:CHI
+							target_country = c:GBR
+						}
+					}
+				}
+			}
+			c:GBR = { add_treasury = 25000 }
+		}
+
+		# ── 4. OSMANLI ÖDÜLÜ (Sadece 20 Yıl Prestij, Tazminat zaten antlaşmadan ödeniyor) ──
+		if = {
+			limit = {
+				has_variable = kashgar_has_ottoman_support
+				exists = c:TUR
+			}
+			c:TUR = {
+				add_modifier = {
+					name = modifier_kashgar_caliphate_prestige
+					months = 240
+				}
+				add_treasury = 25000
+			}
+		}
+
+		# ── 5. DOĞU TÜRKİSTAN (YEDİŞEHİR) ZAFER HEDİYESİ VE KAŞGAR KURULUMU ──
+		# Devlete Bağımsızlık Zaferi Hediyesi
+		add_treasury = 50000
+		add_loyalists = {
+			value = 0.15
+		}
+		add_modifier = {
+			name = modifier_yettishar_independence_victory
+			months = 180
+		}
+
+		# 1. KIRGIZİSTAN (s:STATE_KIRGHIZIA) -> DOĞRUDAN ROOT (HOKAND / OYUNCU)
+		s:STATE_KIRGHIZIA = {
+			every_scope_state = {
+				limit = { owner = c:CHI }
+				set_state_owner = root
+				set_state_type = incorporated
+			}
+		}
+
+		# 2. KAŞGAR EMİRLİĞİ / UYGURİSTAN (c:XIN) PU
+		# Mode decided BEFORE create_country (seeding last CHI share must not
+		# flip into release and steal player Jetisy):
+		#   Liberation — CHI/XBR still holds ET: seed+fill from CHI/XBR only
+		#   Release — no CHI/XBR ET left (war on_enforced / already-secured):
+		#             seed+fill from root non-capital Tianshan/Dzungaria/Jetisy → XIN PU
+		if = {
+			limit = {
+				AND = { exists = c:XIN c:XIN = root }
+			}
+			s:STATE_TIANSHAN = {
+				every_scope_state = {
+					limit = {
+						owner = c:CHI
+					}
+					set_state_owner = root
+					set_state_type = incorporated
+				}
+			}
+			s:STATE_DZUNGARIA = {
+				every_scope_state = {
+					limit = {
+						owner = c:CHI
+					}
+					set_state_owner = root
+					set_state_type = incorporated
+				}
+			}
+			s:STATE_JETISY = {
+				every_scope_state = {
+					limit = {
+						owner = c:CHI
+					}
+					set_state_owner = root
+					set_state_type = incorporated
+				}
+			}
+		}
+		else_if = {
+			# Liberation: Qing / XBR still holds East Turkestan homeland
+			limit = {
+				OR = {
+					s:STATE_TIANSHAN = {
+						any_scope_state = {
+							owner = c:CHI
+						}
+					}
+					s:STATE_DZUNGARIA = {
+						any_scope_state = {
+							owner = c:CHI
+						}
+					}
+					s:STATE_JETISY = {
+						any_scope_state = {
+							owner = c:CHI
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					NOT = { exists = c:XIN }
+				}
+				s:STATE_TIANSHAN = {
+					random_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						create_country = {
+							tag = XIN
+							origin = this.owner
+							state = this
+							on_created = {
+								set_country_type = unrecognized
+								activate_law = law_type:law_monarchy
+								activate_law = law_type:law_autocracy
+								regime_change = yes
+								set_capital = STATE_TIANSHAN
+							}
+						}
+					}
+				}
+				if = {
+					limit = { NOT = { exists = c:XIN } }
+					s:STATE_DZUNGARIA = {
+						random_scope_state = {
+							limit = {
+								owner = c:CHI
+							}
+							create_country = {
+								tag = XIN
+								origin = this.owner
+								state = this
+								on_created = {
+									set_country_type = unrecognized
+									activate_law = law_type:law_monarchy
+									activate_law = law_type:law_autocracy
+									regime_change = yes
+									set_capital = STATE_DZUNGARIA
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = { NOT = { exists = c:XIN } }
+					s:STATE_JETISY = {
+						random_scope_state = {
+							limit = {
+								owner = c:CHI
+							}
+							create_country = {
+								tag = XIN
+								origin = this.owner
+								state = this
+								on_created = {
+									set_country_type = unrecognized
+									activate_law = law_type:law_monarchy
+									activate_law = law_type:law_autocracy
+									regime_change = yes
+									set_capital = STATE_JETISY
+								}
+							}
+						}
+					}
+				}
+			}
+			if = {
+				limit = { exists = c:XIN }
+				s:STATE_TIANSHAN = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_DZUNGARIA = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_JETISY = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							c:KOK = root
+							c:YTS = root
+						}
+					}
+					if = {
+						limit = {
+							c:XIN = { is_subject_of = root }
+						}
+						c:XIN = {
+							change_subject_type = subject_type_personal_union
+						}
+					}
+					else = {
+						create_diplomatic_pact = {
+							country = c:XIN
+							type = personal_union
+						}
+					}
+				}
+			}
+			else = {
+				# Founding failed — Qing leftovers to root
+				s:STATE_TIANSHAN = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = root
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_DZUNGARIA = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = root
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_JETISY = {
+					every_scope_state = {
+						limit = {
+							owner = c:CHI
+						}
+						set_state_owner = root
+						set_state_type = incorporated
+					}
+				}
+			}
+		}
+		else = {
+			# Release: no CHI/XBR ET left — found XIN from player homeland as PU
+			if = {
+				limit = {
+					NOT = { exists = c:XIN }
+				}
+				s:STATE_TIANSHAN = {
+					random_scope_state = {
+						limit = {
+							owner = root
+							NOT = { is_capital = yes }
+						}
+						create_country = {
+							tag = XIN
+							origin = this.owner
+							state = this
+							on_created = {
+								set_country_type = unrecognized
+								activate_law = law_type:law_monarchy
+								activate_law = law_type:law_autocracy
+								regime_change = yes
+								set_capital = STATE_TIANSHAN
+							}
+						}
+					}
+				}
+				if = {
+					limit = { NOT = { exists = c:XIN } }
+					s:STATE_DZUNGARIA = {
+						random_scope_state = {
+							limit = {
+								owner = root
+								NOT = { is_capital = yes }
+							}
+							create_country = {
+								tag = XIN
+								origin = this.owner
+								state = this
+								on_created = {
+									set_country_type = unrecognized
+									activate_law = law_type:law_monarchy
+									activate_law = law_type:law_autocracy
+									regime_change = yes
+									set_capital = STATE_DZUNGARIA
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = { NOT = { exists = c:XIN } }
+					s:STATE_JETISY = {
+						random_scope_state = {
+							limit = {
+								owner = root
+								NOT = { is_capital = yes }
+							}
+							create_country = {
+								tag = XIN
+								origin = this.owner
+								state = this
+								on_created = {
+									set_country_type = unrecognized
+									activate_law = law_type:law_monarchy
+									activate_law = law_type:law_autocracy
+									regime_change = yes
+									set_capital = STATE_JETISY
+								}
+							}
+						}
+					}
+				}
+			}
+			if = {
+				limit = { exists = c:XIN }
+				s:STATE_TIANSHAN = {
+					every_scope_state = {
+						limit = {
+							owner = root
+							NOT = { is_capital = yes }
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_DZUNGARIA = {
+					every_scope_state = {
+						limit = {
+							owner = root
+							NOT = { is_capital = yes }
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				s:STATE_JETISY = {
+					every_scope_state = {
+						limit = {
+							owner = root
+							NOT = { is_capital = yes }
+						}
+						set_state_owner = c:XIN
+						set_state_type = incorporated
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							c:KOK = root
+							c:YTS = root
+						}
+					}
+					if = {
+						limit = {
+							c:XIN = { is_subject_of = root }
+						}
+						c:XIN = {
+							change_subject_type = subject_type_personal_union
+						}
+					}
+					else = {
+						create_diplomatic_pact = {
+							country = c:XIN
+							type = personal_union
+						}
+					}
+				}
+			}
+		}
+
+		# 6. İLİŞKİLERİN ESKİ HALİNE DÖNDÜRÜLMESİ VE ZAFER BAYRAĞI
+		hidden_effect = {
+			if = {
+				limit = { exists = c:RUS NOT = { c:RUS = root } c:RUS = { has_variable = kashgar_temp_relations_locked } }
+				c:RUS = {
+					change_relations = { country = root value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = root } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:GBR NOT = { c:GBR = root } c:GBR = { has_variable = kashgar_temp_relations_locked } }
+				c:GBR = {
+					change_relations = { country = root value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = root } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:TUR NOT = { c:TUR = root } c:TUR = { has_variable = kashgar_temp_relations_locked } }
+				c:TUR = {
+					change_relations = { country = root value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = root } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:KOK NOT = { c:KOK = root } c:KOK = { has_variable = kashgar_temp_relations_locked } }
+				c:KOK = {
+					change_relations = { country = root value = -60 }
+					if = { limit = { exists = c:CHI NOT = { c:CHI = root } } change_relations = { country = c:CHI value = 60 } }
+					remove_variable = kashgar_temp_relations_locked
+				}
+			}
+			if = {
+				limit = { exists = c:RUS NOT = { c:RUS = root } c:RUS = { has_variable = kashgar_temp_neutral_locked } }
+				c:RUS = {
+					if = { limit = { exists = c:CHI NOT = { c:CHI = root } } change_relations = { country = c:CHI value = 80 } }
+					remove_variable = kashgar_temp_neutral_locked
+				}
+			}
+			if = {
+				limit = { exists = c:YTS c:YTS = { has_variable = kashgar_temp_relations_locked } }
+				c:YTS = { remove_variable = kashgar_temp_relations_locked }
+			}
+			if = {
+				limit = { exists = c:XIN c:XIN = { has_variable = kashgar_temp_relations_locked } }
+				c:XIN = { remove_variable = kashgar_temp_relations_locked }
+			}
+		}
+		set_variable = kashgar_crisis_won
+	}
+
+	option = {
+		name = kashgar_victory_events.1.a
+	}
+}
